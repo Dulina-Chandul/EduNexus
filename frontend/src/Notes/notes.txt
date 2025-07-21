@@ -1,0 +1,7 @@
+downgraded to react 18 beacuse react quill didn't compatible with the react 19
+
+Look at the navigation bar(I just copy and pasted the code, if there is a time make the nav bar from scratch)
+
+Look At the home page I didnt know ay code about the home page
+
+min-h- doesnt work for the react quill
