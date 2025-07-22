@@ -4,10 +4,12 @@ import Post from "../../models/Post/Post.model.js";
 const postController = {
   //* Create Post
   createPost: expressAsyncHandler(async (req, res) => {
+    console.log(req.file);
+
     // Get the post data from the request body
     const { description } = req.body;
 
-    const postCreated = await Post.create({ description });
+    const postCreated = await Post.create({ description, image: req.file });
 
     res.status(201).json({
       status: "success",

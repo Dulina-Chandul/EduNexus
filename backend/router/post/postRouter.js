@@ -2,12 +2,21 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import Post from "../../models/Post/Post.model.js";
 import postController from "../../controllers/post/postController.js";
+import multer from "multer";
+import storage from "../../utils/fileUpload.js";
+
+//* Multer configuration for file uploads
+const upload = multer({ storage });
 
 //* Instance of express router
 const postRouter = express.Router();
 
 //* Create Post
-postRouter.post("/posts/create", postController.createPost);
+postRouter.post(
+  "/posts/create",
+  upload.single("image"),
+  postController.createPost
+);
 
 //* List All Posts
 postRouter.get("/posts", postController.listAllPosts);
