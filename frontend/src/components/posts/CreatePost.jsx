@@ -6,10 +6,15 @@ import { createPostAPI } from "../../APIservices/posts/postAPI";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import AlertMessage from "../alerts/AlertMessage";
+import { FaTimesCircle } from "react-icons/fa";
 
 const CreatePost = () => {
   //* State for WYSIWYG Editor
   const [description, setDescription] = useState("");
+
+  //* File upload state
+  const [imageError, setImageError] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
 
   //* Post Mutation
   const postMutation = useMutation({
@@ -20,17 +25,51 @@ const CreatePost = () => {
   const formik = useFormik({
     initialValues: {
       description: "",
+      image: "",
     },
     validationSchema: Yup.object({
       description: Yup.string().required("Description is required"),
+      image: Yup.mixed().required("Image is required"),
     }),
     onSubmit: (values) => {
-      const postData = {
-        description: values.description,
-      };
-      postMutation.mutate(postData);
+      const formData = new FormData();
+      formData.append("description", values.description);
+      formData.append("image", values.image);
+      postMutation.mutate(formData);
     },
   });
+
+  //* File Upload Logic
+  //* Handle file change
+  const handleFileChange = (event) => {
+    //* Get the selected file
+    const file = event.currentTarget.files[0];
+    console.log("Selected file:", file);
+
+    //* Limit file size to 1MB
+    if (file && file.size > 1024 * 1024) {
+      setImageError("File size should be less than 1MB");
+      return;
+    }
+
+    //* Limit the file type to predefined images only
+    if (!["image/jpeg", "image/png", "image/jpg"].includes(file.type)) {
+      setImageError("Only JPEG, PNG and JPG images are allowed");
+      return;
+    }
+
+    //* Set the image preview
+    formik.setFieldValue("image", file);
+    setImagePreview(URL.createObjectURL(file));
+    setImageError("");
+  };
+
+  //* Remove image preview
+  const removeImage = () => {
+    formik.setFieldValue("image", null);
+    setImagePreview(null);
+    setImageError("");
+  };
 
   //* Get Loading State
   const isLoading = postMutation.isPending;
@@ -114,7 +153,7 @@ const CreatePost = () => {
                 type="file"
                 name="image"
                 accept="image/*"
-                // onChange={handleFileChange}
+                onChange={handleFileChange}
                 className="hidden"
               />
               <label
@@ -125,16 +164,16 @@ const CreatePost = () => {
               </label>
             </div>
             {/* Display error message */}
-            {/* {formik.touched.image && formik.errors.image && (
+            {formik.touched.image && formik.errors.image && (
               <p className="text-sm text-red-600">{formik.errors.image}</p>
-            )} */}
+            )}
 
             {/* error message */}
-            {/* {imageError && <p className="text-sm text-red-600">{imageError}</p>} */}
+            {imageError && <p className="text-sm text-red-600">{imageError}</p>}
 
             {/* Preview image */}
 
-            {/* {imagePreview && (
+            {imagePreview && (
               <div className="mt-2 relative">
                 <img
                   src={imagePreview}
@@ -148,7 +187,7 @@ const CreatePost = () => {
                   <FaTimesCircle className="text-red-500" />
                 </button>
               </div>
-            )} */}
+            )}
           </div>
 
           {/* Submit Button - Button to submit the form */}
