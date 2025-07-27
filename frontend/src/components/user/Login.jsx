@@ -128,11 +128,11 @@ const Login = () => {
               className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-orange-500 w-full text-center border border-orange-600 shadow hover:bg-orange-600 focus:ring focus:ring-orange-200 transition duration-200 mb-8"
               type="submit"
             >
-              Sign Up
+              Login
             </button>
             {/* login with google */}
             <a
-              // href="http://localhost:9000/api/v1/users/auth/google"
+              href="http://localhost:5000/api/v1/users/auth/google"
               className="h-14 inline-flex items-center justify-center gap-2 py-4 px-6 rounded-full bg-white w-full text-center border border-gray-100 shadow hover:bg-gray-50 focus:ring focus:ring-orange-200 transition duration-200"
               type="submit"
             >

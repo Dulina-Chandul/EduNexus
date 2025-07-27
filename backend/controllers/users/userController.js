@@ -70,6 +70,81 @@ const userController = {
       });
     })(req, res, next);
   }),
+
+  //* Google OAuth
+  googleAuth: passport.authenticate("google", { scope: ["profile"] }),
+
+  //* Google OAuth Callback
+  googleAuthCallback: expressAsyncHandler(async (req, res, next) => {
+    passport.authenticate(
+      "google",
+      {
+        failureRedirect: "/login",
+        session: false,
+      },
+      (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+          return res.redirect("http://localhost:5173/google-login-error");
+        }
+
+        //* Generate JWT token
+        const token = jwt.sign({ id: user?._id }, process.env.JWT_SECRET, {
+          expiresIn: "3d",
+        });
+        //* set token in cookie
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+          maxAge: 1 * 24 * 60 * 60 * 1000,
+        });
+        //* Redirect to the frontend with user data
+        res.redirect("http://localhost:5173/dashboard");
+      }
+    )(req, res, next);
+  }),
+
+  //* Check user authentication
+  checkAuthenticated: expressAsyncHandler(async (req, res) => {
+    const token = req.cookies["token"];
+    if (!token) {
+      return res.status(401).json({
+        status: "error",
+        message: "User not authenticated",
+        isAuthenticated: false,
+      });
+    }
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return res.status(401).json({
+          status: "error",
+          message: "User not found",
+          isAuthenticated: false,
+        });
+      } else {
+        return res.status(200).json({
+          status: "success",
+          message: "User is authenticated",
+          isAuthenticated: true,
+          _id: user?._id,
+          username: user?.username,
+          email: user?.email,
+          profilePicture: user?.profilePicture,
+        });
+      }
+    } catch (error) {
+      return res.status(401).json({
+        status: "error",
+        message: "Invalid or expired token",
+        isAuthenticated: false,
+        error: error,
+      });
+    }
+  }),
 };
 
 export default userController;

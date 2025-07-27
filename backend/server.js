@@ -5,6 +5,7 @@ import cors from "cors";
 import postRouter from "./router/post/postRouter.js";
 import userRouter from "./router/user/userRouter.js";
 import passport from "./utils/passport-config.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -19,6 +20,9 @@ const corsOptions = {
   origin: ["http://localhost:5173"],
   credentials: true,
 };
+
+//* Cookie Parser
+app.use(cookieParser());
 
 //* Passport
 app.use(passport.initialize());

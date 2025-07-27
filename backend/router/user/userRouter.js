@@ -10,4 +10,13 @@ userRouter.post("/register", userController.register);
 //* Login
 userRouter.post("/login", userController.login);
 
+//* Google OAuth
+userRouter.get("/auth/google", userController.googleAuth);
+
+//* Google OAuth Callback
+userRouter.get("/auth/google/callback", userController.googleAuthCallback);
+
+//* Check if user is authenticated
+userRouter.get("/auth/check", userController.checkAuthenticated);
+
 export default userRouter;
