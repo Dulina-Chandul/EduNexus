@@ -5,6 +5,8 @@ import PostDetails from "./components/posts/PostDetails";
 import PostsList from "./components/posts/PostsList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UpdatePost from "./components/posts/UpdatePost";
+import Login from "./components/user/Login";
+import Register from "./components/user/Register";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {/* <Route path="post/:postId" element={<UpdatePost />} /> */}
       </Routes>
     </BrowserRouter>
