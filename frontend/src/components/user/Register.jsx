@@ -7,6 +7,8 @@ import { registerAPI } from "../../APIservices/users/userAPI";
 import AlertMessage from "../alerts/AlertMessage";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   //* User Mutation
   const userMutation = useMutation({
     mutationKey: ["register-user"],
@@ -40,8 +42,6 @@ const Register = () => {
         });
     },
   });
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-wrap pb-24">
@@ -140,9 +140,9 @@ const Register = () => {
               </svg>
             </div>
             {/* error */}
-            {/* {formik.touched.password && formik.errors.password && (
+            {formik.touched.password && formik.errors.password && (
               <div className="text-red-500 mt-1">{formik.errors.password}</div>
-            )} */}
+            )}
             <button
               className="h-14 inline-flex items-center justify-center py-4 px-6 text-white font-bold font-heading rounded-full bg-orange-500 w-full text-center border border-orange-600 shadow hover:bg-orange-600 focus:ring focus:ring-orange-200 transition duration-200 mb-8"
               type="submit"
