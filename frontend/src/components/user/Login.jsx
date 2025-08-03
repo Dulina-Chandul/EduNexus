@@ -30,8 +30,8 @@ const Login = () => {
       userMutation
         .mutateAsync(values)
         .then(() => {
-          //* Redirect to login page after successful registration
-          // navigate("/login");
+          //* Redirect to login page after login
+          navigate("/profile");
         })
         .catch((error) => {
           console.error("Error during registration:", error);

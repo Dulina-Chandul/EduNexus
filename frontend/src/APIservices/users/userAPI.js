@@ -29,4 +29,14 @@ export const loginAPI = async (userData) => {
       withCredentials: true,
     }
   );
+  return response.data;
+};
+
+//* Authenticate user API service
+export const authenticateUserAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/users/auth/check`, {
+    withCredentials: true,
+  });
+
+  return response.data;
 };
