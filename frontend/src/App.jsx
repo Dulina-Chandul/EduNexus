@@ -15,6 +15,8 @@ import { isAuthenticated } from "./redux/slices/authSlices";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import AuthRoute from "./components/auth-route/AuthRoute";
+import UserDashboard from "./components/user/UserDashboard";
+import AccountSummaryDashboard from "./components/user/AccountSummary";
 
 function App() {
   const {
@@ -47,14 +49,29 @@ function App() {
       {userAuth ? <PrivateNavbar /> : <PublicNavBar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/create-post"
-          element={
-            <AuthRoute>
-              <CreatePost />
-            </AuthRoute>
-          }
-        />
+        <Route path="/dashboard" element={<UserDashboard />}>
+          {/* Acoount Summery */}
+
+          <Route
+            path=""
+            element={
+              <AuthRoute>
+                <AccountSummaryDashboard />
+              </AuthRoute>
+            }
+          />
+
+          {/* Create Post */}
+          <Route
+            path="create-post"
+            element={
+              <AuthRoute>
+                <CreatePost />
+              </AuthRoute>
+            }
+          />
+        </Route>
+
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />
