@@ -5,3 +5,9 @@ Look at the navigation bar(I just copy and pasted the code, if there is a time m
 Look At the home page I didnt know ay code about the home page
 
 min-h- doesnt work for the react quill
+
+Features 
+If something missing from a student there is a feature that can list the missing thing
+(Found - to list by someone who found a bag or money)
+(Missing - to list some thing that is missing)
+Additional : Add some predefined categories like (Bag, Book, Pencil Case like that)

@@ -3,6 +3,9 @@ import connectDB from "./utils/connectDB.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import postRouter from "./router/post/postRouter.js";
+import userRouter from "./router/user/userRouter.js";
+import passport from "./utils/passport-config.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -18,6 +21,12 @@ const corsOptions = {
   credentials: true,
 };
 
+//* Cookie Parser
+app.use(cookieParser());
+
+//* Passport
+app.use(passport.initialize());
+
 //* PORT
 const PORT = process.env.PORT || 5000;
 
@@ -28,7 +37,8 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 //* Route Handlers
-app.use("/api/v1", postRouter);
+app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/users", userRouter);
 
 //* Not Found Route
 app.use((req, res, next) => {
