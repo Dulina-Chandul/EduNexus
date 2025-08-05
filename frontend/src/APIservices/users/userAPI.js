@@ -40,3 +40,13 @@ export const authenticateUserAPI = async () => {
 
   return response.data;
 };
+
+//* Logout user API service
+export const logOutAPI = async () => {
+  const response = await axios.post(
+    `${BASE_URL}/users/logout`,
+    {},
+    { withCredentials: true }
+  );
+  return response.data;
+};

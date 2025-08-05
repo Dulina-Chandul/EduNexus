@@ -18,7 +18,6 @@ const Profile = () => {
   });
 
   //* Dispatch user data to the Redux store
-
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -8,11 +8,42 @@ import UpdatePost from "./components/posts/UpdatePost";
 import Login from "./components/user/Login";
 import Register from "./components/user/Register";
 import Profile from "./components/user/Profile";
+import PrivateNavbar from "./components/nav-bar/PrivateNavbar";
+import { useDispatch, useSelector } from "react-redux";
+import { authenticateUserAPI } from "./APIservices/users/userAPI";
+import { isAuthenticated } from "./redux/slices/authSlices";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 function App() {
+  const {
+    isError,
+    isFetching,
+    data: userData,
+    error,
+    isSuccess,
+    refetch,
+  } = useQuery({
+    queryKey: ["authenticate-user"],
+    queryFn: authenticateUserAPI,
+  });
+
+  //* Dispatch user data to the Redux store
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(isAuthenticated(userData));
+  }, [userData]);
+
+  //* Get the login user from store
+  const { userAuth } = useSelector((state) => {
+    return state.auth;
+  });
+  console.log(userAuth);
+
   return (
     <BrowserRouter>
-      <PublicNavBar />
+      {userAuth ? <PrivateNavbar /> : <PublicNavBar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/create-post" element={<CreatePost />} />

@@ -145,6 +145,15 @@ const userController = {
       });
     }
   }),
+
+  //* Logout
+  logout: expressAsyncHandler(async (req, res) => {
+    res.cookie("token", "", { maxAge: 1 });
+    res.status(200).json({
+      status: "success",
+      message: "User logged out successfully",
+    });
+  }),
 };
 
 export default userController;
