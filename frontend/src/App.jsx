@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import AuthRoute from "./components/auth-route/AuthRoute";
 import UserDashboard from "./components/user/UserDashboard";
 import AccountSummaryDashboard from "./components/user/AccountSummary";
+import AddCategory from "./components/category/AddCategory";
 
 function App() {
   const {
@@ -67,6 +68,16 @@ function App() {
             element={
               <AuthRoute>
                 <CreatePost />
+              </AuthRoute>
+            }
+          />
+
+          {/* Add Category */}
+          <Route
+            path="add-category"
+            element={
+              <AuthRoute>
+                <AddCategory />
               </AuthRoute>
             }
           />

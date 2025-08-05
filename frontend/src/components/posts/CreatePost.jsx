@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { createPostAPI } from "../../APIservices/posts/postAPI";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import AlertMessage from "../alerts/AlertMessage";
 import { FaTimesCircle } from "react-icons/fa";
+import Select from "react-select";
+import { getAllCategoriesAPI } from "../../APIservices/category/categoryAPI";
 
 const CreatePost = () => {
   //* State for WYSIWYG Editor
@@ -22,19 +24,29 @@ const CreatePost = () => {
     mutationFn: createPostAPI,
   });
 
+  const { data: categoriesData } = useQuery({
+    queryKey: ["category-list"],
+    queryFn: getAllCategoriesAPI,
+  });
+
+  console.log(categoriesData);
+
   const formik = useFormik({
     initialValues: {
       description: "",
       image: "",
+      category: "",
     },
     validationSchema: Yup.object({
       description: Yup.string().required("Description is required"),
       image: Yup.mixed().required("Image is required"),
+      category: Yup.string().required("Category is required"),
     }),
     onSubmit: (values) => {
       const formData = new FormData();
       formData.append("description", values.description);
       formData.append("image", values.image);
+      formData.append("category", values.category);
       postMutation.mutate(formData);
     },
   });
@@ -132,10 +144,26 @@ const CreatePost = () => {
             >
               Category
             </label>
+            <Select
+              name="category"
+              options={categoriesData?.categories?.map((category) => {
+                return {
+                  value: category._id,
+                  label: category.categoryName,
+                };
+              })}
+              onChange={(option) => {
+                return formik.setFieldValue("category", option.value);
+              }}
+              value={categoriesData?.categories?.find(
+                (option) => option.value === formik.values.category
+              )}
+              className="mt-1 block w-full"
+            />
             {/* display error */}
-            {/* {formik.touched.category && formik.errors.category && (
+            {formik.touched.category && formik.errors.category && (
               <p className="text-sm text-red-600">{formik.errors.category}</p>
-            )} */}
+            )}
           </div>
 
           {/* Image Upload Input - File input for uploading images */}
