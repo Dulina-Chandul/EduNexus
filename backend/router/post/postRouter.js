@@ -4,6 +4,7 @@ import Post from "../../models/Post/Post.model.js";
 import postController from "../../controllers/post/postController.js";
 import multer from "multer";
 import storage from "../../utils/fileUpload.js";
+import isAuthenticated from "../../middlewares/isAuthenticated.js";
 
 //* Multer configuration for file uploads
 const upload = multer({ storage });
@@ -12,18 +13,23 @@ const upload = multer({ storage });
 const postRouter = express.Router();
 
 //* Create Post
-postRouter.post("/create", upload.single("image"), postController.createPost);
+postRouter.post(
+  "/create",
+  isAuthenticated,
+  upload.single("image"),
+  postController.createPost
+);
 
 //* List All Posts
 postRouter.get("/", postController.listAllPosts);
 
 //* Update Post
-postRouter.put("/:postId", postController.updatePost);
+postRouter.put("/:postId", isAuthenticated, postController.updatePost);
 
 //* Get Post
 postRouter.get("/:postId", postController.getPost);
 
 //* Delete Post
-postRouter.delete("/:postId", postController.deletePost);
+postRouter.delete("/:postId", isAuthenticated, postController.deletePost);
 
 export default postRouter;

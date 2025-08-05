@@ -47,7 +47,14 @@ function App() {
       {userAuth ? <PrivateNavbar /> : <PublicNavBar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/create-post" element={<CreatePost />} />
+        <Route
+          path="/create-post"
+          element={
+            <AuthRoute>
+              <CreatePost />
+            </AuthRoute>
+          }
+        />
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />

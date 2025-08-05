@@ -9,7 +9,11 @@ const postController = {
     // Get the post data from the request body
     const { description } = req.body;
 
-    const postCreated = await Post.create({ description, image: req.file });
+    const postCreated = await Post.create({
+      description,
+      image: req.file,
+      author: req.user,
+    });
 
     res.status(201).json({
       status: "success",

@@ -86,9 +86,6 @@ const CreatePost = () => {
   //* Error message
   const errorMessage = postMutation?.error?.response?.data?.message;
 
-  //* Check if there was an error fetching the data
-  if (isError) return <AlertMessage type="error" message={errorMessage} />;
-
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 m-4">
@@ -103,6 +100,8 @@ const CreatePost = () => {
         {isSuccess && (
           <AlertMessage type="success" message="Post created successfully!" />
         )}
+
+        {isError && <AlertMessage type="error" message={errorMessage} />}
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div className="mb-14">
