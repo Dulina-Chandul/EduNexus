@@ -14,6 +14,7 @@ import { authenticateUserAPI } from "./APIservices/users/userAPI";
 import { isAuthenticated } from "./redux/slices/authSlices";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import AuthRoute from "./components/auth-route/AuthRoute";
 
 function App() {
   const {
@@ -51,7 +52,14 @@ function App() {
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <AuthRoute>
+              <Profile />
+            </AuthRoute>
+          }
+        />
         {/* <Route path="post/:postId" element={<UpdatePost />} /> */}
       </Routes>
     </BrowserRouter>
