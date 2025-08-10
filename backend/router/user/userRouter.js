@@ -26,4 +26,14 @@ userRouter.post("/logout", userController.logout);
 //* Get user profile
 userRouter.get("/profile", isAuthenticated, userController.getUserProfile);
 
+//* Follow a user
+userRouter.put("/follow/:followId", isAuthenticated, userController.followUser);
+
+//* Unfollow a user
+userRouter.put(
+  "/unfollow/:unfollowId",
+  isAuthenticated,
+  userController.unfollowUser
+);
+
 export default userRouter;

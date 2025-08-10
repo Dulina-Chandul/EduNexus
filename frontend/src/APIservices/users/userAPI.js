@@ -59,3 +59,24 @@ export const logOutAPI = async () => {
   );
   return response.data;
 };
+
+//* Follow User
+export const followUserAPI = async (userId) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/follow/${userId}`,
+    {},
+    { withCredentials: true }
+  );
+  return response.data;
+};
+
+//* Unfollow User
+export const unfollowUserAPI = async (userId) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/unfollow/${userId}`,
+    {},
+    { withCredentials: true }
+  );
+  console.log("Unfollow Response:", response.data);
+  return response.data;
+};
