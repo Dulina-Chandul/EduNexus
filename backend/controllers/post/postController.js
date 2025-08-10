@@ -98,9 +98,20 @@ const postController = {
   getPost: expressAsyncHandler(async (req, res) => {
     const { postId } = req.params;
     const postFound = await Post.findById(postId);
+    const userId = req.user ? req.user : null;
     if (!postFound) {
       throw new Error("Post not found");
     }
+
+    //* Increment views count
+    if (userId) {
+      if (!postFound.viewers.includes(userId)) {
+        postFound.viewers.push(userId);
+        postFound.viewsCount += 1;
+        await postFound.save();
+      }
+    }
+
     res.status(200).json({
       status: "success",
       message: "Post retrieved successfully",

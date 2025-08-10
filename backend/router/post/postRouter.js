@@ -5,6 +5,7 @@ import postController from "../../controllers/post/postController.js";
 import multer from "multer";
 import storage from "../../utils/fileUpload.js";
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
+import optionalAuth from "../../middlewares/optionalAuth.js";
 
 //* Multer configuration for file uploads
 const upload = multer({ storage });
@@ -27,7 +28,7 @@ postRouter.get("/", postController.listAllPosts);
 postRouter.put("/:postId", isAuthenticated, postController.updatePost);
 
 //* Get Post
-postRouter.get("/:postId", postController.getPost);
+postRouter.get("/:postId", optionalAuth, postController.getPost);
 
 //* Delete Post
 postRouter.delete("/:postId", isAuthenticated, postController.deletePost);
