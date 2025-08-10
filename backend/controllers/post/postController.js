@@ -1,6 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 import Post from "../../models/Post/Post.model.js";
 import Category from "../../models/Category/Category.model.js";
+import User from "../../models/User/User.model.js";
 
 const postController = {
   //* Create Post
@@ -16,6 +17,12 @@ const postController = {
       throw new Error("Category not found");
     }
 
+    //* Find the User by ID
+    const userFound = await User.findById(req.user);
+    if (!userFound) {
+      throw new Error("User not found");
+    }
+
     const postCreated = await Post.create({
       description,
       image: req.file,
@@ -26,6 +33,9 @@ const postController = {
     categoryFound.posts.push(postCreated);
     await categoryFound.save();
 
+    userFound.posts.push(postCreated?._id);
+    await userFound.save();
+
     res.status(201).json({
       status: "success",
       message: "Post created successfully",
@@ -35,7 +45,7 @@ const postController = {
 
   //* List All Posts
   listAllPosts: expressAsyncHandler(async (req, res) => {
-    console.log(req.query);
+    // console.log(req.query);
     const { category, title, page = 1, limit = 10 } = req.query;
     let filter = {};
 
