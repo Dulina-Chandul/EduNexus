@@ -166,6 +166,69 @@ const userController = {
       user,
     });
   }),
+
+  //* Following a user
+  followUser: expressAsyncHandler(async (req, res) => {
+    const { followId } = req.params;
+    console.log(req.user);
+    const userId = req.user;
+
+    if (userId.toString() === followId.toString()) {
+      throw new Error("You cannot follow yourself");
+    }
+
+    const userToFollow = await User.findById(followId);
+    if (!userToFollow) {
+      throw new Error("User to follow not found");
+    }
+
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $addToSet: { following: followId },
+      },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      followId,
+      {
+        $addToSet: { followers: userId },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "User followed successfully",
+    });
+  }),
+
+  //* Unfollow a user
+  unfollowUser: expressAsyncHandler(async (req, res) => {
+    const userId = req.user;
+    const unfollowId = req.params.unfollowId;
+
+    const user = await User.findById(userId);
+    const unfollowUser = await User.findById(unfollowId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    if (!unfollowUser) {
+      throw new Error("User to unfollow not found");
+    }
+    if (userId.toString() === unfollowId.toString()) {
+      throw new Error("You cannot unfollow yourself");
+    }
+    user.following.pull(unfollowId);
+    unfollowUser.followers.pull(userId);
+    await user.save();
+    await unfollowUser.save();
+    res.status(200).json({
+      status: "success",
+      message: "User unfollowed successfully",
+    });
+  }),
 };
 
 export default userController;

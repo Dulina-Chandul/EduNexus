@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import {
   FaThumbsUp,
@@ -11,6 +11,12 @@ import {
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
 import { getSinglePostAPI } from "../../APIservices/posts/postAPI";
+import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
+import {
+  followUserAPI,
+  unfollowUserAPI,
+  userProfileAPI,
+} from "../../APIservices/users/userAPI";
 
 const PostDetails = () => {
   const [comment, setComment] = useState("");
@@ -29,7 +35,53 @@ const PostDetails = () => {
     queryFn: () => getSinglePostAPI(postId),
   });
 
-  console.log("Post Data:", postData);
+  //* Get the profile details
+
+  const { data: profileData, refetch } = useQuery({
+    queryKey: ["user-profile"],
+    queryFn: () => userProfileAPI(),
+  });
+
+  //* Get the user data from the profile
+  const userID = profileData?.user?._id;
+
+  // console.log("Post Data:", postData);
+
+  const userToFollowUnfollow = postData?.post?.author;
+
+  // console.log("User to Follow:", userToFollowUnfollow, "User ID:", userID);
+
+  //* Check if the user is already following the author
+  const isFollowing = profileData?.user?.following?.find(
+    (user) => user?.toString() === userToFollowUnfollow?.toString()
+  );
+
+  console.log("Is Following:", isFollowing);
+
+  //* Follow and Unfollow mutations
+  const followUserMutation = useMutation({
+    mutationKey: ["follow-user"],
+    mutationFn: followUserAPI,
+  });
+
+  const unFollowUserMutation = useMutation({
+    mutationKey: ["unfollow-user"],
+    mutationFn: unfollowUserAPI,
+  });
+
+  const followUserHandle = async () => {
+    followUserMutation
+      .mutateAsync(userToFollowUnfollow)
+      .then(() => refetch())
+      .catch((error) => console.log("Error following user:", error));
+  };
+
+  const unFollowUserHandle = async () => {
+    unFollowUserMutation
+      .mutateAsync(userToFollowUnfollow)
+      .then(() => refetch())
+      .catch((error) => console.log("Error unfollowing user:", error));
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -69,9 +121,10 @@ const PostDetails = () => {
           </span>
         </div>
         {/* follow icon */}
-        {/* {isFollowing ? (
+
+        {isFollowing ? (
           <button
-            onClick={handleFollow}
+            onClick={unFollowUserHandle}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
           >
             <RiUserUnfollowFill className="mr-2" />
@@ -79,13 +132,13 @@ const PostDetails = () => {
           </button>
         ) : (
           <button
-            onClick={handleFollow}
+            onClick={followUserHandle}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
           >
             Follow
             <RiUserFollowLine className="ml-2" />
           </button>
-        )} */}
+        )}
 
         {/* author */}
         <span className="ml-2">{/* {postData?.author?.username} */}</span>
