@@ -154,6 +154,18 @@ const userController = {
       message: "User logged out successfully",
     });
   }),
+
+  //* Get user profile
+  getUserProfile: expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user)
+      .populate("posts")
+      .select(
+        "-password -passwordResetToken -accountVerificationToken -accountVerificationExpires -passwordResetExpires"
+      );
+    res.json({
+      user,
+    });
+  }),
 };
 
 export default userController;

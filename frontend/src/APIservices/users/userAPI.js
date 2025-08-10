@@ -41,6 +41,15 @@ export const authenticateUserAPI = async () => {
   return response.data;
 };
 
+//* User profile
+export const userProfileAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/users/profile`, {
+    withCredentials: true,
+  });
+
+  return response.data;
+};
+
 //* Logout user API service
 export const logOutAPI = async () => {
   const response = await axios.post(

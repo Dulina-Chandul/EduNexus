@@ -1,5 +1,6 @@
 import express from "express";
 import userController from "../../controllers/users/userController.js";
+import isAuthenticated from "../../middlewares/isAuthenticated.js";
 
 //* Instance of express router
 const userRouter = express.Router();
@@ -21,5 +22,8 @@ userRouter.get("/auth/check", userController.checkAuthenticated);
 
 //* Logout
 userRouter.post("/logout", userController.logout);
+
+//* Get user profile
+userRouter.get("/profile", isAuthenticated, userController.getUserProfile);
 
 export default userRouter;
