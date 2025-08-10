@@ -35,11 +35,31 @@ const postController = {
 
   //* List All Posts
   listAllPosts: expressAsyncHandler(async (req, res) => {
-    const posts = await Post.find().populate("category");
+    console.log(req.query);
+    const { category, title, page = 1, limit = 10 } = req.query;
+    let filter = {};
+
+    if (category) {
+      filter.category = category;
+    }
+    if (title) {
+      filter.description = { $regex: title, $options: "i" };
+    }
+
+    const posts = await Post.find(filter)
+      .populate("category")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    const totalPosts = await Post.countDocuments(filter);
     res.status(200).json({
       status: "success",
       message: "Posts retrieved successfully",
-      posts: posts,
+      posts,
+      currentPage: Number(page),
+      perPage: Number(limit),
+      totalPages: Math.ceil(totalPosts / limit),
     });
   }),
 

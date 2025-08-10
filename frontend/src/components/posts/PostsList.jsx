@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { deletePostAPI, getAllPostsAPI } from "../../APIservices/posts/postAPI";
 import { Link } from "react-router-dom";
 import "./postStyle.css";
@@ -7,7 +7,15 @@ import NoDataFound from "../alerts/NoDataFound";
 import AlertMessage from "../alerts/AlertMessage";
 import { getAllCategoriesAPI } from "../../APIservices/category/categoryAPI";
 import PostCategory from "../category/PostCategory";
+import { FaSearch } from "react-icons/fa";
+import { MdClear } from "react-icons/md";
+
 const PostsList = () => {
+  //* Filtering
+  const [filters, setFilters] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+
   const {
     isError,
     isFetching,
@@ -16,8 +24,9 @@ const PostsList = () => {
     isSuccess,
     refetch,
   } = useQuery({
-    queryKey: ["list-posts"],
-    queryFn: getAllPostsAPI,
+    queryKey: ["list-posts", { ...filters, page }],
+    queryFn: () =>
+      getAllPostsAPI({ ...filters, title: searchQuery, page, limit: 10 }),
   });
 
   const postMutation = useMutation({
@@ -31,6 +40,36 @@ const PostsList = () => {
     queryKey: ["category-list"],
     queryFn: getAllCategoriesAPI,
   });
+
+  //* Category hilter handler
+  const handleCategoryFilter = (categoryId) => {
+    setFilters({ ...filters, category: categoryId });
+    setPage(1);
+    refetch();
+  };
+  //* Search handler
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  //* Submit search handler
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setFilters({ ...filters, title: searchQuery });
+    setPage(1);
+    refetch();
+  };
+  //* Page change handler
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    refetch();
+  };
+  //* Clear filters handler
+  const clearFilters = () => {
+    setFilters({});
+    setSearchQuery("");
+    setPage(1);
+    refetch();
+  };
 
   //* Delete Post Handler
   const deletePostHandler = async (postId) => {
@@ -46,30 +85,53 @@ const PostsList = () => {
 
   //* Handle loading, error, and success states
 
-  //* Check if data is still being fetched
-  if (isFetching)
-    return <AlertMessage type="loading" message="Loading posts..." />;
-
-  //* Check if there was an error fetching the data
-  if (isError) return <AlertMessage type="error" message={error.message} />;
-
-  //* No posts found
-  if (postsData?.posts?.length <= 0) {
-    return <NoDataFound text="No posts found" />;
-  }
-
   console.log("Posts Data:", postsData);
 
   return (
     <section className="overflow-hidden">
-      {isSuccess && (
-        <AlertMessage type="success" message="Posts loaded successfully!" />
-      )}
       <div className="container px-4 mx-auto">
         <h1 className="text-4xl lg:text-6xl font-bold font-heading mb-6 mt-16">
           Blog
         </h1>
-
+        {/* Searching */}
+        <form
+          onSubmit={handleSearchSubmit}
+          className="flex flex-col md:flex-row items-center gap-2 mb-4"
+        >
+          <div className="flex-grow flex items-center border border-gray-300 rounded-lg overflow-hidden">
+            <input
+              type="text"
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={handleSearch}
+              className="flex-grow p-2 text-sm focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="p-2 text-white bg-orange-500 hover:bg-blue-600 rounded-r-lg"
+            >
+              <FaSearch className="h-5 w-5" />
+            </button>
+          </div>
+          <button
+            onClick={clearFilters}
+            className="p-2 text-sm text-orange-500 border border-blue-500 rounded-lg hover:bg-blue-100 flex items-center gap-1"
+          >
+            <MdClear className="h-4 w-4" />
+            Clear Filters
+          </button>
+        </form>
+        {/* Show No data found */}
+        {postsData?.posts?.length <= 0 && <NoDataFound text="No posts found" />}
+        {/* Show error message if any */}
+        {isError && <AlertMessage type="error" message={error.message} />}
+        {/* Show Loading message */}
+        {isFetching && (
+          <AlertMessage type="loading" message="Loading posts..." />
+        )}
+        {isSuccess && !isFetching && (
+          <AlertMessage type="success" message="Posts loaded successfully!" />
+        )}
         {/* featured post */}
         {/* <FeaturedPost post={featuredPost} /> */}
         <h2 className="text-4xl font-bold font-heading mb-10">
@@ -78,7 +140,8 @@ const PostsList = () => {
         {/* Post category */}
         <PostCategory
           categories={categoriesData}
-          // onCategorySelect={handleCategoryFilter}
+          onCategorySelect={handleCategoryFilter}
+          onClearFilters={clearFilters}
         />
         <div className="flex flex-wrap mb-32 -mx-4">
           {/* Posts */}
@@ -129,11 +192,11 @@ const PostsList = () => {
       </div>
 
       {/* Pagination */}
-      {/* <div className="flex justify-center items-center my-8 space-x-4">
-        {isPreviousButtonVisible && (
+      <div className="flex justify-center items-center my-8 space-x-4">
+        {page > 1 && (
           <button
             onClick={() => handlePageChange(page - 1)}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+            className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
           >
             Previous
           </button>
@@ -143,7 +206,7 @@ const PostsList = () => {
           Page {page} of {postsData?.totalPages}
         </span>
 
-        {isNextButtonVisible && (
+        {page < postsData?.totalPages && (
           <button
             onClick={() => handlePageChange(page + 1)}
             className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
@@ -151,7 +214,7 @@ const PostsList = () => {
             Next
           </button>
         )}
-      </div> */}
+      </div>
     </section>
   );
 };
