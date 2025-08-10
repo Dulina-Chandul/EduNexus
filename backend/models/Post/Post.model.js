@@ -38,13 +38,13 @@ const postSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    Likes: [
+    likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
-    deslikes: [
+    dislikes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

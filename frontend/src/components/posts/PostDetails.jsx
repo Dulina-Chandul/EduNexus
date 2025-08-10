@@ -10,7 +10,11 @@ import {
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
-import { getSinglePostAPI } from "../../APIservices/posts/postAPI";
+import {
+  dislikePostAPI,
+  getSinglePostAPI,
+  likePostAPI,
+} from "../../APIservices/posts/postAPI";
 import { RiUserFollowLine, RiUserUnfollowFill } from "react-icons/ri";
 import {
   followUserAPI,
@@ -30,6 +34,7 @@ const PostDetails = () => {
     data: postData,
     error,
     isSuccess,
+    refetch: refetchPostData,
   } = useQuery({
     queryKey: ["get-post"],
     queryFn: () => getSinglePostAPI(postId),
@@ -83,6 +88,34 @@ const PostDetails = () => {
       .catch((error) => console.log("Error unfollowing user:", error));
   };
 
+  //* Like and Dislike mutations
+  const likePostMutation = useMutation({
+    mutationKey: ["like-post"],
+    mutationFn: likePostAPI,
+  });
+
+  const dislikePostMutation = useMutation({
+    mutationKey: ["dislike-post"],
+    mutationFn: dislikePostAPI,
+  });
+
+  const likePostHandle = async () => {
+    likePostMutation
+      .mutateAsync(postId)
+      .then(() => refetchPostData())
+      .catch((error) => console.log("Error following user:", error));
+  };
+
+  const dislikePostHandle = async () => {
+    dislikePostMutation
+      .mutateAsync(postId)
+      .then(() => refetchPostData())
+      .catch((error) => console.log("Error unfollowing user:", error));
+  };
+
+  // console.log("Post : ", postData?.post);
+  // console.log("Post Dislikes : ", postData?.post?.dislikes?.length);
+
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white rounded-lg shadow-lg p-5">
@@ -99,20 +132,20 @@ const PostDetails = () => {
           {/* like icon */}
           <span
             className="flex items-center gap-1 cursor-pointer"
-            // onClick={handleLike}
+            onClick={likePostHandle}
           >
             <FaThumbsUp />
-            {/* {postData?.likes?.length || 0} */}
+            {postData?.post?.likes?.length || 0}
           </span>
 
           {/* Dislike icon */}
           <span
             className="flex items-center gap-1 cursor-pointer"
-            // onClick={handleDislike}
+            onClick={dislikePostHandle}
           >
             <FaThumbsDown />
 
-            {/* {postData?.dislikes?.length || 0} */}
+            {postData?.post?.dislikes?.length || 0}
           </span>
           {/* views icon */}
           <span className="flex items-center gap-1">

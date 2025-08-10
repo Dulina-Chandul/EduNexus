@@ -118,6 +118,68 @@ const postController = {
       message: "Post deleted successfully",
     });
   }),
+
+  //* Like Post
+  likePost: expressAsyncHandler(async (req, res) => {
+    const { postId } = req.params;
+    const userID = req.user;
+    const postFound = await Post.findById(postId);
+
+    // console.log("Post Found:", postFound);
+
+    if (!postFound) {
+      throw new Error("Post not found");
+    }
+
+    //* Check if the user disliked the post, if the user disliked the post change dislike to like
+    if (postFound?.dislikes?.includes(userID)) {
+      postFound?.dislikes?.pull(userID);
+    }
+
+    //* Check if the user already liked the post, if yes then remove the like
+    if (postFound?.likes?.includes(userID)) {
+      postFound.likes.pull(userID);
+    } else {
+      postFound?.likes?.push(userID);
+    }
+
+    await postFound.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Post liked successfully",
+      post: postFound,
+    });
+  }),
+
+  //* Dislike Post
+  dislikePost: expressAsyncHandler(async (req, res) => {
+    const { postId } = req.params;
+    const userID = req.user;
+    const postFound = await Post.findById(postId);
+    if (!postFound) {
+      throw new Error("Post not found");
+    }
+
+    //* Check if the user liked the post, if the user liked the post change like to dislike
+    if (postFound?.likes?.includes(userID)) {
+      postFound?.likes?.pull(userID);
+    }
+    //* Check if the user already disliked the post, if yes then remove the dislike
+    if (postFound?.dislikes?.includes(userID)) {
+      postFound.dislikes.pull(userID);
+    } else {
+      postFound?.dislikes?.push(userID);
+    }
+
+    await postFound.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Post disliked successfully",
+      post: postFound,
+    });
+  }),
 };
 
 export default postController;

@@ -32,4 +32,14 @@ postRouter.get("/:postId", postController.getPost);
 //* Delete Post
 postRouter.delete("/:postId", isAuthenticated, postController.deletePost);
 
+//* Like Post
+postRouter.put("/likes/:postId", isAuthenticated, postController.likePost);
+
+//* Dislike Post
+postRouter.put(
+  "/dislikes/:postId",
+  isAuthenticated,
+  postController.dislikePost
+);
+
 export default postRouter;
