@@ -36,4 +36,14 @@ userRouter.put(
   userController.unfollowUser
 );
 
+//* Verify user email
+userRouter.put("/verify-email/", isAuthenticated, userController.verifyEmail);
+
+//* Verify the user account
+userRouter.put(
+  "/verify-account/:token",
+  isAuthenticated,
+  userController.verifyAccount
+);
+
 export default userRouter;

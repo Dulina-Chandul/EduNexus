@@ -18,6 +18,7 @@ import AuthRoute from "./components/auth-route/AuthRoute";
 import UserDashboard from "./components/user/UserDashboard";
 import AccountSummaryDashboard from "./components/user/AccountSummary";
 import AddCategory from "./components/category/AddCategory";
+import AccountVerification from "./components/user/AccountVerification";
 
 function App() {
   const {
@@ -78,6 +79,16 @@ function App() {
             element={
               <AuthRoute>
                 <AddCategory />
+              </AuthRoute>
+            }
+          />
+
+          {/* Verify Account */}
+          <Route
+            path="verify-account/:token"
+            element={
+              <AuthRoute>
+                <AccountVerification />
               </AuthRoute>
             }
           />

@@ -80,3 +80,25 @@ export const unfollowUserAPI = async (userId) => {
   console.log("Unfollow Response:", response.data);
   return response.data;
 };
+
+//* Send email verification token
+export const accountVerificationEmailAPI = async () => {
+  const response = await axios.put(
+    `${BASE_URL}/users/verify-email`,
+    {},
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Verify user account
+export const verifyUserAccountAPI = async (verifyToken) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/verify-account/${verifyToken}`,
+    {},
+    { withCredentials: true }
+  );
+
+  return response.data;
+};

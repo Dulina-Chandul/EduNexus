@@ -6,6 +6,7 @@ import multer from "multer";
 import storage from "../../utils/fileUpload.js";
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
 import optionalAuth from "../../middlewares/optionalAuth.js";
+import isAccountVerified from "../../middlewares/isAccountVerified.js";
 
 //* Multer configuration for file uploads
 const upload = multer({ storage });
@@ -17,6 +18,7 @@ const postRouter = express.Router();
 postRouter.post(
   "/create",
   isAuthenticated,
+  isAccountVerified,
   upload.single("image"),
   postController.createPost
 );
