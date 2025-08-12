@@ -21,6 +21,7 @@ import AddCategory from "./components/category/AddCategory";
 import AccountVerification from "./components/user/AccountVerification";
 import RequestResetPassword from "./components/user/RequestResetPassword";
 import ResetPassword from "./components/user/ResetPassword";
+import Notifications from "./components/notifications/NotificationLists";
 
 function App() {
   const {
@@ -91,6 +92,16 @@ function App() {
             element={
               <AuthRoute>
                 <AccountVerification />
+              </AuthRoute>
+            }
+          />
+
+          {/* Notification */}
+          <Route
+            path="notifications"
+            element={
+              <AuthRoute>
+                <Notifications />
               </AuthRoute>
             }
           />
