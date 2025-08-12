@@ -80,3 +80,47 @@ export const unfollowUserAPI = async (userId) => {
   console.log("Unfollow Response:", response.data);
   return response.data;
 };
+
+//* Send email verification token
+export const accountVerificationEmailAPI = async () => {
+  const response = await axios.put(
+    `${BASE_URL}/users/verify-email`,
+    {},
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Verify user account
+export const verifyUserAccountAPI = async (verifyToken) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/verify-account/${verifyToken}`,
+    {},
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Request password reset
+export const forgotPasswordAPI = async (email) => {
+  const response = await axios.post(
+    `${BASE_URL}/users/forgot-password`,
+    { email },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Reset password
+export const resetPasswordAPI = async (data) => {
+  const response = await axios.post(
+    `${BASE_URL}/users/reset-password/${data?.token}`,
+    { newPassword: data?.password },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};

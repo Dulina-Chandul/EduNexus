@@ -36,4 +36,20 @@ userRouter.put(
   userController.unfollowUser
 );
 
+//* Verify user email
+userRouter.put("/verify-email/", isAuthenticated, userController.verifyEmail);
+
+//* Verify the user account
+userRouter.put(
+  "/verify-account/:token",
+  isAuthenticated,
+  userController.verifyAccount
+);
+
+//* Request password reset
+userRouter.post("/forgot-password", userController.requestPasswordReset);
+
+// * Reset password
+userRouter.post("/reset-password/:verifyToken", userController.resetPassword);
+
 export default userRouter;

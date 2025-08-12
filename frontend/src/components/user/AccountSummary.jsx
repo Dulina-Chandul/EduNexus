@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
 import {
   FaEye,
@@ -9,7 +9,11 @@ import {
   FaFlag,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { userProfileAPI } from "../../APIservices/users/userAPI";
+import {
+  accountVerificationEmailAPI,
+  userProfileAPI,
+} from "../../APIservices/users/userAPI";
+import AlertMessage from "../alerts/AlertMessage";
 
 const AccountSummaryDashboard = () => {
   const {
@@ -119,6 +123,19 @@ const AccountSummaryDashboard = () => {
     },
   ];
 
+  //* Sending email verification mutation
+  const verificationTokenMutation = useMutation({
+    mutationKey: ["send-email-verification-token"],
+    mutationFn: accountVerificationEmailAPI,
+  });
+
+  //* handleSendVerificationEmail
+  const handleSendVerificationEmail = async () => {
+    verificationTokenMutation.mutate();
+  };
+
+  console.log(verificationTokenMutation);
+
   return (
     <div className="p-4">
       <p
@@ -129,18 +146,22 @@ const AccountSummaryDashboard = () => {
         Welcome Back: {userData?.user?.username || "User"}
       </p>
       {/* display account verification status */}
-      {/* {mutation.isPending ? (
+      {verificationTokenMutation.isPending ? (
         <AlertMessage type="loading" message="Loading..." />
-      ) : mutation.isError ? (
+      ) : verificationTokenMutation.isError ? (
         <AlertMessage
           type="error"
           message={
-            mutation?.error?.message || mutation?.error?.response?.data?.message
+            verificationTokenMutation?.error?.message ||
+            verificationTokenMutation?.error?.response?.data?.message
           }
         />
-      ) : mutation.isSuccess ? (
-        <AlertMessage type="success" message={mutation?.data?.message} />
-      ) : null} */}
+      ) : verificationTokenMutation.isSuccess ? (
+        <AlertMessage
+          type="success"
+          message={verificationTokenMutation?.data?.message}
+        />
+      ) : null}
       {!hasPlan && (
         <div
           className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
@@ -165,7 +186,7 @@ const AccountSummaryDashboard = () => {
           <p>
             Your account is not verified. Please{" "}
             <button
-              // onClick={handleSendVerificationEmail}
+              onClick={handleSendVerificationEmail}
               className="underline text-red-800"
             >
               verify your account

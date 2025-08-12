@@ -18,6 +18,9 @@ import AuthRoute from "./components/auth-route/AuthRoute";
 import UserDashboard from "./components/user/UserDashboard";
 import AccountSummaryDashboard from "./components/user/AccountSummary";
 import AddCategory from "./components/category/AddCategory";
+import AccountVerification from "./components/user/AccountVerification";
+import RequestResetPassword from "./components/user/RequestResetPassword";
+import ResetPassword from "./components/user/ResetPassword";
 
 function App() {
   const {
@@ -81,12 +84,24 @@ function App() {
               </AuthRoute>
             }
           />
+
+          {/* Verify Account */}
+          <Route
+            path="verify-account/:token"
+            element={
+              <AuthRoute>
+                <AccountVerification />
+              </AuthRoute>
+            }
+          />
         </Route>
 
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<RequestResetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route
           path="/profile"
           element={
