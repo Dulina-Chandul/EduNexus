@@ -105,11 +105,13 @@ const postController = {
 
     //* Increment views count
     if (userId) {
-      if (!postFound.viewers.includes(userId)) {
-        postFound.viewers.push(userId);
-        postFound.viewsCount += 1;
-        await postFound.save();
-      }
+      await Post.findByIdAndUpdate(
+        postId,
+        {
+          $addToSet: { viewers: userId },
+        },
+        { new: true }
+      );
     }
 
     res.status(200).json({
