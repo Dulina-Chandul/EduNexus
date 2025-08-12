@@ -150,7 +150,7 @@ const PostDetails = () => {
           {/* views icon */}
           <span className="flex items-center gap-1">
             <FaEye />
-            {postData?.post?.viewsCount || 0}
+            {postData?.post?.viewers?.length || 0}
           </span>
         </div>
         {/* follow icon */}

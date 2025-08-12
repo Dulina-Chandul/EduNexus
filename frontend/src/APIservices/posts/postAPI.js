@@ -20,7 +20,9 @@ export const getAllPostsAPI = async (filters) => {
 
 //* Get Single Post API
 export const getSinglePostAPI = async (postId) => {
-  const response = await axios.get(`${BASE_URL}/${postId}`);
+  const response = await axios.get(`${BASE_URL}/${postId}`, {
+    withCredentials: true,
+  });
   return response.data;
 };
 
