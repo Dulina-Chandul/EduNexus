@@ -102,3 +102,25 @@ export const verifyUserAccountAPI = async (verifyToken) => {
 
   return response.data;
 };
+
+//* Request password reset
+export const forgotPasswordAPI = async (email) => {
+  const response = await axios.post(
+    `${BASE_URL}/users/forgot-password`,
+    { email },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Reset password
+export const resetPasswordAPI = async (data) => {
+  const response = await axios.post(
+    `${BASE_URL}/users/reset-password/${data?.token}`,
+    { newPassword: data?.password },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};

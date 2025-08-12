@@ -117,6 +117,22 @@ userSchema.methods.generateAccountVerificationToken = function () {
   return emailToken;
 };
 
+//* Generating token for the password reset
+userSchema.methods.generatePasswordResetToken = function () {
+  const user = this;
+
+  const passwordToken = crypto.randomBytes(20).toString("hex");
+
+  user.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(passwordToken)
+    .digest("hex");
+
+  user.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return passwordToken;
+};
+
 //* Model
 const User = mongoose.model("User", userSchema);
 export default User;

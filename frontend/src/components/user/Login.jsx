@@ -31,7 +31,7 @@ const Login = () => {
         .mutateAsync(values)
         .then(() => {
           //* Redirect to login page after login
-          navigate("/profile");
+          navigate("/dashboard");
         })
         .catch((error) => {
           console.error("Error during registration:", error);
@@ -166,6 +166,15 @@ const Login = () => {
                 Sign in with Google
               </span>
             </a>
+            {/* Forgot Password */}
+            <Link
+              to="/forgot-password"
+              className="inline-block text-gray-500 hover: transition duration-200 mt-8"
+            >
+              <span>Forgot your password?</span>
+              <span />
+              <span className="font-bold font-heading">Reset Here</span>
+            </Link>
           </form>
         </div>
       </div>

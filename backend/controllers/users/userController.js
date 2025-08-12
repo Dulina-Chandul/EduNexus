@@ -5,6 +5,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import sendAccountVerificationEmail from "../../utils/sendAccountVerificationEmail.js";
 import crypto from "crypto";
+import sendPasswordResetEmail from "../../utils/sendPasswordResetEmail.js";
 
 const userController = {
   //* Create a new user
@@ -249,7 +250,7 @@ const userController = {
 
     await user.save();
 
-    sendAccountVerificationEmail(user?.email, emailToken);
+    await sendAccountVerificationEmail(user?.email, emailToken);
     return res.status(200).json({
       status: "success",
       message: `Verification email sent successfully to your email. It will expire in 10 minutes.`,
@@ -281,6 +282,66 @@ const userController = {
     res.json({
       status: "success",
       message: "Email verified successfully",
+    });
+  }),
+
+  //* Forgot Password (This is for sending the reset password email)
+  requestPasswordReset: expressAsyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new Error(`User with email ${email} not found`);
+    }
+
+    if (user.authMethod !== "local") {
+      throw new Error(
+        "You can only reset password for account created with email and password"
+      );
+    }
+
+    const resetToken = user.generatePasswordResetToken();
+
+    await user.save();
+
+    await sendPasswordResetEmail(user.email, resetToken);
+
+    res.status(200).json({
+      status: "success",
+      message: `Password reset email sent to ${email}. It will expire in 10 minutes.`,
+    });
+  }),
+
+  //* Reset Password (This is for resetting the password)
+  resetPassword: expressAsyncHandler(async (req, res) => {
+    const { verifyToken } = req.params;
+    const { newPassword } = req.body;
+
+    const passwordResetToken = crypto
+      .createHash("sha256")
+      .update(verifyToken)
+      .digest("hex");
+
+    const userFound = await User.findOne({
+      passwordResetToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+    if (!userFound) {
+      throw new Error("Invalid or expired password reset token");
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    userFound.password = hashedPassword;
+    userFound.passwordResetToken = null;
+    userFound.passwordResetExpires = null;
+
+    await userFound.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Password reset successfully",
     });
   }),
 };

@@ -46,4 +46,10 @@ userRouter.put(
   userController.verifyAccount
 );
 
+//* Request password reset
+userRouter.post("/forgot-password", userController.requestPasswordReset);
+
+// * Reset password
+userRouter.post("/reset-password/:verifyToken", userController.resetPassword);
+
 export default userRouter;
