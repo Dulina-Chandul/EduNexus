@@ -2,6 +2,8 @@ import expressAsyncHandler from "express-async-handler";
 import Post from "../../models/Post/Post.model.js";
 import Category from "../../models/Category/Category.model.js";
 import User from "../../models/User/User.model.js";
+import Notification from "../../models/Notification/Notification.model.js";
+import sendNotificationEmail from "../../utils/sendNotificationEmail.js";
 
 const postController = {
   //* Create Post
@@ -35,6 +37,21 @@ const postController = {
 
     userFound.posts.push(postCreated?._id);
     await userFound.save();
+
+    //* Create notification for the user
+    await Notification.create({
+      userId: req.user,
+      postId: postCreated._id,
+      message: `New post created by ${userFound?.username || userFound?.email}`,
+    });
+
+    userFound.followers.forEach(async (followerId) => {
+      const follower = await User.findById(followerId);
+      if (follower) {
+        console.log("Follower Email:", follower.email);
+        await sendNotificationEmail(follower.email, postCreated._id);
+      }
+    });
 
     res.status(201).json({
       status: "success",

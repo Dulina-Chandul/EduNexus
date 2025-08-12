@@ -10,6 +10,7 @@ import { logOutAPI } from "../../APIservices/users/userAPI";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/slices/authSlices";
+import NotificationCounts from "../notifications/NotificationCounts";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -93,6 +94,7 @@ export default function PrivateNavbar() {
                     </button>
                   </Link>
                   {/* Notification */}
+                  <NotificationCounts />
 
                   {/* <NotificationIcon notificationCount={9} /> */}
                 </div>

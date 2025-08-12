@@ -7,6 +7,7 @@ import userRouter from "./router/user/userRouter.js";
 import passport from "./utils/passport-config.js";
 import cookieParser from "cookie-parser";
 import categoryRouter from "./router/category/categoryRouter.js";
+import notificationRouter from "./router/notification/notificationRouter.js";
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use(express.json());
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/notifications", notificationRouter);
 
 //* Not Found Route
 app.use((req, res, next) => {
