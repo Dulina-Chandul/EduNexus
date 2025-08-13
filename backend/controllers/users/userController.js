@@ -161,6 +161,8 @@ const userController = {
   //* Get user profile
   getUserProfile: expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.user)
+      .populate("followers")
+      .populate("following")
       .populate("posts")
       .select(
         "-password -passwordResetToken -accountVerificationToken -accountVerificationExpires -passwordResetExpires"

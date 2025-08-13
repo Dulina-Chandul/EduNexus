@@ -27,13 +27,12 @@ export const getSinglePostAPI = async (postId) => {
 };
 
 //* Update Post API
-export const updatePostAPI = async (postId, postData) => {
+export const updatePostAPI = async ({ postId, postData }) => {
   const response = await axios.put(
     `${BASE_URL}/${postId}`,
-    {
-      title: postData.title,
-      description: postData.description,
-    },
+
+    postData,
+
     { withCredentials: true }
   );
   return response.data;
