@@ -1,6 +1,14 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/baseEndPoint.js";
 
+//* List all users API service
+export const listAllUsersAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/users/all`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
 //* Register new user API service
 export const registerAPI = async (userData) => {
   const response = await axios.post(
@@ -146,5 +154,15 @@ export const uplaodProfilePicAPI = async (formData) => {
     }
   );
 
+  return response.data;
+};
+
+//* Toglle user block status
+export const toggleUserBlockStatusAPI = async (data) => {
+  const response = await axios.put(
+    data.actionURL,
+    { userId: data?.userId },
+    { withCredentials: true }
+  );
   return response.data;
 };

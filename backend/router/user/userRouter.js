@@ -10,6 +10,9 @@ const userRouter = express.Router();
 //* Multer configuration for file uploads
 const upload = multer({ storage });
 
+// * Fetch all users
+userRouter.get("/all", isAuthenticated, userController.getAllUsers);
+
 //* Create User
 userRouter.post("/register", userController.register);
 
@@ -67,5 +70,11 @@ userRouter.put(
   upload.single("image"),
   userController.updateProfilePicture
 );
+
+//* Block User
+userRouter.put("/block-user/", isAuthenticated, userController.blockUser);
+
+//* Unblock User
+userRouter.put("/unblock-user/", isAuthenticated, userController.unblockUser);
 
 export default userRouter;

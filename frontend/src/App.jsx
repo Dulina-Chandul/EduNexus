@@ -28,6 +28,7 @@ import DashboardPosts from "./components/user/DashboardPosts";
 import SettingsPage from "./components/user/SettingsPage";
 import AddEmailComponent from "./components/user/UpdateEmail";
 import UploadProfilePic from "./components/user/UploadProfilePic";
+import Users from "./components/user/Users";
 
 function App() {
   const {
@@ -178,6 +179,16 @@ function App() {
             element={
               <AuthRoute>
                 <UploadProfilePic />
+              </AuthRoute>
+            }
+          />
+
+          {/* List all Users */}
+          <Route
+            path="users"
+            element={
+              <AuthRoute>
+                <Users />
               </AuthRoute>
             }
           />

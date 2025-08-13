@@ -8,6 +8,28 @@ import crypto from "crypto";
 import sendPasswordResetEmail from "../../utils/sendPasswordResetEmail.js";
 
 const userController = {
+  //* Fetching all users
+  getAllUsers: expressAsyncHandler(async (req, res) => {
+    const users = await User.find({})
+      .select(
+        "-password -passwordResetToken -accountVerificationToken -accountVerificationExpires -passwordResetExpires"
+      )
+      .populate("followers")
+      .populate("following")
+      .populate("posts");
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "No users found",
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      message: "Users retrieved successfully",
+      users,
+    });
+  }),
+
   //* Create a new user
   register: expressAsyncHandler(async (req, res) => {
     const { username, email, password } = req.body;
@@ -401,6 +423,50 @@ const userController = {
     res.status(200).json({
       status: "success",
       message: "Profile picture updated successfully",
+    });
+  }),
+
+  //* Block the user
+  blockUser: expressAsyncHandler(async (req, res) => {
+    const { userId } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isBlocked: true },
+      { new: true }
+    );
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "User blocked successfully",
+      username: user.username,
+      isBlocked: user.isBlocked,
+    });
+  }),
+
+  //* Unblock the user
+  unblockUser: expressAsyncHandler(async (req, res) => {
+    const { userId } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { isBlocked: false },
+      { new: true }
+    );
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "User unblocked successfully",
+      username: user.username,
+      isBlocked: user.isBlocked,
     });
   }),
 };
