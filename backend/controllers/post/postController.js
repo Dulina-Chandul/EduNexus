@@ -114,7 +114,12 @@ const postController = {
   //* Get Post
   getPost: expressAsyncHandler(async (req, res) => {
     const { postId } = req.params;
-    const postFound = await Post.findById(postId);
+    const postFound = await Post.findById(postId).populate({
+      path: "comments",
+      populate: {
+        path: "author",
+      },
+    });
     const userId = req.user ? req.user : null;
     if (!postFound) {
       throw new Error("Post not found");
