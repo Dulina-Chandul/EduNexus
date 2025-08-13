@@ -7,6 +7,7 @@ import {
   FaThumbsUp,
   FaThumbsDown,
   FaFlag,
+  FaCommentDots,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
@@ -53,22 +54,17 @@ const AccountSummaryDashboard = () => {
 
   //there is a view count in the post object so calculate the total views
 
-  const totalViews = 0;
+  let totalViews = 0;
+  let totalLikes = 0;
+  let totalComments = 0;
+  let totalDislikes = 0;
 
-  //calculate total likes but likes is an array
-
-  const totalLikes = 0;
-
-  //total posts
-
-  //calculate total comments
-
-  const totalComments = 0;
-
-  //calculate total dislikes
-
-  const totalDislikes = 0;
-
+  userData?.user?.posts.forEach((post) => {
+    totalViews += post?.viewers?.length || 0;
+    totalLikes += post?.likes?.length || 0;
+    totalComments += post?.comments?.length || 0;
+    totalDislikes += post?.dislikes?.length || 0;
+  });
   //total earnings
 
   const totalEarnings = 0;
@@ -116,9 +112,9 @@ const AccountSummaryDashboard = () => {
       bgColor: "bg-pink-500",
     },
     {
-      icon: <FaUsers />,
-      label: "Ranking",
-      value: "1st",
+      icon: <FaCommentDots />,
+      label: "Comments",
+      value: totalComments || 0,
       bgColor: "bg-teal-500",
     },
   ];

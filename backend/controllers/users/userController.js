@@ -346,6 +346,63 @@ const userController = {
       message: "Password reset successfully",
     });
   }),
+
+  //* Update email
+  updateEmail: expressAsyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    console.log("Updating email to:", email);
+
+    console.log("Current email:", req.user, "user.email");
+
+    //* Check if the email is already in use
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log("Email is already in use");
+      throw new Error("Email is already in use");
+    }
+
+    const user = await User.findById(req.user);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    console.log("user", user);
+
+    user.email = email;
+    user.isEmailVerified = false;
+    await user.save();
+
+    try {
+      const token = await user.generateAccountVerificationToken();
+      await sendAccountVerificationEmail(user.email, token);
+    } catch (emailError) {
+      console.error("Error sending verification email:", emailError);
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Email updated successfully. Please verify your new email.",
+    });
+  }),
+
+  //* Update user profile picture
+  updateProfilePicture: expressAsyncHandler(async (req, res) => {
+    const user = await User.findByIdAndUpdate(
+      req.user,
+      {
+        $set: {
+          profilePicture: req.file,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "Profile picture updated successfully",
+    });
+  }),
 };
 
 export default userController;

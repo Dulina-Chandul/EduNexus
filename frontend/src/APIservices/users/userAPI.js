@@ -124,3 +124,27 @@ export const resetPasswordAPI = async (data) => {
 
   return response.data;
 };
+
+//* Update user email API
+export const updateEmailAPI = async (email) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/update-email`,
+    { email },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Upload profile picture API
+export const uplaodProfilePicAPI = async (formData) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/upload-profile-picture`,
+    formData,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};
