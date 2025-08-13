@@ -27,7 +27,12 @@ postRouter.post(
 postRouter.get("/", postController.listAllPosts);
 
 //* Update Post
-postRouter.put("/:postId", isAuthenticated, postController.updatePost);
+postRouter.put(
+  "/:postId",
+  isAuthenticated,
+  upload.single("image"),
+  postController.updatePost
+);
 
 //* Get Post
 postRouter.get("/:postId", optionalAuth, postController.getPost);
