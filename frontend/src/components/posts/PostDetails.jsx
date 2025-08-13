@@ -60,7 +60,7 @@ const PostDetails = () => {
 
   //* Check if the user is already following the author
   const isFollowing = profileData?.user?.following?.find(
-    (user) => user?.toString() === userToFollowUnfollow?.toString()
+    (user) => user?._id?.toString() === userToFollowUnfollow?.toString()
   );
 
   // console.log("Is Following:", isFollowing);

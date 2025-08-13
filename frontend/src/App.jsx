@@ -22,6 +22,8 @@ import AccountVerification from "./components/user/AccountVerification";
 import RequestResetPassword from "./components/user/RequestResetPassword";
 import ResetPassword from "./components/user/ResetPassword";
 import Notifications from "./components/notifications/NotificationLists";
+import MyFollowers from "./components/user/MyFollowers";
+import MyFollowing from "./components/user/MyFollowing";
 
 function App() {
   const {
@@ -72,6 +74,26 @@ function App() {
             element={
               <AuthRoute>
                 <CreatePost />
+              </AuthRoute>
+            }
+          />
+
+          {/* My Followers */}
+          <Route
+            path="my-followers"
+            element={
+              <AuthRoute>
+                <MyFollowers />
+              </AuthRoute>
+            }
+          />
+
+          {/* My Following */}
+          <Route
+            path="my-followings"
+            element={
+              <AuthRoute>
+                <MyFollowing />
               </AuthRoute>
             }
           />
