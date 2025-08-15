@@ -7,6 +7,7 @@ import storage from "../../utils/fileUpload.js";
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
 import optionalAuth from "../../middlewares/optionalAuth.js";
 import isAccountVerified from "../../middlewares/isAccountVerified.js";
+import isBlocked from "../../middlewares/isBlocked.js";
 
 //* Multer configuration for file uploads
 const upload = multer({ storage });
@@ -19,6 +20,7 @@ postRouter.post(
   "/create",
   isAuthenticated,
   isAccountVerified,
+  isBlocked,
   upload.single("image"),
   postController.createPost
 );
@@ -30,23 +32,35 @@ postRouter.get("/", postController.listAllPosts);
 postRouter.put(
   "/:postId",
   isAuthenticated,
+  isBlocked,
   upload.single("image"),
   postController.updatePost
 );
 
 //* Get Post
-postRouter.get("/:postId", optionalAuth, postController.getPost);
+postRouter.get("/:postId", optionalAuth, isBlocked, postController.getPost);
 
 //* Delete Post
-postRouter.delete("/:postId", isAuthenticated, postController.deletePost);
+postRouter.delete(
+  "/:postId",
+  isAuthenticated,
+  isBlocked,
+  postController.deletePost
+);
 
 //* Like Post
-postRouter.put("/likes/:postId", isAuthenticated, postController.likePost);
+postRouter.put(
+  "/likes/:postId",
+  isAuthenticated,
+  isBlocked,
+  postController.likePost
+);
 
 //* Dislike Post
 postRouter.put(
   "/dislikes/:postId",
   isAuthenticated,
+  isBlocked,
   postController.dislikePost
 );
 

@@ -1,6 +1,14 @@
 import axios from "axios";
 import { BASE_URL } from "../../utils/baseEndPoint.js";
 
+//* List all users API service
+export const listAllUsersAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/users/all`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
 //* Register new user API service
 export const registerAPI = async (userData) => {
   const response = await axios.post(
@@ -122,5 +130,39 @@ export const resetPasswordAPI = async (data) => {
     { withCredentials: true }
   );
 
+  return response.data;
+};
+
+//* Update user email API
+export const updateEmailAPI = async (email) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/update-email`,
+    { email },
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+//* Upload profile picture API
+export const uplaodProfilePicAPI = async (formData) => {
+  const response = await axios.put(
+    `${BASE_URL}/users/upload-profile-picture`,
+    formData,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return response.data;
+};
+
+//* Toglle user block status
+export const toggleUserBlockStatusAPI = async (data) => {
+  const response = await axios.put(
+    data.actionURL,
+    { userId: data?.userId },
+    { withCredentials: true }
+  );
   return response.data;
 };

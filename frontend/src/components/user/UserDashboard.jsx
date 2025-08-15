@@ -56,10 +56,9 @@ const navigation = [
     current: false,
   },
   {
-    name: "My Earnings",
-    href: "/dashboard/my-earnings",
-    icon: FaWallet,
-    current: false,
+    name: "Users",
+    href: "/dashboard/users",
+    icon: FaUsers,
   },
 ];
 

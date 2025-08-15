@@ -25,6 +25,10 @@ import Notifications from "./components/notifications/NotificationLists";
 import MyFollowers from "./components/user/MyFollowers";
 import MyFollowing from "./components/user/MyFollowing";
 import DashboardPosts from "./components/user/DashboardPosts";
+import SettingsPage from "./components/user/SettingsPage";
+import AddEmailComponent from "./components/user/UpdateEmail";
+import UploadProfilePic from "./components/user/UploadProfilePic";
+import Users from "./components/user/Users";
 
 function App() {
   const {
@@ -145,6 +149,46 @@ function App() {
             element={
               <AuthRoute>
                 <UpdatePost />
+              </AuthRoute>
+            }
+          />
+
+          {/* Settings */}
+          <Route
+            path="settings"
+            element={
+              <AuthRoute>
+                <SettingsPage />
+              </AuthRoute>
+            }
+          />
+
+          {/* Update Email */}
+          <Route
+            path="add-email"
+            element={
+              <AuthRoute>
+                <AddEmailComponent />
+              </AuthRoute>
+            }
+          />
+
+          {/* Update Profile Picture */}
+          <Route
+            path="upload-profile-photo"
+            element={
+              <AuthRoute>
+                <UploadProfilePic />
+              </AuthRoute>
+            }
+          />
+
+          {/* List all Users */}
+          <Route
+            path="users"
+            element={
+              <AuthRoute>
+                <Users />
               </AuthRoute>
             }
           />

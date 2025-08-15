@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema(
         ref: "Post",
       },
     ],
+    role: {
+      type: String,
+      default: "user",
+    },
     totalEarnings: {
       type: Number,
       default: 0,
@@ -98,6 +102,11 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
