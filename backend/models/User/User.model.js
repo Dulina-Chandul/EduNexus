@@ -55,7 +55,8 @@ const userSchema = new mongoose.Schema(
     ],
     role: {
       type: String,
-      default: "user",
+      enum: ["admin", "teacher", "student", "guest"],
+      default: "student",
     },
     totalEarnings: {
       type: Number,

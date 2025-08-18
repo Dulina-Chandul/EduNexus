@@ -11,7 +11,7 @@ import Profile from "./components/user/Profile";
 import PrivateNavbar from "./components/nav-bar/PrivateNavbar";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticateUserAPI } from "./APIservices/users/userAPI";
-import { isAuthenticated } from "./redux/slices/authSlices";
+import { isAuthenticated, setRole } from "./redux/slices/authSlices";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import AuthRoute from "./components/auth-route/AuthRoute";
@@ -29,6 +29,7 @@ import SettingsPage from "./components/user/SettingsPage";
 import AddEmailComponent from "./components/user/UpdateEmail";
 import UploadProfilePic from "./components/user/UploadProfilePic";
 import Users from "./components/user/Users";
+import Unauthorized from "./components/user/Unauthorized";
 function App() {
   const {
     isError,
@@ -54,6 +55,10 @@ function App() {
   }, [theme]);
   useEffect(() => {
     dispatch(isAuthenticated(userData));
+    // console.log(userData);
+    if (userData) {
+      dispatch(setRole(userData.role));
+    }
   }, [userData]);
   //* Get the login user from store
   const { userAuth } = useSelector((state) => {
@@ -71,7 +76,7 @@ function App() {
           <Route
             path=""
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <AccountSummaryDashboard />
               </AuthRoute>
             }
@@ -80,7 +85,7 @@ function App() {
           <Route
             path="create-post"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin"]}>
                 <CreatePost />
               </AuthRoute>
             }
@@ -89,7 +94,7 @@ function App() {
           <Route
             path="posts"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin"]}>
                 <DashboardPosts />
               </AuthRoute>
             }
@@ -98,7 +103,7 @@ function App() {
           <Route
             path="my-followers"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin"]}>
                 <MyFollowers />
               </AuthRoute>
             }
@@ -107,7 +112,7 @@ function App() {
           <Route
             path="my-followings"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <MyFollowing />
               </AuthRoute>
             }
@@ -116,7 +121,7 @@ function App() {
           <Route
             path="add-category"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["admin"]}>
                 <AddCategory />
               </AuthRoute>
             }
@@ -125,7 +130,7 @@ function App() {
           <Route
             path="verify-account/:token"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["admin", "teacher", "student"]}>
                 <AccountVerification />
               </AuthRoute>
             }
@@ -134,7 +139,7 @@ function App() {
           <Route
             path="notifications"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <Notifications />
               </AuthRoute>
             }
@@ -143,7 +148,7 @@ function App() {
           <Route
             path="update-post/:postId"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin"]}>
                 <UpdatePost />
               </AuthRoute>
             }
@@ -152,7 +157,7 @@ function App() {
           <Route
             path="settings"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <SettingsPage />
               </AuthRoute>
             }
@@ -161,7 +166,7 @@ function App() {
           <Route
             path="add-email"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <AddEmailComponent />
               </AuthRoute>
             }
@@ -170,7 +175,7 @@ function App() {
           <Route
             path="upload-profile-photo"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
                 <UploadProfilePic />
               </AuthRoute>
             }
@@ -179,7 +184,7 @@ function App() {
           <Route
             path="users"
             element={
-              <AuthRoute>
+              <AuthRoute requiredRoles={["admin"]}>
                 <Users />
               </AuthRoute>
             }
@@ -191,10 +196,12 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<RequestResetPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+
         <Route
           path="/profile"
           element={
-            <AuthRoute>
+            <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
               <Profile />
             </AuthRoute>
           }

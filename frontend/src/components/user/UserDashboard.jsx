@@ -16,49 +16,57 @@ import {
   FaTags,
   FaWallet,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+  {
+    name: "Dashboard",
+    href: "/dashboard",
+    icon: HomeIcon,
+    current: true,
+    roles: ["teacher", "admin", "student"],
+  },
   {
     name: "Create New Post",
     href: "/dashboard/create-post",
     icon: FaUserEdit,
     current: false,
+    roles: ["teacher", "admin"],
   },
   {
     name: "My Posts",
     href: "/dashboard/posts",
     icon: FaFileAlt,
     current: false,
+    roles: ["teacher", "admin"],
   },
   {
     name: "My Followers",
     href: "/dashboard/my-followers",
     icon: FaUsers,
     current: false,
+    roles: ["teacher", "admin"],
   },
   {
     name: "My Followings",
     href: "/dashboard/my-followings",
     icon: FaUsers,
     current: false,
-  },
-  {
-    name: "Create Plan",
-    href: "/dashboard/add-plan",
-    icon: FaCalendarPlus,
-    current: false,
+    roles: ["teacher", "admin", "student"],
   },
   {
     name: "Add Category",
     href: "/dashboard/add-category",
     icon: FaTags,
     current: false,
+    roles: ["admin"],
   },
   {
     name: "Users",
     href: "/dashboard/users",
     icon: FaUsers,
+    current: false,
+    roles: ["admin"],
   },
 ];
 
@@ -70,6 +78,12 @@ export default function UserDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   //Get the auth user from redux store
 
+  const role = useSelector((state) => state.auth?.role);
+  // console.log(role);
+
+  const filterNavigation = role
+    ? navigation.filter((item) => item.roles && item.roles.includes(role))
+    : [];
   return (
     <>
       <div>
@@ -137,7 +151,7 @@ export default function UserDashboard() {
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
-                            {navigation.map((item) => (
+                            {filterNavigation.map((item) => (
                               <li key={item.name}>
                                 <Link
                                   to={item.href}
@@ -185,7 +199,7 @@ export default function UserDashboard() {
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
+                    {filterNavigation.map((item) => (
                       <li key={item.name}>
                         <Link
                           to={item.href}

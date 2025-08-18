@@ -159,6 +159,7 @@ const userController = {
           username: user?.username,
           email: user?.email,
           profilePicture: user?.profilePicture,
+          role: user?.role,
         });
       }
     } catch (error) {
