@@ -15,7 +15,7 @@ const HomePage = () => {
             <span>Explore the Power of</span>
             <span className="block text-orange-600">Shared Wisdom</span>
           </h1>
-          <p className="text-center text-lg mb-10 max-w-lg mx-auto">
+          <p className="text-center text-lg mb-10 max-w-lg mx-auto dark:text-secondary-dark">
             Embark on a journey of discovery and growth. Connect, collaborate,
             and create with a global network of enthusiastic learners and
             thinkers.

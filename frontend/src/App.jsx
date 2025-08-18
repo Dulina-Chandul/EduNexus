@@ -29,7 +29,6 @@ import SettingsPage from "./components/user/SettingsPage";
 import AddEmailComponent from "./components/user/UpdateEmail";
 import UploadProfilePic from "./components/user/UploadProfilePic";
 import Users from "./components/user/Users";
-
 function App() {
   const {
     isError,
@@ -42,20 +41,26 @@ function App() {
     queryKey: ["authenticate-user"],
     queryFn: authenticateUserAPI,
   });
-
   //* Dispatch user data to the Redux store
   const dispatch = useDispatch();
-
+  const theme = useSelector((state) => state.theme.mode);
+  //* Apply the theme for the entire app
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
   useEffect(() => {
     dispatch(isAuthenticated(userData));
   }, [userData]);
-
   //* Get the login user from store
   const { userAuth } = useSelector((state) => {
     return state.auth;
   });
   console.log(userAuth);
-
+  console.log("The current theme is:", theme);
   return (
     <BrowserRouter>
       {userAuth ? <PrivateNavbar /> : <PublicNavBar />}
@@ -63,7 +68,6 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/dashboard" element={<UserDashboard />}>
           {/* Acoount Summery */}
-
           <Route
             path=""
             element={
@@ -72,7 +76,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Create Post */}
           <Route
             path="create-post"
@@ -82,7 +85,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* My Posts */}
           <Route
             path="posts"
@@ -92,7 +94,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* My Followers */}
           <Route
             path="my-followers"
@@ -102,7 +103,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* My Following */}
           <Route
             path="my-followings"
@@ -112,7 +112,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Add Category */}
           <Route
             path="add-category"
@@ -122,7 +121,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Verify Account */}
           <Route
             path="verify-account/:token"
@@ -132,7 +130,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Notification */}
           <Route
             path="notifications"
@@ -142,7 +139,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Update Post */}
           <Route
             path="update-post/:postId"
@@ -152,7 +148,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Settings */}
           <Route
             path="settings"
@@ -162,7 +157,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Update Email */}
           <Route
             path="add-email"
@@ -172,7 +166,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* Update Profile Picture */}
           <Route
             path="upload-profile-photo"
@@ -182,7 +175,6 @@ function App() {
               </AuthRoute>
             }
           />
-
           {/* List all Users */}
           <Route
             path="users"
@@ -193,7 +185,6 @@ function App() {
             }
           />
         </Route>
-
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />
@@ -213,5 +204,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

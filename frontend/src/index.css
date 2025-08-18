@@ -1,1 +1,21 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:where(.dark, .dark *));
+@theme {
+  --font-display: "Satoshi", sans-serif;
+  --breakpoint-3xl: 120rem;
+  /* Light theme colors */
+  --color-primary: #4caf50; /* Vibrant green */
+  --color-secondary: #2196f3; /* Soft blue */
+  --color-bg: #ffffff; /* Pure white */
+  --color-text: #212121; /* Dark gray */
+  --color-accent: #ffca28; /* Warm yellow */
+  /* Dark theme colors */
+  --color-primary-dark: #66bb6a; /* Lighter green */
+  --color-secondary-dark: #42a5f5; /* Lighter blue */
+  --color-bg-dark: #121212; /* Deep black */
+  --color-text-dark: #e0e0e0; /* Light gray */
+  --color-accent-dark: #ffd54f; /* Lighter yellow */
+  --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+}
