@@ -32,6 +32,8 @@ import Users from "./components/user/Users";
 import Unauthorized from "./components/user/Unauthorized";
 import StudentDashboard from "./components/user/student/StudentDashboard";
 import StudentAccountSummary from "./components/user/student/StudentAccountSummary";
+import StudentMyFollowing from "./components/user/student/StudentMyFollowing";
+
 function App() {
   const {
     isError,
@@ -199,6 +201,14 @@ function App() {
             element={
               <AuthRoute requiredRoles={["student", "admin", "teacher"]}>
                 <StudentAccountSummary />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="my-followings"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <StudentMyFollowing />
               </AuthRoute>
             }
           />
