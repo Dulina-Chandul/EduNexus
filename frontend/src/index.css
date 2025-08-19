@@ -5,17 +5,17 @@
   --font-display: "Satoshi", sans-serif;
   --breakpoint-3xl: 120rem;
   /* Light theme colors */
-  --color-primary: #4caf50; /* Vibrant green */
-  --color-secondary: #2196f3; /* Soft blue */
-  --color-bg: #ffffff; /* Pure white */
-  --color-text: #212121; /* Dark gray */
-  --color-accent: #ffca28; /* Warm yellow */
+  --color-primary: #2ecc71; /* Modern light green */
+  --color-secondary: #e74c3c; /* Vibrant coral */
+  --color-bg: #f5f7fa; /* Light off-white */
+  --color-text: #2c3e50; /* Deep slate gray */
+  --color-accent: #f1c40f; /* Bright, modern yellow */
   /* Dark theme colors */
-  --color-primary-dark: #66bb6a; /* Lighter green */
-  --color-secondary-dark: #42a5f5; /* Lighter blue */
-  --color-bg-dark: #121212; /* Deep black */
-  --color-text-dark: #e0e0e0; /* Light gray */
-  --color-accent-dark: #ffd54f; /* Lighter yellow */
+  --color-primary-dark: #27ae60; /* Deeper green for contrast */
+  --color-secondary-dark: #c0392b; /* Richer red-coral */
+  --color-bg-dark: #1a252f; /* Dark navy */
+  --color-text-dark: #ecf0f1; /* Soft off-white */
+  --color-accent-dark: #f39c12; /* Warm orange-yellow */
   --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
-  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 0, 1);
 }

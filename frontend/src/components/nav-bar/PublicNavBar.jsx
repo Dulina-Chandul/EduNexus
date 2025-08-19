@@ -45,34 +45,22 @@ export default function PublicNavbar() {
                   >
                     Latest Posts
                   </Link>
-                  <Link
-                    to="/ranking"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-text dark:text-text-dark hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-200"
-                  >
-                    Creators Ranking
-                  </Link>
-                  <Link
-                    to="/pricing"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-text dark:text-text-dark hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-200"
-                  >
-                    Pricing
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-text dark:text-text-dark hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-200"
-                  >
-                    Create Account
-                  </Link>
                 </div>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center ">
                 <div className="flex-shrink-0">
                   <Link
-                    to="/create-post"
-                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-primary dark:bg-primary-dark px-3 py-2 text-sm font-semibold text-text dark:text-text-dark shadow-sm hover:bg-accent dark:hover:bg-accent-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:focus-visible:outline-primary-dark animate-pulse"
+                    to="/register"
+                    className="relative inline-flex items-center gap-x-1.5 rounded-md bg-primary dark:bg-primary-dark px-3 py-2 text-sm font-semibold text-text dark:text-text-dark shadow-sm hover:bg-accent dark:hover:bg-accent-dark focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-primary dark:focus-visible:outline-primary-dark "
                   >
                     <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Create Post
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="relative inline-flex items-center gap-x-1.5 rounded-sm bg-secondary dark:bg-secondary-dark px-3 py-2 text-sm font-semibold text-text dark:text-text-dark bottom-1.5"
+                  >
+                    Login
                   </Link>
                   <Button
                     onClick={() => dispatch(toggleTheme())}

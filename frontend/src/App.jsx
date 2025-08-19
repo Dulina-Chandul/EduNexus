@@ -30,6 +30,8 @@ import AddEmailComponent from "./components/user/UpdateEmail";
 import UploadProfilePic from "./components/user/UploadProfilePic";
 import Users from "./components/user/Users";
 import Unauthorized from "./components/user/Unauthorized";
+import StudentDashboard from "./components/user/student/StudentDashboard";
+import StudentAccountSummary from "./components/user/student/StudentAccountSummary";
 function App() {
   const {
     isError,
@@ -190,6 +192,18 @@ function App() {
             }
           />
         </Route>
+        {/* Student Dashboard */}
+        <Route path="/student-dashboard" element={<StudentDashboard />}>
+          <Route
+            path=""
+            element={
+              <AuthRoute requiredRoles={["student", "admin", "teacher"]}>
+                <StudentAccountSummary />
+              </AuthRoute>
+            }
+          />
+        </Route>
+
         <Route path="/posts" element={<PostsList />} />
         <Route path="post/:postId" element={<PostDetails />} />
         <Route path="/login" element={<Login />} />

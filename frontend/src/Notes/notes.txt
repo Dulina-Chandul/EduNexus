@@ -18,6 +18,8 @@ Show the report card of the student
 
 Show the error when use follow himself
 
+Add Mindmap to the platform
+
 Blog add Slugs m=npm i slugify
 
 Daily motivation quotes
