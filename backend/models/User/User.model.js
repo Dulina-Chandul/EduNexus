@@ -108,6 +108,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    studentProfile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StudentProfile",
+    },
   },
   { timestamps: true }
 );

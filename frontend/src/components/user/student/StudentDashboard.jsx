@@ -14,6 +14,8 @@ import {
   Clock,
   MessageSquare,
   Bell,
+  User,
+  Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -27,6 +29,20 @@ const navigation = [
     href: "/student-dashboard",
     icon: Home,
     description: "Overview and stats",
+    roles: ["student"],
+  },
+  {
+    name: "Profile Settings",
+    href: "/student-dashboard/profile-settings",
+    icon: User,
+    description: "Configure study preferences",
+    roles: ["student"],
+  },
+  {
+    name: "Smart Daily Planner",
+    href: "/student-dashboard/daily-planner",
+    icon: Brain,
+    description: "AI-powered study schedule",
     roles: ["student"],
   },
   {

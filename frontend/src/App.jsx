@@ -33,6 +33,8 @@ import Unauthorized from "./components/user/Unauthorized";
 import StudentDashboard from "./components/user/student/StudentDashboard";
 import StudentAccountSummary from "./components/user/student/StudentAccountSummary";
 import StudentMyFollowing from "./components/user/student/StudentMyFollowing";
+import SmartDailyPlanner from "./components/user/student/SmartDailyPlanner";
+import StudentProfileSettings from "./components/user/student/StudentProfileSettings";
 
 function App() {
   const {
@@ -201,6 +203,22 @@ function App() {
             element={
               <AuthRoute requiredRoles={["student", "admin", "teacher"]}>
                 <StudentAccountSummary />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="profile-settings"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <StudentProfileSettings />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="daily-planner"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <SmartDailyPlanner />
               </AuthRoute>
             }
           />

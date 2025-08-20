@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import sendAccountVerificationEmail from "../../utils/sendAccountVerificationEmail.js";
 import crypto from "crypto";
 import sendPasswordResetEmail from "../../utils/sendPasswordResetEmail.js";
+import StudentProfile from "../../models/User/studentProfile.model.js";
 
 const userController = {
   //* Fetching all users
@@ -32,7 +33,7 @@ const userController = {
 
   //* Create a new user
   register: expressAsyncHandler(async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     //* Check if user already exists
     const userFound = await User.findOne({ username, email });
@@ -49,7 +50,18 @@ const userController = {
       username,
       email,
       password: hashedPassword,
+      role,
     });
+
+    if (userCreated.role === "student") {
+      const newStudentProfile = await StudentProfile.create({
+        userId: userCreated._id,
+      });
+    }
+
+    userCreated.studentProfile = newStudentProfile._id;
+    await newStudentProfile.save();
+    await userCreated.save();
 
     //* Send the response to the client side
     res.status(201).json({
