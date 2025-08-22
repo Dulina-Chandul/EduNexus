@@ -35,6 +35,7 @@ import StudentAccountSummary from "./components/user/student/StudentAccountSumma
 import StudentMyFollowing from "./components/user/student/StudentMyFollowing";
 import SmartDailyPlanner from "./components/user/student/SmartDailyPlanner";
 import StudentProfileSettings from "./components/user/student/StudentProfileSettings";
+import SmartQuiz from "./components/user/student/SmartQuiz";
 
 function App() {
   const {
@@ -203,6 +204,14 @@ function App() {
             element={
               <AuthRoute requiredRoles={["student", "admin", "teacher"]}>
                 <StudentAccountSummary />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="quiz"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <SmartQuiz />
               </AuthRoute>
             }
           />

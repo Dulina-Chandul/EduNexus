@@ -26,4 +26,25 @@ studentRouter.post(
   studentController.generateDailyPlanner
 );
 
+//* Generate quiz questions
+studentRouter.post(
+  "/generate-quiz",
+  isAuthenticated,
+  studentController.generateQuiz
+);
+
+//* Submit quiz answers
+studentRouter.post(
+  "/submit-quiz",
+  isAuthenticated,
+  studentController.submitQuiz
+);
+
+//* Get quiz history
+studentRouter.get(
+  "/quiz-history",
+  isAuthenticated,
+  studentController.getQuizHistory
+);
+
 export default studentRouter;

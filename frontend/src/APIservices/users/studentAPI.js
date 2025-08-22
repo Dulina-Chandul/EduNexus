@@ -29,3 +29,27 @@ export const generateDailyPlannerAPI = async () => {
   );
   return response.data;
 };
+
+//* Generate quiz questions
+export const generateQuizAPI = async (quizData) => {
+  const response = await axios.post(`${BASE_URL}/generate-quiz`, quizData, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+//* Submit quiz answers
+export const submitQuizAnswerAPI = async (submissionData) => {
+  const response = await axios.post(`${BASE_URL}/submit-quiz`, submissionData, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+//* Get quiz history
+export const getQuizHistoryAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/quiz-history`, {
+    withCredentials: true,
+  });
+  return response.data;
+};

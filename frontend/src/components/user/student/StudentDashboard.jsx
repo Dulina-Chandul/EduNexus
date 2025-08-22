@@ -46,6 +46,13 @@ const navigation = [
     roles: ["student"],
   },
   {
+    name: "Smart Quiz",
+    href: "/student-dashboard/quiz",
+    icon: Brain,
+    description: "AI-powered adaptive tests",
+    roles: ["student"],
+  },
+  {
     name: "My Followings",
     href: "/student-dashboard/my-followings",
     icon: Users,

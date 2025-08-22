@@ -77,6 +77,53 @@ const studentProfileSchema = new mongoose.Schema(
       type: Object,
       default: {},
     },
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
+    quizStreak: {
+      type: Number,
+      default: 0,
+    },
+    accuracyRate: {
+      type: Number,
+      default: 0,
+    },
+    quizHistory: [
+      {
+        quizId: String,
+        subjects: [String],
+        score: Number,
+        totalQuestions: Number,
+        correctAnswers: Number,
+        pointsEarned: Number,
+        completedAt: Date,
+        timeTaken: Number,
+        difficulty: {
+          type: String,
+          enum: ["easy", "medium", "hard"],
+          default: "medium",
+        },
+      },
+    ],
+    subjectPerformance: [
+      {
+        subject: String,
+        averageScore: {
+          type: Number,
+          default: 0,
+        },
+        totalQuizzes: {
+          type: Number,
+          default: 0,
+        },
+        difficulty: {
+          type: String,
+          enum: ["easy", "medium", "hard"],
+          default: "medium",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
