@@ -73,6 +73,10 @@ const studentProfileSchema = new mongoose.Schema(
       enum: ["visual", "auditory", "kinesthetic", "reading_writing"],
       default: "visual",
     },
+    dailyPlanner: {
+      type: Object,
+      default: {},
+    },
   },
   {
     timestamps: true,

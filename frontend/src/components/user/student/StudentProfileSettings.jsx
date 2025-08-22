@@ -121,11 +121,10 @@ const StudentProfileSettings = () => {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
+    <div className="max-w-6xl mx-auto p-4 space-y-6">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/30 dark:via-primary-dark/20 dark:to-secondary-dark/30 p-6 border border-primary/30 dark:border-primary-dark/40">
         <div className="flex items-center space-x-4">
-          <div className="p-3 bg-primary/20 dark:bg-primary-dark/20 rounded-xl">
+          <div className="p-3 bg-primary/20 dark:bg-primary-dark/30 rounded-xl border border-primary/20 dark:border-primary-dark/30">
             <Settings className="h-8 w-8 text-primary dark:text-primary-dark" />
           </div>
           <div>
@@ -140,34 +139,32 @@ const StudentProfileSettings = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Subjects Section */}
-        <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
-          <CardHeader>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
+          <CardHeader className="pb-4">
             <CardTitle className="text-xl text-text dark:text-text-dark flex items-center">
               <BookOpen className="h-6 w-6 mr-2 text-primary dark:text-primary-dark" />
               Your Subjects
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Current Subjects */}
+          <CardContent className="space-y-4">
             <div className="space-y-3">
               {formData.subjects.map((subject, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 bg-primary/5 dark:bg-primary-dark/5 rounded-lg border border-primary/10 dark:border-primary-dark/10"
+                  className="flex items-center justify-between p-4 bg-primary/5 dark:bg-primary-dark/10 rounded-lg border border-primary/20 dark:border-primary-dark/30"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="text-text dark:text-text-dark font-medium">
                       {subject.name}
                     </div>
-                    <Badge className="bg-secondary/20 dark:bg-secondary-dark/20 text-secondary dark:text-secondary-dark">
+                    <Badge className="bg-secondary/20 dark:bg-secondary-dark/30 text-secondary dark:text-secondary-dark border border-secondary/30 dark:border-secondary-dark/40">
                       {subject.difficulty}
                     </Badge>
-                    <Badge className="bg-accent/20 dark:bg-accent-dark/20 text-accent dark:text-accent-dark">
+                    <Badge className="bg-accent/20 dark:bg-accent-dark/30 text-accent dark:text-accent-dark border border-accent/30 dark:border-accent-dark/40">
                       {subject.priority} priority
                     </Badge>
-                    <span className="text-sm text-text/60 dark:text-text-dark/60">
+                    <span className="text-sm text-text/60 dark:text-text-dark/60 bg-primary/10 dark:bg-primary-dark/20 px-2 py-1 rounded border border-primary/20 dark:border-primary-dark/30">
                       {subject.studyHoursPerWeek}h/week
                     </span>
                   </div>
@@ -176,7 +173,7 @@ const StudentProfileSettings = () => {
                     variant="ghost"
                     size="sm"
                     onClick={() => removeSubject(index)}
-                    className="text-secondary dark:text-secondary-dark hover:bg-secondary/10 dark:hover:bg-secondary-dark/10"
+                    className="text-secondary dark:text-secondary-dark hover:bg-secondary/10 dark:hover:bg-secondary-dark/10 border border-transparent hover:border-secondary/30 dark:hover:border-secondary-dark/40"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -184,15 +181,14 @@ const StudentProfileSettings = () => {
               ))}
             </div>
 
-            {/* Add New Subject */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-4 bg-accent/5 dark:bg-accent-dark/5 rounded-lg border border-accent/20 dark:border-accent-dark/20">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-4 bg-accent/5 dark:bg-accent-dark/10 rounded-lg border border-accent/30 dark:border-accent-dark/40">
               <Input
                 placeholder="Subject name"
                 value={newSubject.name}
                 onChange={(e) =>
                   setNewSubject((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="bg-bg dark:bg-bg-dark"
+                className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
               />
 
               <Select
@@ -201,7 +197,7 @@ const StudentProfileSettings = () => {
                   setNewSubject((prev) => ({ ...prev, difficulty: value }))
                 }
               >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -217,7 +213,7 @@ const StudentProfileSettings = () => {
                   setNewSubject((prev) => ({ ...prev, priority: value }))
                 }
               >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -227,25 +223,30 @@ const StudentProfileSettings = () => {
                 </SelectContent>
               </Select>
 
-              <Input
-                type="number"
-                placeholder="Hours/week"
-                min="1"
-                max="20"
-                value={newSubject.studyHoursPerWeek}
-                onChange={(e) =>
-                  setNewSubject((prev) => ({
-                    ...prev,
-                    studyHoursPerWeek: parseInt(e.target.value) || 1,
-                  }))
-                }
-                className="bg-bg dark:bg-bg-dark"
-              />
+              <div className="space-y-1">
+                <Label className="text-xs text-text/60 dark:text-text-dark/60">
+                  Hours per week
+                </Label>
+                <Input
+                  type="number"
+                  placeholder="Hours/week"
+                  min="1"
+                  max="20"
+                  value={newSubject.studyHoursPerWeek}
+                  onChange={(e) =>
+                    setNewSubject((prev) => ({
+                      ...prev,
+                      studyHoursPerWeek: parseInt(e.target.value) || 1,
+                    }))
+                  }
+                  className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                />
+              </div>
 
               <Button
                 type="button"
                 onClick={addSubject}
-                className="bg-accent dark:bg-accent-dark text-bg dark:text-bg-dark hover:bg-accent/90 dark:hover:bg-accent-dark/90"
+                className="bg-accent dark:bg-accent-dark text-bg dark:text-bg-dark hover:bg-accent/90 dark:hover:bg-accent-dark/90 border border-accent/40 dark:border-accent-dark/50"
               >
                 <Plus className="h-4 w-4 mr-1" />
                 Add
@@ -254,10 +255,9 @@ const StudentProfileSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Study Preferences */}
         <div className="grid gap-6 md:grid-cols-2">
-          <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
-            <CardHeader>
+          <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
+            <CardHeader className="pb-4">
               <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
                 <Clock className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
                 Study Timing
@@ -274,7 +274,7 @@ const StudentProfileSettings = () => {
                     setFormData((prev) => ({ ...prev, chronotype: value }))
                   }
                 >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -309,7 +309,7 @@ const StudentProfileSettings = () => {
                         preferredStudyStartTime: e.target.value,
                       }))
                     }
-                    className="bg-bg dark:bg-bg-dark"
+                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
                   />
                 </div>
                 <div className="space-y-2">
@@ -325,15 +325,15 @@ const StudentProfileSettings = () => {
                         preferredStudyEndTime: e.target.value,
                       }))
                     }
-                    className="bg-bg dark:bg-bg-dark"
+                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
                   />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
-            <CardHeader>
+          <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
+            <CardHeader className="pb-4">
               <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
                 <Brain className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
                 Learning Preferences
@@ -358,7 +358,7 @@ const StudentProfileSettings = () => {
                     }
                     className="flex-1"
                   />
-                  <Badge className="bg-primary/20 dark:bg-primary-dark/20 text-primary dark:text-primary-dark px-3 py-1">
+                  <Badge className="bg-primary/20 dark:bg-primary-dark/30 text-primary dark:text-primary-dark px-3 py-1 border border-primary/30 dark:border-primary-dark/40">
                     {formData.energyLevel}/10
                   </Badge>
                 </div>
@@ -374,7 +374,7 @@ const StudentProfileSettings = () => {
                     setFormData((prev) => ({ ...prev, currentMood: value }))
                   }
                 >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -390,9 +390,8 @@ const StudentProfileSettings = () => {
           </Card>
         </div>
 
-        {/* Study Session Settings */}
-        <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
-          <CardHeader>
+        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
+          <CardHeader className="pb-4">
             <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
               <Target className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
               Study Session Configuration
@@ -402,42 +401,52 @@ const StudentProfileSettings = () => {
             <div className="grid gap-6 md:grid-cols-3">
               <div className="space-y-2">
                 <Label className="text-text dark:text-text-dark font-medium">
-                  Max Session Length (minutes)
+                  Max Session Length
                 </Label>
-                <Input
-                  type="number"
-                  min="30"
-                  max="180"
-                  step="15"
-                  value={formData.maxStudySessionLength}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      maxStudySessionLength: parseInt(e.target.value) || 90,
-                    }))
-                  }
-                  className="bg-bg dark:bg-bg-dark"
-                />
+                <div className="space-y-1">
+                  <Input
+                    type="number"
+                    min="30"
+                    max="180"
+                    step="15"
+                    value={formData.maxStudySessionLength}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        maxStudySessionLength: parseInt(e.target.value) || 90,
+                      }))
+                    }
+                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                  />
+                  <span className="text-xs text-text/60 dark:text-text-dark/60">
+                    minutes (30-180)
+                  </span>
+                </div>
               </div>
 
               <div className="space-y-2">
                 <Label className="text-text dark:text-text-dark font-medium">
-                  Break Duration (minutes)
+                  Break Duration
                 </Label>
-                <Input
-                  type="number"
-                  min="5"
-                  max="30"
-                  step="5"
-                  value={formData.studyBreakDuration}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      studyBreakDuration: parseInt(e.target.value) || 15,
-                    }))
-                  }
-                  className="bg-bg dark:bg-bg-dark"
-                />
+                <div className="space-y-1">
+                  <Input
+                    type="number"
+                    min="5"
+                    max="30"
+                    step="5"
+                    value={formData.studyBreakDuration}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        studyBreakDuration: parseInt(e.target.value) || 15,
+                      }))
+                    }
+                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                  />
+                  <span className="text-xs text-text/60 dark:text-text-dark/60">
+                    minutes (5-30)
+                  </span>
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -450,7 +459,7 @@ const StudentProfileSettings = () => {
                     setFormData((prev) => ({ ...prev, learningStyle: value }))
                   }
                 >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -467,9 +476,8 @@ const StudentProfileSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Environment Preferences */}
-        <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
-          <CardHeader>
+        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
+          <CardHeader className="pb-4">
             <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
               <Zap className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
               Study Environment
@@ -489,7 +497,7 @@ const StudentProfileSettings = () => {
                   }))
                 }
               >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark">
+                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -504,8 +512,7 @@ const StudentProfileSettings = () => {
           </CardContent>
         </Card>
 
-        {/* Save Button */}
-        <div className="flex justify-center">
+        <div className="flex justify-center pb-4">
           <Button
             type="submit"
             disabled={updateProfileMutation.isPending}
@@ -526,7 +533,7 @@ const StudentProfileSettings = () => {
         </div>
 
         {updateProfileMutation.isSuccess && (
-          <Alert className="border-accent/50 dark:border-accent-dark/50 bg-accent/5 dark:bg-accent-dark/5">
+          <Alert className="border-accent/50 dark:border-accent-dark/50 bg-accent/5 dark:bg-accent-dark/10 mb-4">
             <AlertDescription className="text-text dark:text-text-dark">
               ✅ Profile updated successfully! Your AI planner is now optimized
               for your preferences.

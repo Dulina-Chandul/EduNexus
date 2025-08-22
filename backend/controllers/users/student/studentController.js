@@ -173,7 +173,8 @@ IMPORTANT GUIDELINES:
               profileData,
               null,
               2
-            )}. 
+            )} (MUST BE DIFFERENT EACH TIME)
+
             
 Current date: ${new Date().toISOString().split("T")[0]}
 Generate a smart, realistic daily schedule that optimizes their learning based on their chronotype, energy level, mood, and subjects.`,
@@ -193,8 +194,9 @@ Generate a smart, realistic daily schedule that optimizes their learning based o
       for await (const chunk of response) {
         fullResponse += chunk.text;
       }
-
+      //   console.log(fullResponse);
       const cleanResponse = fullResponse.replace(/```json\s*|\s*```/g, "");
+      //   console.log(cleanResponse);
       const parsedData = JSON.parse(cleanResponse);
 
       res.status(200).json({
@@ -202,6 +204,8 @@ Generate a smart, realistic daily schedule that optimizes their learning based o
         message: "Daily planner generated successfully",
         data: parsedData,
       });
+      studentProfile.dailyPlanner = parsedData;
+      await studentProfile.save();
     } catch (error) {
       console.error("Daily planner generation failed:", error);
 
