@@ -36,6 +36,7 @@ import StudentMyFollowing from "./components/user/student/StudentMyFollowing";
 import SmartDailyPlanner from "./components/user/student/SmartDailyPlanner";
 import StudentProfileSettings from "./components/user/student/StudentProfileSettings";
 import SmartQuiz from "./components/user/student/SmartQuiz";
+import AIChatAssistant from "./components/user/student/AIChatAssistant";
 
 function App() {
   const {
@@ -231,6 +232,15 @@ function App() {
               </AuthRoute>
             }
           />
+          <Route
+            path="ai-assistant"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <AIChatAssistant />
+              </AuthRoute>
+            }
+          />
+
           <Route
             path="my-followings"
             element={

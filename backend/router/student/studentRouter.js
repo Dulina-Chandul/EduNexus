@@ -47,4 +47,6 @@ studentRouter.get(
   studentController.getQuizHistory
 );
 
+studentRouter.post("/ai-chat", isAuthenticated, studentController.handleAIChat);
+
 export default studentRouter;

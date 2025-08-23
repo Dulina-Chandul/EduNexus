@@ -53,3 +53,11 @@ export const getQuizHistoryAPI = async () => {
   });
   return response.data;
 };
+
+//* AI Chat assistance
+export const aiChatAPI = async (chatData) => {
+  const response = await axios.post(`${BASE_URL}/ai-chat`, chatData, {
+    withCredentials: true,
+  });
+  return response.data;
+};

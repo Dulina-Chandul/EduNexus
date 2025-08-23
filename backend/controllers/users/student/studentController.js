@@ -525,6 +525,76 @@ Make questions challenging but appropriate for their performance levels in each 
       ),
     });
   }),
+
+  //* AI Chat Assistance
+  handleAIChat: expressAsyncHandler(async (req, res) => {
+    try {
+      const { message, isVoice, chatHistory = [] } = req.body;
+      const studentProfile = await StudentProfile.findOne({ userId: req.user });
+
+      if (!studentProfile) {
+        return res.status(404).json({
+          status: "error",
+          message: "Student profile not found.",
+        });
+      }
+
+      const ai = new GoogleGenAI({
+        apiKey: process.env.GEMINI_API_KEY,
+      });
+
+      const context = {
+        subjects: studentProfile.subjects,
+        learningStyle: studentProfile.learningStyle,
+        currentMood: studentProfile.currentMood,
+      };
+
+      const prompt = `
+      You are an AI study assistant for students. Help them understand difficult concepts in simple words. And help them to learn as an professional teacher with the undertaning of the mood and other stuff.
+      
+      Student Context:
+      - Subjects: ${context.subjects.map((s) => s.name).join(", ")}
+      - Learning Style: ${context.learningStyle}
+      - Current Mood: ${context.currentMood}
+      
+      Previous conversation:
+      ${chatHistory.map((chat) => `${chat.role}: ${chat.message}`).join("\n")}
+      
+      Current question: ${message}
+      
+      Provide a helpful, step-by-step explanation in simple language. If the question is not study-related, politely redirect to study topics.
+      `;
+
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+      });
+
+      const aiResponse = response.text;
+
+      const updatedChatHistory = [
+        ...chatHistory.slice(-4),
+        { role: "user", message },
+        { role: "assistant", message: aiResponse },
+      ];
+
+      res.status(200).json({
+        status: "success",
+        message: "AI response generated successfully",
+        data: {
+          response: aiResponse,
+          chatHistory: updatedChatHistory,
+          isVoice,
+        },
+      });
+    } catch (error) {
+      console.error("AI chat error:", error);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to generate AI response",
+      });
+    }
+  }),
 };
 
 export default studentController;

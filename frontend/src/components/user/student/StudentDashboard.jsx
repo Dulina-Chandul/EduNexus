@@ -12,7 +12,6 @@ import {
   GraduationCap,
   FileText,
   Clock,
-  MessageSquare,
   Bell,
   User,
   Brain,
@@ -50,6 +49,13 @@ const navigation = [
     href: "/student-dashboard/quiz",
     icon: Brain,
     description: "AI-powered adaptive tests",
+    roles: ["student"],
+  },
+  {
+    name: "AI Assistant",
+    href: "/student-dashboard/ai-assistant",
+    icon: Brain,
+    description: "Get help with your studies",
     roles: ["student"],
   },
   {
