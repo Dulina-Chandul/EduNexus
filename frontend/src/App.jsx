@@ -84,7 +84,7 @@ function App() {
           <Route
             path=""
             element={
-              <AuthRoute requiredRoles={["teacher", "admin", "student"]}>
+              <AuthRoute requiredRoles={["teacher", "admin"]}>
                 <AccountSummaryDashboard />
               </AuthRoute>
             }

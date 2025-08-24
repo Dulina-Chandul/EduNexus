@@ -103,6 +103,7 @@ const userController = {
         message: "User logged in successfully",
         username: user?.username,
         email: user?.email,
+        role: user?.role,
         _id: user?._id,
       });
     })(req, res, next);
