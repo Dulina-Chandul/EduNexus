@@ -67,40 +67,40 @@ const navigation = [
   },
   {
     name: "Learning Resources",
-    href: "/student-dashboard/resources",
+    href: "/posts",
     icon: BookOpen,
     description: "Study materials",
     roles: ["student"],
   },
-  {
-    name: "Study Schedule",
-    href: "/student-dashboard/study-schedule",
+  // {
+  //   name: "Study Schedule",
+  //   href: "/student-dashboard/study-schedule",
 
-    icon: Calendar,
-    description: "Your timetable",
-    roles: ["student"],
-  },
-  {
-    name: "Study Groups",
-    href: "/student-dashboard/study-groups",
-    icon: GraduationCap,
-    description: "Collaborate & learn",
-    roles: ["student"],
-  },
-  {
-    name: "Notes & Assignments",
-    href: "/student-dashboard/notes",
-    icon: FileText,
-    description: "Your academic work",
-    roles: ["student"],
-  },
-  {
-    name: "Study Progress",
-    href: "/student-dashboard/progress",
-    icon: Clock,
-    description: "Track learning goals",
-    roles: ["student"],
-  },
+  //   icon: Calendar,
+  //   description: "Your timetable",
+  //   roles: ["student"],
+  // },
+  // {
+  //   name: "Study Groups",
+  //   href: "/student-dashboard/study-groups",
+  //   icon: GraduationCap,
+  //   description: "Collaborate & learn",
+  //   roles: ["student"],
+  // },
+  // {
+  //   name: "Notes & Assignments",
+  //   href: "/student-dashboard/notes",
+  //   icon: FileText,
+  //   description: "Your academic work",
+  //   roles: ["student"],
+  // },
+  // {
+  //   name: "Study Progress",
+  //   href: "/student-dashboard/progress",
+  //   icon: Clock,
+  //   description: "Track learning goals",
+  //   roles: ["student"],
+  // },
 ];
 
 function classNames(...classes) {

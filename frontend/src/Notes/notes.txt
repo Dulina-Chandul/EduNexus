@@ -29,3 +29,5 @@ Change the email when sending email change
 
 -----BUGS----
 when creating category if user added space between words there is an error, so make sure to add only '-' between words
+
+student dashboard my following not working as expected

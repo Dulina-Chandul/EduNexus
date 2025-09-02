@@ -37,9 +37,9 @@ export default function PublicNavbar() {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link to="/" className="flex items-center space-x-2 group">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+                    {/* <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
                       <FaBlog className="h-4 w-4 text-bg dark:text-bg-dark" />
-                    </div>
+                    </div> */}
                     <span className="text-text dark:text-text-dark font-bold text-xl hidden sm:block group-hover:text-primary dark:group-hover:text-primary-dark transition-colors duration-300">
                       Edu Nexus
                     </span>
@@ -79,19 +79,19 @@ export default function PublicNavbar() {
 
                 {/* Action Buttons - Desktop */}
                 <div className="hidden sm:flex sm:items-center sm:space-x-3">
-                  <Link to="/register">
+                  <Link to="/login">
                     <Button className="bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-bg dark:text-bg-dark hover:from-primary/90 hover:to-secondary/90 dark:hover:from-primary-dark/90 dark:hover:to-secondary-dark/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                       <PlusIcon className="h-4 w-4 mr-2" />
-                      Create Post
+                      Login
                     </Button>
                   </Link>
 
-                  <Link to="/login">
+                  <Link to="/register">
                     <Button
                       variant="outline"
                       className="border-primary dark:border-primary-dark text-primary dark:text-primary-dark hover:bg-primary dark:hover:bg-primary-dark hover:text-bg dark:hover:text-bg-dark transition-all duration-200 shadow-sm hover:shadow-md"
                     >
-                      Login
+                      Register
                     </Button>
                   </Link>
                 </div>

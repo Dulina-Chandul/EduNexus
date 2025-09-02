@@ -107,19 +107,19 @@ const StudentAccountSummary = () => {
       textColor: "text-primary dark:text-primary-dark",
     },
     {
-      title: "Study Groups",
-      description: "Join collaborative learning",
+      title: "Smart Daily Planner",
+      description: "Plan your Day Smarlty",
       icon: <Users className="h-6 w-6" />,
-      href: "/student-dashboard/study-groups",
+      href: "/student-dashboard/daily-planner",
       color:
         "from-secondary/20 to-secondary/10 dark:from-secondary-dark/20 dark:to-secondary-dark/10",
       textColor: "text-secondary dark:text-secondary-dark",
     },
     {
-      title: "Study Progress",
-      description: "Track your learning goals",
+      title: "AI Assistance",
+      description: "Learn With AI",
       icon: <Target className="h-6 w-6" />,
-      href: "/student-dashboard/progress",
+      href: "/student-dashboard/ai-assistant",
       color:
         "from-accent/20 to-accent/10 dark:from-accent-dark/20 dark:to-accent-dark/10",
       textColor: "text-accent dark:text-accent-dark",
@@ -340,7 +340,7 @@ const StudentAccountSummary = () => {
       </Card>
 
       {/* Progress Tracking */}
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* <div className="grid gap-6 md:grid-cols-2">
         <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">
           <CardHeader>
             <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
@@ -438,7 +438,7 @@ const StudentAccountSummary = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Recent Activity */}
       <Card className="bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg">

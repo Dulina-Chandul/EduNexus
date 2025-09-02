@@ -212,8 +212,9 @@ const StudentProfileSettings = () => {
                 onValueChange={(value) =>
                   setNewSubject((prev) => ({ ...prev, priority: value }))
                 }
+                classname
               >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
+                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40 ">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

@@ -34,6 +34,7 @@ const userController = {
   //* Create a new user
   register: expressAsyncHandler(async (req, res) => {
     const { username, email, password, role } = req.body;
+    let newStudentProfile = undefined;
 
     //* Check if user already exists
     const userFound = await User.findOne({ username, email });
@@ -54,7 +55,7 @@ const userController = {
     });
 
     if (userCreated.role === "student") {
-      const newStudentProfile = await StudentProfile.create({
+      newStudentProfile = await StudentProfile.create({
         userId: userCreated._id,
       });
     }

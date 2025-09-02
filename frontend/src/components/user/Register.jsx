@@ -173,7 +173,7 @@ const Register = () => {
                 <div className="animate-shake">
                   <AlertMessage
                     type="error"
-                    message={userMutation.error.response.data.message}
+                    message={userMutation?.error?.response?.data?.message}
                   />
                 </div>
               )}

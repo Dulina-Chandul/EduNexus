@@ -3,56 +3,75 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Mic, MicOff, Send, Volume2, VolumeX, Bot, User } from "lucide-react";
+import {
+  Mic,
+  MicOff,
+  Send,
+  Volume2,
+  VolumeX,
+  Bot,
+  User,
+  Pause,
+  Play,
+} from "lucide-react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 import { aiChatAPI } from "../../../APIservices/users/studentAPI";
 
 const AIChatAssistant = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
-  const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const recognitionRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [silenceTimer, setSilenceTimer] = useState(null);
+
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const speechSynthesisRef = useRef(null);
 
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  //* Auto-send after 3 seconds of silence
   useEffect(() => {
-    // Initialize speech recognition if available
-    if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = false;
-      recognitionRef.current.lang = "en-US";
+    if (listening && transcript && !isPaused) {
+      if (silenceTimer) {
+        clearTimeout(silenceTimer);
+      }
 
-      recognitionRef.current.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setInputMessage(transcript);
-        setIsListening(false);
-
-        // Wait a bit before sending to ensure complete sentence
-        setTimeout(() => {
+      const timer = setTimeout(() => {
+        if (transcript.trim()) {
           handleSendMessage(transcript, true);
-        }, 500);
-      };
+          resetTranscript();
+        }
+      }, 3000);
 
-      recognitionRef.current.onerror = (event) => {
-        console.error("Speech recognition error", event.error);
-        setIsListening(false);
-      };
-
-      recognitionRef.current.onend = () => {
-        setIsListening(false);
-      };
+      setSilenceTimer(timer);
     }
 
     return () => {
-      if (recognitionRef.current) {
-        recognitionRef.current.abort();
+      if (silenceTimer) {
+        clearTimeout(silenceTimer);
       }
+    };
+  }, [transcript, listening, isPaused]);
+
+  //* Update input when transcribing
+  useEffect(() => {
+    if (listening && transcript) {
+      setInputMessage(transcript);
+    }
+  }, [transcript, listening]);
+
+  useEffect(() => {
+    return () => {
       if (speechSynthesisRef.current) {
         window.speechSynthesis.cancel();
       }
@@ -67,23 +86,34 @@ const AIChatAssistant = () => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  const handleListen = () => {
-    if (!recognitionRef.current) {
+  const startListening = () => {
+    if (!browserSupportsSpeechRecognition) {
       alert("Speech recognition is not supported in your browser");
       return;
     }
 
-    if (isListening) {
-      recognitionRef.current.stop();
-      setIsListening(false);
-    } else {
-      try {
-        recognitionRef.current.start();
-        setIsListening(true);
-      } catch (error) {
-        console.error("Error starting speech recognition:", error);
-        setIsListening(false);
-      }
+    resetTranscript();
+    setInputMessage("");
+    setIsPaused(false);
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-US",
+    });
+  };
+
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+    if (silenceTimer) {
+      clearTimeout(silenceTimer);
+      setSilenceTimer(null);
+    }
+  };
+
+  const pauseListening = () => {
+    setIsPaused(!isPaused);
+    if (silenceTimer) {
+      clearTimeout(silenceTimer);
+      setSilenceTimer(null);
     }
   };
 
@@ -116,6 +146,11 @@ const AIChatAssistant = () => {
     setIsProcessing(true);
     setIsTyping(true);
 
+    //* Stop listening after sending
+    if (listening) {
+      stopListening();
+    }
+
     try {
       const chatHistory = messages.map((msg) => ({
         role: msg.role,
@@ -131,14 +166,13 @@ const AIChatAssistant = () => {
       if (response.status === "success") {
         setIsTyping(false);
 
-        // Clean the response text from markdown and formatting
         const cleanResponse = response.data.response
-          .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1") // Remove asterisks
-          .replace(/#{1,6}\s*/g, "") // Remove hash marks
-          .replace(/`{1,3}([^`]+)`{1,3}/g, "$1") // Remove backticks
-          .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Remove markdown links
-          .replace(/^\s*[\*\-\+]\s*/gm, "• ") // Convert list markers to bullets
-          .replace(/\n{3,}/g, "\n\n") // Normalize line breaks
+          .replace(/\*{1,3}([^*]+)\*{1,3}/g, "$1")
+          .replace(/#{1,6}\s*/g, "")
+          .replace(/`{1,3}([^`]+)`{1,3}/g, "$1")
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+          .replace(/^\s*[\*\-\+]\s*/gm, "• ")
+          .replace(/\n{3,}/g, "\n\n")
           .trim();
 
         const aiMessage = {
@@ -174,7 +208,6 @@ const AIChatAssistant = () => {
     if ("speechSynthesis" in window && text) {
       window.speechSynthesis.cancel();
 
-      // Remove any remaining special characters for better speech
       const cleanText = text
         .replace(/[*#`_~]/g, "")
         .replace(/\s+/g, " ")
@@ -217,6 +250,14 @@ const AIChatAssistant = () => {
     });
   };
 
+  if (!browserSupportsSpeechRecognition) {
+    return (
+      <div className="w-full max-w-4xl mx-auto p-8 text-center">
+        <p>Browser doesn't support speech recognition.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
       {/* Header */}
@@ -230,7 +271,11 @@ const AIChatAssistant = () => {
               AI Study Assistant
             </h2>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              {isProcessing ? "Thinking..." : "Ready to help you learn"}
+              {isProcessing
+                ? "Thinking..."
+                : listening
+                ? "Listening..."
+                : "Ready to help you learn"}
             </p>
           </div>
         </div>
@@ -278,7 +323,6 @@ const AIChatAssistant = () => {
                     : ""
                 }`}
               >
-                {/* Avatar */}
                 <div
                   className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
                     message.role === "user"
@@ -295,7 +339,6 @@ const AIChatAssistant = () => {
                   )}
                 </div>
 
-                {/* Message Content */}
                 <div
                   className={`flex-1 max-w-3xl ${
                     message.role === "user" ? "text-right" : "text-left"
@@ -364,25 +407,48 @@ const AIChatAssistant = () => {
       {/* Input Area */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div className="flex items-center space-x-3 max-w-4xl mx-auto">
-          {/* Voice Button */}
-          <Button
-            variant={isListening ? "default" : "outline"}
-            size="icon"
-            onClick={handleListen}
-            disabled={isProcessing || isSpeaking}
-            className={`flex-shrink-0 transition-all duration-200 ${
-              isListening
-                ? "bg-red-500 hover:bg-red-600 text-white border-red-500 animate-pulse"
-                : "border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
-            }`}
-            title={isListening ? "Stop listening" : "Start voice input"}
-          >
-            {isListening ? (
-              <MicOff className="h-4 w-4" />
-            ) : (
-              <Mic className="h-4 w-4" />
+          {/* Voice Controls */}
+          <div className="flex items-center space-x-2">
+            <Button
+              variant={listening ? "default" : "outline"}
+              size="icon"
+              onClick={listening ? stopListening : startListening}
+              disabled={isProcessing || isSpeaking}
+              className={`flex-shrink-0 transition-all duration-200 ${
+                listening
+                  ? "bg-red-500 hover:bg-red-600 text-white border-red-500 animate-pulse"
+                  : "border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+              }`}
+              title={listening ? "Stop listening" : "Start voice input"}
+            >
+              {listening ? (
+                <MicOff className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+            </Button>
+
+            {/* Pause Button - only show when listening */}
+            {listening && (
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={pauseListening}
+                className={`flex-shrink-0 ${
+                  isPaused
+                    ? "bg-yellow-500 text-white border-yellow-500"
+                    : "border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+                }`}
+                title={isPaused ? "Resume listening" : "Pause listening"}
+              >
+                {isPaused ? (
+                  <Play className="h-4 w-4" />
+                ) : (
+                  <Pause className="h-4 w-4" />
+                )}
+              </Button>
             )}
-          </Button>
+          </div>
 
           {/* Input Field */}
           <div className="flex-1 relative">
@@ -396,7 +462,6 @@ const AIChatAssistant = () => {
               className="pr-12 py-3 text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-xl"
             />
 
-            {/* Character count or status */}
             {inputMessage.length > 0 && (
               <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xs text-gray-400">
                 {inputMessage.length}
@@ -417,13 +482,19 @@ const AIChatAssistant = () => {
         </div>
 
         {/* Status indicators */}
-        {(isListening || isProcessing || isSpeaking) && (
+        {(listening || isProcessing || isSpeaking || isPaused) && (
           <div className="flex justify-center mt-2">
             <div className="text-xs text-gray-500 dark:text-gray-400 flex items-center space-x-2">
-              {isListening && (
+              {listening && !isPaused && (
                 <>
                   <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span>Listening...</span>
+                  <span>Listening... (Auto-send in 3s after silence)</span>
+                </>
+              )}
+              {isPaused && (
+                <>
+                  <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                  <span>Paused - Click play to resume</span>
                 </>
               )}
               {isProcessing && (
