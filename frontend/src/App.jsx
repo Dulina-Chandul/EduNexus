@@ -61,6 +61,14 @@ function App() {
       document.documentElement.classList.remove("dark");
     }
   }, [theme]);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme && savedTheme !== theme) {
+      dispatch(setTheme(savedTheme));
+    }
+  }, [dispatch, theme]);
+
   useEffect(() => {
     dispatch(isAuthenticated(userData));
     // console.log(userData);
