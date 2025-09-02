@@ -5,6 +5,7 @@
   --font-display: "Satoshi", sans-serif;
   --breakpoint-3xl: 120rem;
   /* Light theme colors */
+  --color-yellow: #f1cd1e;
   --color-primary: #2ecc71; /* Modern light green */
   --color-secondary: #e74c3c; /* Vibrant coral */
   --color-bg: #f5f7fa; /* Light off-white */

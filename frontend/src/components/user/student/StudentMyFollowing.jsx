@@ -129,8 +129,8 @@ const StudentMyFollowing = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header Section */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20"></div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-accent-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-accent-dark/20"></div>
         <div className="relative">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
@@ -197,7 +197,7 @@ const StudentMyFollowing = () => {
               Start building your learning network by following teachers,
               mentors, and fellow students.
             </p>
-            <Button className="bg-primary dark:bg-primary-dark text-bg dark:text-bg-dark hover:bg-secondary dark:hover:bg-secondary-dark">
+            <Button className="bg-primary/80  text-bg dark:text-bg-dark hover:bg-primary dark:hover:bg-secondary-dark">
               <Users className="h-4 w-4 mr-2" />
               Discover People
             </Button>

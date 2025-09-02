@@ -115,7 +115,7 @@ export default function UserDashboard() {
                 {role || "User"}
               </Badge>
               <span className="text-xs text-text/60 dark:text-text-dark/60 font-medium">
-                Online
+                Online 
               </span>
             </div>
           </div>

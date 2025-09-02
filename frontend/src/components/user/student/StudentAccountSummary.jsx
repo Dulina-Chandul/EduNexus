@@ -129,14 +129,14 @@ const StudentAccountSummary = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Welcome Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20"></div>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-yellow/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-yellow-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-yellow/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-yellow-dark/20"></div>
         <div className="relative">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
               <Avatar className="h-16 w-16 ring-4 ring-bg dark:ring-bg-dark shadow-xl">
                 <AvatarImage src={userData?.profilePicture} />
-                <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-bg font-bold text-xl">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-yellow text-bg font-bold text-xl">
                   {userData.username.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>

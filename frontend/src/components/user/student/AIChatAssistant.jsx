@@ -261,10 +261,10 @@ const AIChatAssistant = () => {
   return (
     <div className="w-full max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-t-xl">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-green-50 dark:from-gray-800 dark:to-gray-700 rounded-t-xl">
         <div className="flex items-center space-x-3">
-          <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-            <Bot className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+            <Bot className="h-6 w-6 text-green-600 dark:text-green-400" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -298,7 +298,7 @@ const AIChatAssistant = () => {
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center py-12">
             <div className="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-600 max-w-md">
-              <Bot className="h-12 w-12 text-blue-500 dark:text-blue-400 mx-auto mb-4" />
+              <Bot className="h-12 w-12 text-green-500 dark:text-green-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 Welcome to your AI Study Assistant!
               </h3>
@@ -473,7 +473,7 @@ const AIChatAssistant = () => {
           <Button
             onClick={() => handleSendMessage()}
             disabled={!inputMessage.trim() || isProcessing || isSpeaking}
-            className="flex-shrink-0 bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 rounded-xl transition-all duration-200"
+            className="flex-shrink-0 bg-green-500 hover:bg-green-600 text-white disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 rounded-xl transition-all duration-200"
             title="Send message"
           >
             <Send className="h-4 w-4 mr-2" />
