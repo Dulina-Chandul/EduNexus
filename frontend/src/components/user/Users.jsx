@@ -48,7 +48,7 @@ const Users = () => {
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4">Users List</h2>
-      <div className="space-y-3">
+      <div className="space-y-3 ">
         {users?.users?.map((user) => (
           <div
             key={user.id}
