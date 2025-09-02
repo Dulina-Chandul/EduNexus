@@ -186,7 +186,7 @@ export default function UserDashboard() {
         </div>
       </nav>
 
-      <div className="p-4 border-t border-primary/20 dark:border-primary-dark/20">
+      <div className="p-4 border-t border-primary/20 dark:border-primary-dark/20 mb-20">
         <div className="bg-gradient-to-r from-primary/15 via-accent/10 to-secondary/15 dark:from-primary-dark/15 dark:via-accent-dark/10 dark:to-secondary-dark/15 rounded-xl p-4 border border-primary/20 dark:border-primary-dark/20">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-accent/20 dark:bg-accent-dark/20 rounded-lg">
@@ -194,7 +194,7 @@ export default function UserDashboard() {
             </div>
             <div>
               <div className="text-sm font-bold text-text dark:text-text-dark">
-                Blog Platform
+                Edu Nexus
               </div>
               <div className="text-xs text-text/70 dark:text-text-dark/70">
                 Create, Share, Inspire

@@ -57,7 +57,6 @@ const AccountSummaryDashboard = () => {
     totalDislikes += post?.dislikes?.length || 0;
   });
 
-  const totalEarnings = 0;
   const stats = [
     {
       icon: <FaEye className="h-6 w-6" />,
