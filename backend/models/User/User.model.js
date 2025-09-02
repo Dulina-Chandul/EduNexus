@@ -55,7 +55,8 @@ const userSchema = new mongoose.Schema(
     ],
     role: {
       type: String,
-      default: "user",
+      enum: ["admin", "teacher", "student", "guest"],
+      default: "student",
     },
     totalEarnings: {
       type: Number,
@@ -106,6 +107,10 @@ const userSchema = new mongoose.Schema(
     isBlocked: {
       type: Boolean,
       default: false,
+    },
+    studentProfile: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "StudentProfile",
     },
   },
   { timestamps: true }

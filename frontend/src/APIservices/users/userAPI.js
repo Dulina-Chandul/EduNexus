@@ -17,6 +17,7 @@ export const registerAPI = async (userData) => {
       username: userData?.username,
       email: userData?.email,
       password: userData?.password,
+      role: userData?.role || "student", // Add role to the userdata when adding admins and teachers
     },
     {
       withCredentials: true,

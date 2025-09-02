@@ -9,6 +9,8 @@ import cookieParser from "cookie-parser";
 import categoryRouter from "./router/category/categoryRouter.js";
 import notificationRouter from "./router/notification/notificationRouter.js";
 import commentRouter from "./router/comments/commentRouter.js";
+import geminiRouter from "./router/geminiapi/geminiRouter.js";
+import studentRouter from "./router/student/studentRouter.js";
 
 dotenv.config();
 
@@ -45,6 +47,8 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/comments", commentRouter);
+app.use("/api/v1/ai", geminiRouter);
+app.use("/api/v1/student", studentRouter);
 
 //* Not Found Route
 app.use((req, res, next) => {

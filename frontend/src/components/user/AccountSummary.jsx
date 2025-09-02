@@ -10,11 +10,17 @@ import {
   FaCommentDots,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Sparkles, Zap, ArrowRight, AlertTriangle } from "lucide-react";
 import {
   accountVerificationEmailAPI,
   userProfileAPI,
 } from "../../APIservices/users/userAPI";
 import AlertMessage from "../alerts/AlertMessage";
+import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const AccountSummaryDashboard = () => {
   const {
@@ -29,30 +35,15 @@ const AccountSummaryDashboard = () => {
 
   console.log("User Data:", userData);
 
-  //check if user has email
-
   const hasEmail = userData?.user?.email ? true : false;
-
-  //check if user has plan
-
-  const hasPlan = false;
-
-  //check if user has verified account
+  const hasPlan = true;
   const isEmailVerified = userData?.user?.isEmailVerified
     ? userData?.user?.isEmailVerified
     : false;
 
-  //total followers
   const totalFollowers = userData?.user?.followers?.length || 0;
-
-  //total following
   const totalFollowing = userData?.user?.following?.length || 0;
-
-  //get user posts
-
   const userPosts = userData?.user?.posts || [];
-
-  //there is a view count in the post object so calculate the total views
 
   let totalViews = 0;
   let totalLikes = 0;
@@ -65,67 +56,66 @@ const AccountSummaryDashboard = () => {
     totalComments += post?.comments?.length || 0;
     totalDislikes += post?.dislikes?.length || 0;
   });
-  //total earnings
 
   const totalEarnings = 0;
   const stats = [
     {
-      icon: <FaEye />,
+      icon: <FaEye className="h-6 w-6" />,
       label: "Views",
       value: totalViews,
-      bgColor: "bg-blue-500",
+      color: "text-blue-500 dark:text-blue-400",
+      bgColor: "bg-blue-500/10 dark:bg-blue-400/10",
     },
+
     {
-      icon: <FaDollarSign />,
-      label: "Earnings",
-      value: `$${totalEarnings?.toFixed(2)}`,
-      bgColor: "bg-green-500",
-    },
-    {
-      icon: <FaUsers />,
+      icon: <FaUsers className="h-6 w-6" />,
       label: "Followers",
       value: totalFollowers || 0,
-      bgColor: "bg-purple-500",
+      color: "text-purple-500 dark:text-purple-400",
+      bgColor: "bg-purple-500/10 dark:bg-purple-400/10",
     },
     {
-      icon: <FaThumbsUp />,
+      icon: <FaThumbsUp className="h-6 w-6" />,
       label: "Likes",
       value: totalLikes || 0,
-      bgColor: "bg-yellow-500",
+      color: "text-yellow-500 dark:text-yellow-400",
+      bgColor: "bg-yellow-500/10 dark:bg-yellow-400/10",
     },
     {
-      icon: <FaThumbsDown />,
+      icon: <FaThumbsDown className="h-6 w-6" />,
       label: "Dislikes",
       value: totalDislikes || 0,
-      bgColor: "bg-red-500",
+      color: "text-red-500 dark:text-red-400",
+      bgColor: "bg-red-500/10 dark:bg-red-400/10",
     },
     {
-      icon: <FaUsers />,
+      icon: <FaUsers className="h-6 w-6" />,
       label: "Following",
       value: totalFollowing || 0,
-      bgColor: "bg-indigo-500",
+      color: "text-indigo-500 dark:text-indigo-400",
+      bgColor: "bg-indigo-500/10 dark:bg-indigo-400/10",
     },
     {
-      icon: <FaFlag />,
+      icon: <FaFlag className="h-6 w-6" />,
       label: "Posts",
       value: userPosts?.length || 0,
-      bgColor: "bg-pink-500",
+      color: "text-pink-500 dark:text-pink-400",
+      bgColor: "bg-pink-500/10 dark:bg-pink-400/10",
     },
     {
-      icon: <FaCommentDots />,
+      icon: <FaCommentDots className="h-6 w-6" />,
       label: "Comments",
       value: totalComments || 0,
-      bgColor: "bg-teal-500",
+      color: "text-teal-500 dark:text-teal-400",
+      bgColor: "bg-teal-500/10 dark:bg-teal-400/10",
     },
   ];
 
-  //* Sending email verification mutation
   const verificationTokenMutation = useMutation({
     mutationKey: ["send-email-verification-token"],
     mutationFn: accountVerificationEmailAPI,
   });
 
-  //* handleSendVerificationEmail
   const handleSendVerificationEmail = async () => {
     verificationTokenMutation.mutate();
   };
@@ -133,93 +123,170 @@ const AccountSummaryDashboard = () => {
   console.log(verificationTokenMutation);
 
   return (
-    <div className="p-4">
-      <p
-        className="
-       font-bold text-2xl text-gray-800 mb-4
-      "
-      >
-        Welcome Back: {userData?.user?.username || "User"}
-      </p>
-      {/* display account verification status */}
-      {verificationTokenMutation.isPending ? (
-        <AlertMessage type="loading" message="Loading..." />
-      ) : verificationTokenMutation.isError ? (
-        <AlertMessage
-          type="error"
-          message={
-            verificationTokenMutation?.error?.message ||
-            verificationTokenMutation?.error?.response?.data?.message
-          }
-        />
-      ) : verificationTokenMutation.isSuccess ? (
-        <AlertMessage
-          type="success"
-          message={verificationTokenMutation?.data?.message}
-        />
-      ) : null}
+    <div className="space-y-8 animate-fade-in">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20 p-8 border border-primary/20 dark:border-primary-dark/20">
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/20 via-primary/10 to-secondary/20 dark:from-primary-dark/20 dark:via-primary-dark/10 dark:to-secondary-dark/20"></div>
+        <div className="relative">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-4">
+              <Avatar className="h-16 w-16 ring-4 ring-bg dark:ring-bg-dark shadow-xl">
+                <AvatarImage src={userData?.user?.profilePicture?.path} />
+                <AvatarFallback className="bg-gradient-to-br from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-bg dark:text-bg-dark font-bold text-xl">
+                  {userData?.user?.username?.charAt(0)?.toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h1 className="text-3xl font-bold text-text dark:text-text-dark">
+                  Welcome Back: {userData?.user?.username || "User"}!
+                  <Sparkles className="inline h-6 w-6 ml-2 text-accent dark:text-accent-dark" />
+                </h1>
+                <p className="text-text/70 dark:text-text-dark/70 mt-1">
+                  Ready to create amazing content?
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <Badge className="bg-primary/30 dark:bg-primary-dark/30 text-primary dark:text-primary-dark px-4 py-2 text-sm font-medium border border-primary/40 dark:border-primary-dark/40">
+                {userData?.user?.role?.charAt(0)?.toUpperCase() +
+                  userData?.user?.role?.slice(1) || "User"}
+              </Badge>
+              <div className="flex items-center space-x-2 bg-bg/70 dark:bg-bg-dark/70 backdrop-blur-sm rounded-full px-4 py-2 border border-primary/20 dark:border-primary-dark/20">
+                <div className="w-2 h-2 bg-accent dark:bg-accent-dark rounded-full animate-pulse"></div>
+                <span className="text-sm text-text/80 dark:text-text-dark/80 font-medium">
+                  Active
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {verificationTokenMutation.isPending && (
+        <Alert className="border-primary/50 dark:border-primary-dark/50 bg-primary/5 dark:bg-primary-dark/5">
+          <Zap className="h-4 w-4 text-primary dark:text-primary-dark" />
+          <AlertTitle className="text-primary dark:text-primary-dark">
+            Loading...
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
+            <AlertMessage type="loading" message="Loading..." />
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {verificationTokenMutation.isError && (
+        <Alert className="border-red-500/50 dark:border-red-400/50 bg-red-500/5 dark:bg-red-400/5">
+          <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400" />
+          <AlertTitle className="text-red-500 dark:text-red-400">
+            Error
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
+            <AlertMessage
+              type="error"
+              message={
+                verificationTokenMutation?.error?.message ||
+                verificationTokenMutation?.error?.response?.data?.message
+              }
+            />
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {verificationTokenMutation.isSuccess && (
+        <Alert className="border-green-500/50 dark:border-green-400/50 bg-green-500/5 dark:bg-green-400/5">
+          <Zap className="h-4 w-4 text-green-500 dark:text-green-400" />
+          <AlertTitle className="text-green-500 dark:text-green-400">
+            Success
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
+            <AlertMessage
+              type="success"
+              message={verificationTokenMutation?.data?.message}
+            />
+          </AlertDescription>
+        </Alert>
+      )}
+
       {!hasPlan && (
-        <div
-          className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
-          role="alert"
-        >
-          <p className="font-bold">Plan Selection Required</p>
-          <p>
+        <Alert className="border-yellow-500/50 dark:border-yellow-400/50 bg-yellow-500/5 dark:bg-yellow-400/5">
+          <AlertTriangle className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+          <AlertTitle className="text-yellow-500 dark:text-yellow-400">
+            Plan Selection Required
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
             Please{" "}
-            <Link to="/pricing" className="underline text-yellow-800">
+            <Link
+              to="/pricing"
+              className="underline text-yellow-500 dark:text-yellow-400 hover:text-yellow-600 dark:hover:text-yellow-300 transition-colors font-medium"
+            >
               select a plan
             </Link>{" "}
             to continue using our services.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
+
       {!isEmailVerified && (
-        <div
-          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4"
-          role="alert"
-        >
-          <p className="font-bold">Account Verification Needed</p>
-          <p>
+        <Alert className="border-red-500/50 dark:border-red-400/50 bg-red-500/5 dark:bg-red-400/5">
+          <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400" />
+          <AlertTitle className="text-red-500 dark:text-red-400">
+            Account Verification Needed
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
             Your account is not verified. Please{" "}
             <button
               onClick={handleSendVerificationEmail}
-              className="underline text-red-800"
+              className="underline text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors font-medium"
             >
               verify your account
             </button>{" "}
             for full access.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
+
       {!hasEmail && (
-        <div
-          className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4"
-          role="alert"
-        >
-          <p className="font-bold">Email Required</p>
-          <p>
+        <Alert className="border-blue-500/50 dark:border-blue-400/50 bg-blue-500/5 dark:bg-blue-400/5">
+          <AlertTriangle className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+          <AlertTitle className="text-blue-500 dark:text-blue-400">
+            Email Required
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
             Please{" "}
-            <Link to="/add-email" className="underline text-blue-800">
+            <Link
+              to="/add-email"
+              className="underline text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors font-medium"
+            >
               add an email
             </Link>{" "}
             to your account for important notifications.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div
+          <Card
             key={index}
-            className={`${stat.bgColor} text-white rounded-lg shadow-lg p-6`}
+            className="group bg-bg dark:bg-bg-dark border-primary/10 dark:border-primary-dark/10 shadow-lg hover:shadow-xl transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer overflow-hidden"
           >
-            <div className="flex items-center space-x-4">
-              <div className="text-2xl">{stat.icon}</div>
-              <div>
-                <div className="text-xl font-semibold">{stat.value}</div>
-                <div className="text-sm">{stat.label}</div>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div
+                  className={`p-3 rounded-xl ${stat.bgColor} transition-all duration-300 group-hover:scale-110`}
+                >
+                  <div className={stat.color}>{stat.icon}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-text dark:text-text-dark">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-text/60 dark:text-text-dark/60">
+                    {stat.label}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

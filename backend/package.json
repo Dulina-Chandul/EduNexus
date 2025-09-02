@@ -15,6 +15,7 @@
   "license": "ISC",
   "description": "This is the backend for EduNexus, a platform for educational resources and mentorship.",
   "dependencies": {
+    "@google/genai": "^1.15.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.7",

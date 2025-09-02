@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import sendAccountVerificationEmail from "../../utils/sendAccountVerificationEmail.js";
 import crypto from "crypto";
 import sendPasswordResetEmail from "../../utils/sendPasswordResetEmail.js";
+import StudentProfile from "../../models/User/studentProfile.model.js";
 
 const userController = {
   //* Fetching all users
@@ -32,7 +33,8 @@ const userController = {
 
   //* Create a new user
   register: expressAsyncHandler(async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
+    let newStudentProfile = undefined;
 
     //* Check if user already exists
     const userFound = await User.findOne({ username, email });
@@ -49,7 +51,18 @@ const userController = {
       username,
       email,
       password: hashedPassword,
+      role,
     });
+
+    if (userCreated.role === "student") {
+      newStudentProfile = await StudentProfile.create({
+        userId: userCreated._id,
+      });
+    }
+
+    userCreated.studentProfile = newStudentProfile._id;
+    await newStudentProfile.save();
+    await userCreated.save();
 
     //* Send the response to the client side
     res.status(201).json({
@@ -91,6 +104,7 @@ const userController = {
         message: "User logged in successfully",
         username: user?.username,
         email: user?.email,
+        role: user?.role,
         _id: user?._id,
       });
     })(req, res, next);
@@ -159,6 +173,7 @@ const userController = {
           username: user?.username,
           email: user?.email,
           profilePicture: user?.profilePicture,
+          role: user?.role,
         });
       }
     } catch (error) {
