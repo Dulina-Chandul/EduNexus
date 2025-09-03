@@ -90,7 +90,7 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="bg-bg dark:bg-bg-dark border border-primary/20 dark:border-primary-dark/20 rounded-3xl shadow-2xl p-8 backdrop-blur-sm relative overflow-hidden">
           {/* Background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 dark:from-primary-dark/5 dark:to-secondary-dark/5 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 dark:from-primary-dark/5 dark:to-accent-dark/5 pointer-events-none"></div>
 
           {/* Decorative elements */}
           <div className="absolute top-4 right-4 text-accent/20 dark:text-accent-dark/20">
@@ -103,7 +103,7 @@ const Login = () => {
           <div className="relative z-10">
             {/* Header */}
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark rounded-2xl mb-4 shadow-lg">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-accent dark:from-primary-dark dark:to-primary-dark rounded-2xl mb-4 shadow-lg">
                 <User className="h-8 w-8 text-bg dark:text-bg-dark" />
               </div>
               <h1 className="text-3xl font-bold text-text dark:text-text-dark mb-2">
@@ -216,7 +216,7 @@ const Login = () => {
 
               {/* Login Button */}
               <button
-                className="w-full py-4 bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-bg dark:text-bg-dark font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed relative overflow-hidden group"
+                className="w-full py-4 bg-gradient-to-r from-primary to-primary dark:from-primary-dark dark:to-accent-dark text-bg dark:text-bg-dark font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed relative overflow-hidden group"
                 type="submit"
                 disabled={userMutation.isPending}
               >
