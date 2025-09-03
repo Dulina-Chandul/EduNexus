@@ -167,7 +167,7 @@ const AccountSummaryDashboard = () => {
             Loading...
           </AlertTitle>
           <AlertDescription className="text-text dark:text-text-dark">
-            <AlertMessage type="loading" message="Loading..." />
+            Please wait while we are processing your request
           </AlertDescription>
         </Alert>
       )}
@@ -179,13 +179,8 @@ const AccountSummaryDashboard = () => {
             Error
           </AlertTitle>
           <AlertDescription className="text-text dark:text-text-dark">
-            <AlertMessage
-              type="error"
-              message={
-                verificationTokenMutation?.error?.message ||
-                verificationTokenMutation?.error?.response?.data?.message
-              }
-            />
+            {verificationTokenMutation?.error?.message ||
+              verificationTokenMutation?.error?.response?.data?.message}
           </AlertDescription>
         </Alert>
       )}
@@ -197,51 +192,32 @@ const AccountSummaryDashboard = () => {
             Success
           </AlertTitle>
           <AlertDescription className="text-text dark:text-text-dark">
-            <AlertMessage
-              type="success"
-              message={verificationTokenMutation?.data?.message}
-            />
+            {verificationTokenMutation?.data?.message}
           </AlertDescription>
         </Alert>
       )}
 
-      {!hasPlan && (
-        <Alert className="border-yellow-500/50 dark:border-yellow-400/50 bg-yellow-500/5 dark:bg-yellow-400/5">
-          <AlertTriangle className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
-          <AlertTitle className="text-yellow-500 dark:text-yellow-400">
-            Plan Selection Required
-          </AlertTitle>
-          <AlertDescription className="text-text dark:text-text-dark">
-            Please{" "}
-            <Link
-              to="/pricing"
-              className="underline text-yellow-500 dark:text-yellow-400 hover:text-yellow-600 dark:hover:text-yellow-300 transition-colors font-medium"
-            >
-              select a plan
-            </Link>{" "}
-            to continue using our services.
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {!isEmailVerified && (
-        <Alert className="border-red-500/50 dark:border-red-400/50 bg-red-500/5 dark:bg-red-400/5">
-          <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400" />
-          <AlertTitle className="text-red-500 dark:text-red-400">
-            Account Verification Needed
-          </AlertTitle>
-          <AlertDescription className="text-text dark:text-text-dark">
-            Your account is not verified. Please{" "}
-            <button
-              onClick={handleSendVerificationEmail}
-              className="underline text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors font-medium"
-            >
-              verify your account
-            </button>{" "}
-            for full access.
-          </AlertDescription>
-        </Alert>
-      )}
+      {!isEmailVerified &&
+        !verificationTokenMutation.isSuccess &&
+        !verificationTokenMutation.isError &&
+        !verificationTokenMutation.isPending && (
+          <Alert className="border-red-500/50 dark:border-red-400/50 bg-red-500/5 dark:bg-red-400/5">
+            <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400 " />
+            <p className="text-red-500 dark:text-red-400">
+              Account Verification Needed
+            </p>
+            <AlertDescription className="text-text dark:text-text-dark">
+              Your account is not verified. Please{" "}
+              <button
+                onClick={handleSendVerificationEmail}
+                className="underline text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors font-medium"
+              >
+                verify your account
+              </button>
+              for full access.
+            </AlertDescription>
+          </Alert>
+        )}
 
       {!hasEmail && (
         <Alert className="border-blue-500/50 dark:border-blue-400/50 bg-blue-500/5 dark:bg-blue-400/5">
