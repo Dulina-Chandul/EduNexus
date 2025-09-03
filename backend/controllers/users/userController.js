@@ -139,7 +139,7 @@ const userController = {
           maxAge: 1 * 24 * 60 * 60 * 1000,
         });
         //* Redirect to the frontend with user data
-        res.redirect("http://localhost:5173/dashboard");
+        res.redirect("http://localhost:5173/student-dashboard");
       }
     )(req, res, next);
   }),
