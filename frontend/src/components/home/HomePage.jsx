@@ -8,6 +8,7 @@ import 'boxicons/css/boxicons.min.css';
 
 
 
+
 const HomePage = () => {
   return (
     // <section className="overflow-hidden pb-24">
@@ -74,8 +75,8 @@ const HomePage = () => {
             </div>
           </div>
           <div className="text-center">
-            <h1 className="text-4xl font-semibold text-gray-900 tracking-tigh">C.W.W.Kannangara Central College</h1>
-            <h1 className="text-4xl font-semibold tracking-tight text-gray-900">Mathugama</h1>
+            <h1 className="text-6xl font-semibold text-gray-900 tracking-tigh">Edu Nexus</h1>
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900">EC.W.W.Kannangara Central College</h1>
 
             <p className="mt-8 text-lg font-medium text-gray-550 text-pretty sm:text-xl/8">
               Welcome to the C.W.W.Kannangara Central College Management System
@@ -333,7 +334,7 @@ const HomePage = () => {
         <div className="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
           <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
           <div className="text-center">
-            <img className="w-auto mx-auto h-11 " src="" alt="" />
+            <img className="w-auto mx-auto h-11 " src="assets/logo.png" alt="" />
             
             <div className="flex items-center justify-center mb-3 text-2xl font-semibold">
               <h1 className="text-[#39cc2e]">C.W.W.Kannangara Central College</h1>
