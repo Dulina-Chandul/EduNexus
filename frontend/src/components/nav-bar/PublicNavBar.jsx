@@ -41,7 +41,7 @@ export default function PublicNavbar() {
                       <FaBlog className="h-4 w-4 text-bg dark:text-bg-dark" />
                     </div> */}
                     <span className="text-text dark:text-text-dark font-bold text-xl hidden sm:block group-hover:text-primary dark:group-hover:text-primary-dark transition-colors duration-300">
-                      Edu Nexus
+                      Edu Nexus 
                     </span>
                   </Link>
                 </div>
@@ -80,7 +80,7 @@ export default function PublicNavbar() {
                 {/* Action Buttons - Desktop */}
                 <div className="hidden sm:flex sm:items-center sm:space-x-3">
                   <Link to="/login">
-                    <Button className="bg-gradient-to-r from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark text-bg dark:text-bg-dark hover:from-primary/90 hover:to-secondary/90 dark:hover:from-primary-dark/90 dark:hover:to-secondary-dark/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <Button className="bg-gradient-to-r from-primary to-accent dark:from-primary-dark dark:to-accent-dark text-bg dark:text-bg-dark hover:from-primary/90 hover:to-accent/90 dark:hover:from-primary-dark/90 dark:hover:to-accent-dark/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                       <PlusIcon className="h-4 w-4 mr-2" />
                       Login
                     </Button>

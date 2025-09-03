@@ -57,7 +57,7 @@ export default function PrivateNavbar() {
   return (
     <Disclosure
       as="nav"
-      className="bg-bg dark:bg-bg-dark border-b border-primary/10 dark:border-primary-dark/10 backdrop-blur-sm sticky top-0 z-50"
+      className="bg-bg dark:bg-bg-dark border-b border-primary/10 dark:border-primary-dark/10 backdrop-blur-lg sticky top-0 z-50"
     >
       {({ open }) => (
         <>
@@ -67,9 +67,10 @@ export default function PrivateNavbar() {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link to="/" className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                    {/* <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                       <span className="text-bg font-bold text-sm">SS</span>
-                    </div>
+                    </div> */}
+
                     <span className="text-text dark:text-text-dark font-bold text-lg hidden sm:block">
                       Edu Nexus
                     </span>
