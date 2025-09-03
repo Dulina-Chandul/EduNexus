@@ -28,6 +28,7 @@ import {
   Clock,
   CheckCircle,
   ArrowRight,
+  AlertTriangle,
   Sparkles,
   Rocket,
 } from "lucide-react";
@@ -42,8 +43,11 @@ import { useEffect, useState } from "react";
 
 import { GoogleGenAI } from "@google/genai";
 
-import { userProfileAPI } from "../../../APIservices/users/userAPI";
-import { useQuery } from "@tanstack/react-query";
+import {
+  accountVerificationEmailAPI,
+  userProfileAPI,
+} from "../../../APIservices/users/userAPI";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getRandomQuoteAndTips } from "../../../APIservices/geminiAPI/geminiAPI";
 
 const StudentAccountSummary = () => {
@@ -126,6 +130,12 @@ const StudentAccountSummary = () => {
     },
   ];
 
+  //* Email Verification
+  const verificationTokenMutation = useMutation({
+    mutationKey: ["verify-email"],
+    mutationFn: accountVerificationEmailAPI,
+  });
+
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Welcome Header */}
@@ -162,54 +172,68 @@ const StudentAccountSummary = () => {
               </div>
             </div>
           </div>
-
-          {/* Study Streak */}
-          <div className="bg-bg/70 dark:bg-bg-dark/70 backdrop-blur-sm rounded-xl p-4 border border-primary/20 dark:border-primary-dark/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-accent/20 dark:bg-accent-dark/20 rounded-lg">
-                  <Zap className="h-6 w-6 text-accent dark:text-accent-dark" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-text dark:text-text-dark">
-                    {userData.currentStreak} Day Study Streak!
-                  </h3>
-                  <p className="text-sm text-text/60 dark:text-text-dark/60">
-                    Keep up the great work
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-accent dark:text-accent-dark">
-                  {userData.totalPoints.toLocaleString()}
-                </div>
-                <div className="text-sm text-text/60 dark:text-text-dark/60">
-                  Learning Points
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Email Verification Alert */}
-      {!userData.isEmailVerified && (
-        <Alert className="border-secondary/50 dark:border-secondary-dark/50 bg-secondary/5 dark:bg-secondary-dark/5">
-          <AlertTitle className="text-secondary dark:text-secondary-dark flex items-center">
-            <Zap className="h-4 w-4 mr-2" />
-            Account Verification Needed
+
+      {verificationTokenMutation.isPending && (
+        <Alert className="border-primary/50 dark:border-primary-dark/50 bg-primary/5 dark:bg-primary-dark/5">
+          <Zap className="h-4 w-4 text-primary dark:text-primary-dark" />
+          <AlertTitle className="text-primary dark:text-primary-dark">
+            Loading...
           </AlertTitle>
           <AlertDescription className="text-text dark:text-text-dark">
-            Verify your email for full access to competitions and features.{" "}
-            <Link
-              to="/dashboard/verify"
-              className="underline text-primary dark:text-primary-dark hover:text-secondary dark:hover:text-secondary-dark transition-colors font-medium"
-            >
-              Verify now →
-            </Link>
+            Please wait while we are processing your request
           </AlertDescription>
         </Alert>
       )}
+
+      {verificationTokenMutation.isError && (
+        <Alert className="border-red-500/50 dark:border-red-400/50 bg-red-500/5 dark:bg-red-400/5">
+          <AlertTriangle className="h-4 w-4 text-red-500 dark:text-red-400" />
+          <AlertTitle className="text-red-500 dark:text-red-400">
+            Error
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
+            {verificationTokenMutation?.error?.message ||
+              verificationTokenMutation?.error?.response?.data?.message}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {verificationTokenMutation.isSuccess && (
+        <Alert className="border-green-500/50 dark:border-green-400/50 bg-green-500/5 dark:bg-green-400/5">
+          <Zap className="h-4 w-4 text-green-500 dark:text-green-400" />
+          <AlertTitle className="text-green-500 dark:text-green-400">
+            Success
+          </AlertTitle>
+          <AlertDescription className="text-text dark:text-text-dark">
+            {verificationTokenMutation?.data?.message}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {!userData.isEmailVerified &&
+        !verificationTokenMutation.isSuccess &&
+        !verificationTokenMutation.isError &&
+        !verificationTokenMutation.isPending && (
+          <Alert className="border-secondary/50 dark:border-secondary-dark/50 bg-secondary/5 dark:bg-secondary-dark/5">
+            <AlertTitle className="text-secondary dark:text-secondary-dark flex items-center">
+              <Zap className="h-4 w-4 mr-2" />
+              Account Verification Needed
+            </AlertTitle>
+            <AlertDescription className="text-text dark:text-text-dark">
+              Verify your email for full access to competitions and features.{" "}
+              <button
+                onClick={async () => await verificationTokenMutation.mutate()}
+                className="underline text-primary dark:text-primary-dark hover:text-secondary dark:hover:text-secondary-dark transition-colors font-medium cursor-pointer"
+              >
+                Verify now →
+              </button>
+            </AlertDescription>
+          </Alert>
+        )}
 
       {/* Daily Inspiration */}
       <div className="grid gap-6 md:grid-cols-2">

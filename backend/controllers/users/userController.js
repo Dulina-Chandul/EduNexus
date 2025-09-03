@@ -321,6 +321,7 @@ const userController = {
     res.json({
       status: "success",
       message: "Email verified successfully",
+      userRole: user.role,
     });
   }),
 
