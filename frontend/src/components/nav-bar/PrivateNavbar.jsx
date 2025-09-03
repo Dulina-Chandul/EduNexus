@@ -50,8 +50,8 @@ export default function PrivateNavbar() {
 
   const navigation = [
     { name: "Latest Posts", href: "/posts" },
-    { name: "Categories", href: "/categories" },
     { name: "About", href: "/about" },
+    { name: "Contact US", href: "/contact" },
   ];
 
   return (
@@ -68,7 +68,7 @@ export default function PrivateNavbar() {
                 <div className="flex-shrink-0">
                   <Link to="/" className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                      <span className="text-bg font-bold text-sm">SS</span>
+                      <span className="text-bg font-bold text-sm">EN</span>
                     </div>
                     <span className="text-text dark:text-text-dark font-bold text-lg hidden sm:block">
                       Edu Nexus

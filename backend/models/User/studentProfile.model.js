@@ -16,6 +16,7 @@ const studentProfileSchema = new mongoose.Schema(
     medium: {
       type: String,
       enum: ["Sinhala", "English", "Tamil"],
+      default: "English",
       required: true,
     },
     subjects: [
