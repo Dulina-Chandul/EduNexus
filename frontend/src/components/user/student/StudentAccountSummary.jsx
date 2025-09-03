@@ -224,7 +224,7 @@ const StudentAccountSummary = () => {
               Account Verification Needed
             </AlertTitle>
             <AlertDescription className="text-text dark:text-text-dark">
-              Verify your email for full access to competitions and features.{" "}
+              Verify your email for the best experience.
               <button
                 onClick={async () => await verificationTokenMutation.mutate()}
                 className="underline text-primary dark:text-primary-dark hover:text-secondary dark:hover:text-secondary-dark transition-colors font-medium cursor-pointer"
