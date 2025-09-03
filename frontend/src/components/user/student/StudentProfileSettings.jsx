@@ -41,6 +41,8 @@ const StudentProfileSettings = () => {
 
   const [formData, setFormData] = useState({
     subjects: [],
+    grade: " Grade 10",
+    medium: "English",
     chronotype: "Neither",
     energyLevel: 5,
     studyBreakDuration: 15,
@@ -149,6 +151,51 @@ const StudentProfileSettings = () => {
             </AlertDescription>
           </Alert>
         )}
+
+        <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-lg">
+            <CardTitle className="text-xl text-text dark:text-white flex items-center">
+              <User className="h-6 w-6 mr-3 text-orange-600 dark:text-orange-400" />
+              You Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="flex flex-row space-x-4 justify-between">
+              <div className="w-1/2">
+                <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                  Grade
+                </Label>
+                <Input
+                  placeholder="e.g. Grade 11"
+                  value={formData.grade}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      grade: e.target.value,
+                    }))
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                />
+              </div>
+              <div className="w-1/2">
+                <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                  Medium
+                </Label>
+                <Input
+                  placeholder="e.g. English"
+                  value={formData.medium}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      medium: e.target.value,
+                    }))
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">

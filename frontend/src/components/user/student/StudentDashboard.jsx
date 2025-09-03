@@ -14,6 +14,9 @@ import {
   Clock,
   Bell,
   User,
+  CalendarHeart,
+  BrainCircuit,
+  BookOpenText,
   Brain,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,7 +43,7 @@ const navigation = [
   {
     name: "Smart Daily Planner",
     href: "/student-dashboard/daily-planner",
-    icon: Brain,
+    icon: CalendarHeart,
     description: "AI-powered study schedule",
     roles: ["student"],
   },
@@ -54,8 +57,15 @@ const navigation = [
   {
     name: "AI Assistant",
     href: "/student-dashboard/ai-assistant",
-    icon: Brain,
+    icon: BrainCircuit,
     description: "Get help with your studies",
+    roles: ["student"],
+  },
+  {
+    name: "Smart FlashCards",
+    href: "/student-dashboard/flashcards",
+    icon: BookOpenText,
+    description: "AI-powered flashcards",
     roles: ["student"],
   },
   {
@@ -72,35 +82,6 @@ const navigation = [
     description: "Study materials",
     roles: ["student"],
   },
-  // {
-  //   name: "Study Schedule",
-  //   href: "/student-dashboard/study-schedule",
-
-  //   icon: Calendar,
-  //   description: "Your timetable",
-  //   roles: ["student"],
-  // },
-  // {
-  //   name: "Study Groups",
-  //   href: "/student-dashboard/study-groups",
-  //   icon: GraduationCap,
-  //   description: "Collaborate & learn",
-  //   roles: ["student"],
-  // },
-  // {
-  //   name: "Notes & Assignments",
-  //   href: "/student-dashboard/notes",
-  //   icon: FileText,
-  //   description: "Your academic work",
-  //   roles: ["student"],
-  // },
-  // {
-  //   name: "Study Progress",
-  //   href: "/student-dashboard/progress",
-  //   icon: Clock,
-  //   description: "Track learning goals",
-  //   roles: ["student"],
-  // },
 ];
 
 function classNames(...classes) {

@@ -61,3 +61,51 @@ export const aiChatAPI = async (chatData) => {
   });
   return response.data;
 };
+
+//* Generate flashcards from content
+export const generateFlashcardsAPI = async (flashcardData) => {
+  const response = await axios.post(
+    `${BASE_URL}/generate-flashcards`,
+    flashcardData,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
+//* Get all flashcard decks
+export const getFlashcardDecksAPI = async () => {
+  const response = await axios.get(`${BASE_URL}/flashcard-decks`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+//* Get study session for a deck
+export const getStudySessionAPI = async (deckId) => {
+  const response = await axios.get(`${BASE_URL}/study-session/${deckId}`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
+
+//* Update flashcard review
+export const updateFlashcardReviewAPI = async (flashcardId, reviewData) => {
+  const response = await axios.patch(
+    `${BASE_URL}/flashcard-review/${flashcardId}`,
+    reviewData,
+    {
+      withCredentials: true,
+    }
+  );
+  return response.data;
+};
+
+//* Delete flashcard deck
+export const deleteFlashcardDeckAPI = async (deckId) => {
+  const response = await axios.delete(`${BASE_URL}/flashcard-deck/${deckId}`, {
+    withCredentials: true,
+  });
+  return response.data;
+};
