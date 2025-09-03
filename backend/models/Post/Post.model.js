@@ -16,19 +16,7 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    nextEarningDate: {
-      type: Date,
-      default: () =>
-        new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-    },
-    thisMonthEarnings: {
-      type: Number,
-      default: 0,
-    },
-    totalEarnings: {
-      type: Number,
-      default: 0,
-    },
+
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
