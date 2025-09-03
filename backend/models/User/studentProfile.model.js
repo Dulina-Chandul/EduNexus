@@ -8,6 +8,16 @@ const studentProfileSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    grade: {
+      type: String,
+      default: "Grade 11",
+      required: true,
+    },
+    medium: {
+      type: String,
+      enum: ["Sinhala", "English", "Tamil"],
+      required: true,
+    },
     subjects: [
       {
         name: {

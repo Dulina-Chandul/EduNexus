@@ -37,6 +37,7 @@ import SmartDailyPlanner from "./components/user/student/SmartDailyPlanner";
 import StudentProfileSettings from "./components/user/student/StudentProfileSettings";
 import SmartQuiz from "./components/user/student/SmartQuiz";
 import AIChatAssistant from "./components/user/student/AIChatAssistant";
+import SmartFlashcards from "./components/user/student/SmartFlashCards";
 
 function App() {
   const {
@@ -245,6 +246,14 @@ function App() {
             element={
               <AuthRoute requiredRoles={["student"]}>
                 <AIChatAssistant />
+              </AuthRoute>
+            }
+          />
+          <Route
+            path="flashcards"
+            element={
+              <AuthRoute requiredRoles={["student"]}>
+                <SmartFlashcards />
               </AuthRoute>
             }
           />

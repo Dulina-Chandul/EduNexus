@@ -41,6 +41,8 @@ const StudentProfileSettings = () => {
 
   const [formData, setFormData] = useState({
     subjects: [],
+    grade: " Grade 10",
+    medium: "English",
     chronotype: "Neither",
     energyLevel: 5,
     studyBreakDuration: 15,
@@ -59,7 +61,6 @@ const StudentProfileSettings = () => {
     priority: "medium",
   });
 
-  // Query to get current profile
   const {
     data: profileResponse,
     isLoading,
@@ -71,7 +72,6 @@ const StudentProfileSettings = () => {
 
   const profileData = profileResponse?.studentProfile;
 
-  // Mutation to update profile
   const updateProfileMutation = useMutation({
     mutationFn: updateStudentProfileAPI,
     onSuccess: () => {
@@ -114,297 +114,457 @@ const StudentProfileSettings = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary dark:text-primary-dark" />
+      <div className="flex items-center justify-center min-h-screen bg-bg dark:bg-bg-dark">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary dark:text-primary-dark" />
+          <p className="text-text dark:text-white">Loading your profile...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-6">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 dark:from-primary-dark/30 dark:via-primary-dark/20 dark:to-accent-dark/30 p-6 border border-primary/30 dark:border-primary-dark/40">
-        <div className="flex items-center space-x-4">
-          <div className="p-3 bg-primary/20 dark:bg-primary-dark/30 rounded-xl border border-primary/20 dark:border-primary-dark/30">
-            <Settings className="h-8 w-8 text-primary dark:text-primary-dark" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-text dark:text-text-dark">
-              Study Profile Settings
-            </h1>
-            <p className="text-text/70 dark:text-text-dark/70 mt-1">
-              Customize your learning preferences for optimal AI-powered
-              planning
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-bg to-bg/90 dark:from-bg-dark dark:to-bg-dark/90 p-4 lg:p-8">
+      <div className="max-w-5xl mx-auto space-y-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 dark:from-primary-dark/30 dark:via-primary-dark/20 dark:to-accent-dark/30 p-6 border border-primary/30 dark:border-primary-dark/40">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-primary/20 dark:bg-primary-dark/30 rounded-xl border border-primary/20 dark:border-primary-dark/30">
+              <Settings className="h-8 w-8 text-primary dark:text-primary-dark" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-text dark:text-text-dark">
+                Study Profile Settings
+              </h1>
+              <p className="text-text/70 dark:text-text-dark/70 mt-1">
+                Customize your learning preferences for optimal AI-powered
+                planning
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-xl text-text dark:text-text-dark flex items-center">
-              <BookOpen className="h-6 w-6 mr-2 text-primary dark:text-primary-dark" />
-              Your Subjects
+        {updateProfileMutation.isSuccess && (
+          <Alert className="border-green-500/50 bg-green-50 dark:bg-green-900/20 max-w-2xl mx-auto">
+            <AlertDescription className="text-green-800 dark:text-green-200 text-center">
+              ✅ Profile updated successfully! Your AI planner is now optimized
+              for your preferences.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-lg">
+            <CardTitle className="text-xl text-text dark:text-white flex items-center">
+              <User className="h-6 w-6 mr-3 text-orange-600 dark:text-orange-400" />
+              You Details
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              {formData.subjects.map((subject, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-4 bg-primary/5 dark:bg-primary-dark/10 rounded-lg border border-primary/20 dark:border-primary-dark/30"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="text-text dark:text-text-dark font-medium">
-                      {subject.name}
-                    </div>
-                    <Badge className="bg-secondary/20 dark:bg-secondary-dark/30 text-secondary dark:text-secondary-dark border border-secondary/30 dark:border-secondary-dark/40">
-                      {subject.difficulty}
-                    </Badge>
-                    <Badge className="bg-accent/20 dark:bg-accent-dark/30 text-accent dark:text-accent-dark border border-accent/30 dark:border-accent-dark/40">
-                      {subject.priority} priority
-                    </Badge>
-                    <span className="text-sm text-text/60 dark:text-text-dark/60 bg-primary/10 dark:bg-primary-dark/20 px-2 py-1 rounded border border-primary/20 dark:border-primary-dark/30">
-                      {subject.studyHoursPerWeek}h/week
-                    </span>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeSubject(index)}
-                    className="text-secondary dark:text-secondary-dark hover:bg-secondary/10 dark:hover:bg-secondary-dark/10 border border-transparent hover:border-secondary/30 dark:hover:border-secondary-dark/40"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 p-4 bg-accent/5 dark:bg-accent-dark/10 rounded-lg border border-accent/30 dark:border-accent-dark/40">
-              <Input
-                placeholder="Subject name"
-                value={newSubject.name}
-                onChange={(e) =>
-                  setNewSubject((prev) => ({ ...prev, name: e.target.value }))
-                }
-                className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
-              />
-
-              <Select
-                value={newSubject.difficulty}
-                onValueChange={(value) =>
-                  setNewSubject((prev) => ({ ...prev, difficulty: value }))
-                }
-              >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="easy">Easy</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="hard">Hard</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select
-                value={newSubject.priority}
-                onValueChange={(value) =>
-                  setNewSubject((prev) => ({ ...prev, priority: value }))
-                }
-                classname
-              >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40 ">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low Priority</SelectItem>
-                  <SelectItem value="medium">Medium Priority</SelectItem>
-                  <SelectItem value="high">High Priority</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <div className="space-y-1">
-                <Label className="text-xs text-text/60 dark:text-text-dark/60">
-                  Hours per week
+          <CardContent className="p-6">
+            <div className="flex flex-row space-x-4 justify-between">
+              <div className="w-1/2">
+                <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                  Grade
                 </Label>
                 <Input
-                  type="number"
-                  placeholder="Hours/week"
-                  min="1"
-                  max="20"
-                  value={newSubject.studyHoursPerWeek}
+                  placeholder="e.g. Grade 11"
+                  value={formData.grade}
                   onChange={(e) =>
-                    setNewSubject((prev) => ({
+                    setFormData((prev) => ({
                       ...prev,
-                      studyHoursPerWeek: parseInt(e.target.value) || 1,
+                      grade: e.target.value,
                     }))
                   }
-                  className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
                 />
               </div>
-
-              <Button
-                type="button"
-                onClick={addSubject}
-                className="bg-accent dark:bg-accent-dark text-bg dark:text-bg-dark hover:bg-accent/90 dark:hover:bg-accent-dark/90 border border-accent/40 dark:border-accent-dark/50"
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Add
-              </Button>
+              <div className="w-1/2">
+                <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                  Medium
+                </Label>
+                <Input
+                  placeholder="e.g. English"
+                  value={formData.medium}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      medium: e.target.value,
+                    }))
+                  }
+                  className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
-                <Clock className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
-                Study Timing
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary-dark/10 dark:to-accent-dark/10 rounded-t-lg">
+              <CardTitle className="text-2xl text-text dark:text-white flex items-center">
+                <BookOpen className="h-7 w-7 mr-3 text-primary dark:text-primary-dark" />
+                Your Subjects
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Chronotype
-                </Label>
-                <Select
-                  value={formData.chronotype}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, chronotype: value }))
-                  }
-                >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Early Bird">
-                      <div className="flex items-center">
-                        <Sun className="h-4 w-4 mr-2" />
-                        Early Bird
+            <CardContent className="p-6 space-y-6">
+              {formData.subjects.length > 0 && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {formData.subjects.map((subject, index) => (
+                    <div
+                      key={index}
+                      className="p-4 bg-gradient-to-r from-primary/5 to-accent/5 dark:from-primary-dark/10 dark:to-accent-dark/10 rounded-xl border border-primary/20 dark:border-primary-dark/20 hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-2">
+                          <h3 className="font-semibold text-text dark:text-white text-lg">
+                            {subject.name}
+                          </h3>
+                          <div className="flex gap-2 flex-wrap">
+                            <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-0">
+                              {subject.difficulty}
+                            </Badge>
+                            <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border-0">
+                              {subject.priority} priority
+                            </Badge>
+                            <Badge className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-0">
+                              {subject.studyHoursPerWeek}h/week
+                            </Badge>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeSubject(index)}
+                          className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </Button>
                       </div>
-                    </SelectItem>
-                    <SelectItem value="Night Owl">
-                      <div className="flex items-center">
-                        <Moon className="h-4 w-4 mr-2" />
-                        Night Owl
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="Neither">Neither</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-text dark:text-text-dark font-medium">
-                    Start Time
-                  </Label>
-                  <Input
-                    type="time"
-                    value={formData.preferredStudyStartTime}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        preferredStudyStartTime: e.target.value,
-                      }))
-                    }
-                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
-                  />
+                    </div>
+                  ))}
                 </div>
-                <div className="space-y-2">
-                  <Label className="text-text dark:text-text-dark font-medium">
-                    End Time
-                  </Label>
-                  <Input
-                    type="time"
-                    value={formData.preferredStudyEndTime}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        preferredStudyEndTime: e.target.value,
-                      }))
-                    }
-                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
-                  />
+              )}
+
+              <div className="bg-gradient-to-r from-accent/5 to-primary/5 dark:from-accent-dark/10 dark:to-primary-dark/10 p-6 rounded-xl border border-accent/20 dark:border-accent-dark/20">
+                <h3 className="text-lg font-semibold text-text dark:text-white mb-4">
+                  Add New Subject
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                  <div className="lg:col-span-2">
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                      Subject Name
+                    </Label>
+                    <Input
+                      placeholder="e.g., Mathematics"
+                      value={newSubject.name}
+                      onChange={(e) =>
+                        setNewSubject((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                      Difficulty
+                    </Label>
+                    <Select
+                      value={newSubject.difficulty}
+                      onValueChange={(value) =>
+                        setNewSubject((prev) => ({
+                          ...prev,
+                          difficulty: value,
+                        }))
+                      }
+                    >
+                      <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                        <SelectItem
+                          value="easy"
+                          className="text-text dark:text-white"
+                        >
+                          Easy
+                        </SelectItem>
+                        <SelectItem
+                          value="medium"
+                          className="text-text dark:text-white"
+                        >
+                          Medium
+                        </SelectItem>
+                        <SelectItem
+                          value="hard"
+                          className="text-text dark:text-white"
+                        >
+                          Hard
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                      Priority
+                    </Label>
+                    <Select
+                      value={newSubject.priority}
+                      onValueChange={(value) =>
+                        setNewSubject((prev) => ({ ...prev, priority: value }))
+                      }
+                    >
+                      <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                        <SelectItem
+                          value="low"
+                          className="text-text dark:text-white"
+                        >
+                          Low Priority
+                        </SelectItem>
+                        <SelectItem
+                          value="medium"
+                          className="text-text dark:text-white"
+                        >
+                          Medium Priority
+                        </SelectItem>
+                        <SelectItem
+                          value="high"
+                          className="text-text dark:text-white"
+                        >
+                          High Priority
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2">
+                      Hours/Week
+                    </Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="20"
+                      value={newSubject.studyHoursPerWeek}
+                      onChange={(e) =>
+                        setNewSubject((prev) => ({
+                          ...prev,
+                          studyHoursPerWeek: parseInt(e.target.value) || 1,
+                        }))
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                    />
+                    <Button
+                      type="button"
+                      onClick={addSubject}
+                      className="bg-primary hover:bg-primary/90 dark:bg-primary-dark dark:hover:bg-primary-dark/90 text-white mt-2"
+                    >
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add
+                    </Button>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
-                <Brain className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
-                Learning Preferences
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-lg">
+                <CardTitle className="text-xl text-text dark:text-white flex items-center">
+                  <Clock className="h-6 w-6 mr-3 text-blue-600 dark:text-blue-400" />
+                  Study Timing
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                    Chronotype
+                  </Label>
+                  <Select
+                    value={formData.chronotype}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, chronotype: value }))
+                    }
+                  >
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                      <SelectItem
+                        value="Early Bird"
+                        className="text-text dark:text-white"
+                      >
+                        <div className="flex items-center">
+                          <Sun className="h-4 w-4 mr-2" />
+                          Early Bird
+                        </div>
+                      </SelectItem>
+                      <SelectItem
+                        value="Night Owl"
+                        className="text-text dark:text-white"
+                      >
+                        <div className="flex items-center">
+                          <Moon className="h-4 w-4 mr-2" />
+                          Night Owl
+                        </div>
+                      </SelectItem>
+                      <SelectItem
+                        value="Neither"
+                        className="text-text dark:text-white"
+                      >
+                        Neither
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                      Start Time
+                    </Label>
+                    <Input
+                      type="time"
+                      value={formData.preferredStudyStartTime}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          preferredStudyStartTime: e.target.value,
+                        }))
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                      End Time
+                    </Label>
+                    <Input
+                      type="time"
+                      value={formData.preferredStudyEndTime}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          preferredStudyEndTime: e.target.value,
+                        }))
+                      }
+                      className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-t-lg">
+                <CardTitle className="text-xl text-text dark:text-white flex items-center">
+                  <Brain className="h-6 w-6 mr-3 text-purple-600 dark:text-purple-400" />
+                  Learning Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                    Current Energy Level
+                  </Label>
+                  <div className="space-y-3">
+                    <Input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={formData.energyLevel}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          energyLevel: parseInt(e.target.value),
+                        }))
+                      }
+                      className="w-full"
+                    />
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-text/70 dark:text-white/70">
+                        Low
+                      </span>
+                      <Badge className="bg-primary/10 dark:bg-primary-dark/20 text-primary dark:text-primary-dark border-0">
+                        {formData.energyLevel}/10
+                      </Badge>
+                      <span className="text-sm text-text/70 dark:text-white/70">
+                        High
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                    Current Mood
+                  </Label>
+                  <Select
+                    value={formData.currentMood}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, currentMood: value }))
+                    }
+                  >
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                      <SelectItem
+                        value="motivated"
+                        className="text-text dark:text-white"
+                      >
+                        😃 Motivated
+                      </SelectItem>
+                      <SelectItem
+                        value="neutral"
+                        className="text-text dark:text-white"
+                      >
+                        😐 Neutral
+                      </SelectItem>
+                      <SelectItem
+                        value="tired"
+                        className="text-text dark:text-white"
+                      >
+                        😴 Tired
+                      </SelectItem>
+                      <SelectItem
+                        value="stressed"
+                        className="text-text dark:text-white"
+                      >
+                        😰 Stressed
+                      </SelectItem>
+                      <SelectItem
+                        value="excited"
+                        className="text-text dark:text-white"
+                      >
+                        🤩 Excited
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-t-lg">
+              <CardTitle className="text-xl text-text dark:text-white flex items-center">
+                <Target className="h-6 w-6 mr-3 text-green-600 dark:text-green-400" />
+                Study Session Configuration
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Current Energy Level (1-10)
-                </Label>
-                <div className="flex items-center space-x-4">
-                  <Input
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={formData.energyLevel}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        energyLevel: parseInt(e.target.value),
-                      }))
-                    }
-                    className="flex-1"
-                  />
-                  <Badge className="bg-primary/20 dark:bg-primary-dark/30 text-primary dark:text-primary-dark px-3 py-1 border border-primary/30 dark:border-primary-dark/40">
-                    {formData.energyLevel}/10
-                  </Badge>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Current Mood
-                </Label>
-                <Select
-                  value={formData.currentMood}
-                  onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, currentMood: value }))
-                  }
-                >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="motivated">😃 Motivated</SelectItem>
-                    <SelectItem value="neutral">😐 Neutral</SelectItem>
-                    <SelectItem value="tired">😴 Tired</SelectItem>
-                    <SelectItem value="stressed">😰 Stressed</SelectItem>
-                    <SelectItem value="excited">🤩 Excited</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
-              <Target className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
-              Study Session Configuration
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Max Session Length
-                </Label>
-                <div className="space-y-1">
+            <CardContent className="p-6">
+              <div className="grid gap-6 md:grid-cols-3">
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                    Max Session Length
+                  </Label>
                   <Input
                     type="number"
                     min="30"
@@ -417,19 +577,17 @@ const StudentProfileSettings = () => {
                         maxStudySessionLength: parseInt(e.target.value) || 90,
                       }))
                     }
-                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
                   />
-                  <span className="text-xs text-text/60 dark:text-text-dark/60">
+                  <p className="text-xs text-text/70 dark:text-white/70 mt-1">
                     minutes (30-180)
-                  </span>
+                  </p>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Break Duration
-                </Label>
-                <div className="space-y-1">
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                    Break Duration
+                  </Label>
                   <Input
                     type="number"
                     min="5"
@@ -442,106 +600,128 @@ const StudentProfileSettings = () => {
                         studyBreakDuration: parseInt(e.target.value) || 15,
                       }))
                     }
-                    className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40"
+                    className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white"
                   />
-                  <span className="text-xs text-text/60 dark:text-text-dark/60">
+                  <p className="text-xs text-text/70 dark:text-white/70 mt-1">
                     minutes (5-30)
-                  </span>
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-text dark:text-white mb-2 block">
+                    Learning Style
+                  </Label>
+                  <Select
+                    value={formData.learningStyle}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, learningStyle: value }))
+                    }
+                  >
+                    <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                      <SelectItem
+                        value="visual"
+                        className="text-text dark:text-white"
+                      >
+                        👁️ Visual
+                      </SelectItem>
+                      <SelectItem
+                        value="auditory"
+                        className="text-text dark:text-white"
+                      >
+                        👂 Auditory
+                      </SelectItem>
+                      <SelectItem
+                        value="kinesthetic"
+                        className="text-text dark:text-white"
+                      >
+                        ✋ Kinesthetic
+                      </SelectItem>
+                      <SelectItem
+                        value="reading_writing"
+                        className="text-text dark:text-white"
+                      >
+                        📝 Reading/Writing
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="space-y-2">
-                <Label className="text-text dark:text-text-dark font-medium">
-                  Learning Style
+          <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 rounded-t-lg">
+              <CardTitle className="text-xl text-text dark:text-white flex items-center">
+                <Zap className="h-6 w-6 mr-3 text-orange-600 dark:text-orange-400" />
+                Study Environment
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div>
+                <Label className="text-sm font-medium text-text dark:text-white mb-3 block">
+                  Preferred Environment
                 </Label>
                 <Select
-                  value={formData.learningStyle}
+                  value={formData.studyEnvironmentPreference}
                   onValueChange={(value) =>
-                    setFormData((prev) => ({ ...prev, learningStyle: value }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      studyEnvironmentPreference: value,
+                    }))
                   }
                 >
-                  <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
+                  <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-text dark:text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="visual">👁️ Visual</SelectItem>
-                    <SelectItem value="auditory">👂 Auditory</SelectItem>
-                    <SelectItem value="kinesthetic">✋ Kinesthetic</SelectItem>
-                    <SelectItem value="reading_writing">
-                      📝 Reading/Writing
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                    <SelectItem
+                      value="quiet"
+                      className="text-text dark:text-white"
+                    >
+                      🔇 Complete Silence
+                    </SelectItem>
+                    <SelectItem
+                      value="background_music"
+                      className="text-text dark:text-white"
+                    >
+                      🎵 Background Music
+                    </SelectItem>
+                    <SelectItem
+                      value="white_noise"
+                      className="text-text dark:text-white"
+                    >
+                      🌊 White Noise
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
-              <Zap className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
-              Study Environment
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label className="text-text dark:text-text-dark font-medium">
-                Preferred Environment
-              </Label>
-              <Select
-                value={formData.studyEnvironmentPreference}
-                onValueChange={(value) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    studyEnvironmentPreference: value,
-                  }))
-                }
-              >
-                <SelectTrigger className="bg-bg dark:bg-bg-dark border-primary/30 dark:border-primary-dark/40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="quiet">🔇 Complete Silence</SelectItem>
-                  <SelectItem value="background_music">
-                    🎵 Background Music
-                  </SelectItem>
-                  <SelectItem value="white_noise">🌊 White Noise</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-center pb-4">
-          <Button
-            type="submit"
-            disabled={updateProfileMutation.isPending}
-            className="bg-primary dark:bg-primary-dark text-bg dark:text-bg-dark hover:bg-primary/90 dark:hover:bg-primary-dark/90 px-8 py-3 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            {updateProfileMutation.isPending ? (
-              <>
-                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="h-5 w-5 mr-2" />
-                Save Profile
-              </>
-            )}
-          </Button>
-        </div>
-
-        {updateProfileMutation.isSuccess && (
-          <Alert className="border-accent/50 dark:border-accent-dark/50 bg-accent/5 dark:bg-accent-dark/10 mb-4">
-            <AlertDescription className="text-text dark:text-text-dark">
-              ✅ Profile updated successfully! Your AI planner is now optimized
-              for your preferences.
-            </AlertDescription>
-          </Alert>
-        )}
-      </form>
+          <div className="flex justify-center pt-4">
+            <Button
+              type="submit"
+              disabled={updateProfileMutation.isPending}
+              className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 dark:from-primary-dark dark:to-accent-dark text-white px-12 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {updateProfileMutation.isPending ? (
+                <>
+                  <Loader2 className="h-6 w-6 mr-3 animate-spin" />
+                  Saving Profile...
+                </>
+              ) : (
+                <>
+                  <Save className="h-6 w-6 mr-3" />
+                  Save Profile
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

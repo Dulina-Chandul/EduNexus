@@ -2,6 +2,8 @@ import expressAsyncHandler from "express-async-handler";
 import StudentProfile from "../../../models/User/studentProfile.model.js";
 import { GoogleGenAI } from "@google/genai";
 import User from "../../../models/User/User.model.js";
+import FlashcardDeck from "../../../models/Flashcard/FlashcardDeck.model.js";
+import Flashcard from "../../../models/Flashcard/Flashcard.model.js";
 
 const studentController = {
   //* Get student profile
@@ -37,6 +39,8 @@ const studentController = {
   //* Update student profile
   updateStudentProfile: expressAsyncHandler(async (req, res) => {
     const {
+      grade,
+      medium,
       subjects,
       chronotype,
       energyLevel,
@@ -53,6 +57,8 @@ const studentController = {
       { userId: req.user },
       {
         $set: {
+          grade,
+          medium,
           subjects,
           chronotype,
           energyLevel,
@@ -92,6 +98,8 @@ const studentController = {
     });
 
     const profileData = {
+      grade: studentProfile?.grdae,
+      medium: studentProfile?.medium,
       subjects: studentProfile?.subjects,
       chronotype: studentProfile?.chronotype,
       energyLevel: studentProfile?.energyLevel,
@@ -594,6 +602,298 @@ Make questions challenging but appropriate for their performance levels in each 
         message: "Failed to generate AI response",
       });
     }
+  }),
+
+  //* Generate flashcards from content
+  generateFlashcards: expressAsyncHandler(async (req, res) => {
+    const { title, subject, content } = req.body;
+    const studentProfile = await StudentProfile.findOne({ userId: req.user });
+
+    if (!studentProfile) {
+      return res.status(404).json({
+        status: "error",
+        message: "Student profile not found.",
+      });
+    }
+
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+    });
+
+    const config = {
+      systemInstruction: [
+        {
+          text: `You are an AI flashcard generator for Sri Lankan students following the local education syllabus. Create effective flashcards based on the provided content.
+
+Return ONLY a valid JSON object with this structure:
+{
+  "flashcards": [
+    {
+      "question": "What is the formula for kinetic energy?",
+      "answer": "KE = 1/2 mv²",
+      "difficulty": "medium",
+      "topic": "Energy and Motion"
+    }
+  ]
+}
+
+Guidelines for Sri Lankan Education Context:
+- Create 8-15 flashcards appropriate for ${studentProfile.grade} level Sri Lankan syllabus
+- Use ${studentProfile.medium} language terminology and concepts familiar to Sri Lankan students
+- Include local examples and context where relevant (e.g., Sri Lankan geography, history, culture)
+- Follow Sri Lankan curriculum standards and exam patterns
+- For science: Use SI units and standard formulas taught in Sri Lankan schools
+- For mathematics: Follow Sri Lankan textbook approaches and methods
+- Questions should test understanding, not just memorization
+- Keep answers concise but complete for the grade level
+- Include practical applications relevant to Sri Lankan context
+- Ensure questions align with local exam formats and expectations`,
+        },
+      ],
+    };
+
+    const model = "gemini-2.0-flash";
+    const contents = [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `Generate flashcards from this content for Grade ${studentProfile.grade} students in ${studentProfile.medium} medium:
+
+Subject: ${subject}
+Content: ${content}
+
+Make flashcards that help students understand and remember key concepts effectively.`,
+          },
+        ],
+      },
+    ];
+
+    try {
+      const response = await ai.models.generateContentStream({
+        model,
+        config,
+        contents,
+      });
+
+      let fullResponse = "";
+      for await (const chunk of response) {
+        fullResponse += chunk.text;
+      }
+
+      const cleanResponse = fullResponse.replace(/```json\s*|\s*```/g, "");
+      const parsedData = JSON.parse(cleanResponse);
+
+      const deck = await FlashcardDeck.create({
+        userId: req.user,
+        title,
+        subject,
+      });
+
+      const flashcardPromises = parsedData.flashcards.map((card) =>
+        Flashcard.create({
+          userId: req.user,
+          deckId: deck._id,
+          question: card.question,
+          answer: card.answer,
+        })
+      );
+
+      const createdFlashcards = await Promise.all(flashcardPromises);
+      deck.flashcards = createdFlashcards.map((card) => card._id);
+      await deck.save();
+
+      res.status(201).json({
+        status: "success",
+        message: "Flashcards generated successfully",
+        data: {
+          deck,
+          flashcardsCount: createdFlashcards.length,
+        },
+      });
+    } catch (error) {
+      console.error("Flashcard generation failed:", error);
+      res.status(500).json({
+        status: "error",
+        message: "Failed to generate flashcards",
+      });
+    }
+  }),
+
+  //* Get all flashcard decks
+  getFlashcardDecks: expressAsyncHandler(async (req, res) => {
+    const decks = await FlashcardDeck.find({ userId: req.user })
+      .populate("flashcards")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      status: "success",
+      message: "Flashcard decks retrieved successfully",
+      decks,
+    });
+  }),
+
+  //* Get deck with flashcards for study session
+  getStudySession: expressAsyncHandler(async (req, res) => {
+    const { deckId } = req.params;
+
+    const currentTime = new Date();
+    const flashcards = await Flashcard.find({
+      userId: req.user,
+      deckId,
+      nextReview: { $lte: currentTime },
+    }).sort({ confidenceLevel: 1, nextReview: 1 });
+
+    const deck = await FlashcardDeck.findById(deckId);
+
+    res.status(200).json({
+      status: "success",
+      message: "Study session loaded successfully",
+      data: {
+        deck,
+        flashcards,
+        totalDue: flashcards.length,
+      },
+    });
+  }),
+
+  //* Update flashcard confidence and schedule next review
+  updateFlashcardReview: expressAsyncHandler(async (req, res) => {
+    const { flashcardId } = req.params;
+    const { confidenceLevel } = req.body;
+
+    const flashcard = await Flashcard.findById(flashcardId);
+    const studentProfile = await StudentProfile.findOne({ userId: req.user });
+
+    if (!flashcard || flashcard.userId.toString() !== req.user.toString()) {
+      return res.status(404).json({
+        status: "error",
+        message: "Flashcard not found",
+      });
+    }
+
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+    });
+
+    const profileContext = {
+      confidenceLevel,
+      currentMood: studentProfile.currentMood,
+      energyLevel: studentProfile.energyLevel,
+      learningStyle: studentProfile.learningStyle,
+      studyHoursPerWeek: flashcard.subject
+        ? studentProfile.subjects.find((s) => s.name === flashcard.subject)
+            ?.studyHoursPerWeek || 4
+        : 4,
+      difficulty: flashcard.subject
+        ? studentProfile.subjects.find((s) => s.name === flashcard.subject)
+            ?.difficulty || "medium"
+        : "medium",
+    };
+
+    const prompt = `Calculate the optimal next review time for a Sri Lankan student's flashcard based on spaced repetition principles.
+
+Student Context:
+- Confidence Level (1-4): ${confidenceLevel}
+- Current Mood: ${profileContext.currentMood}
+- Energy Level: ${profileContext.energyLevel}/10
+- Learning Style: ${profileContext.learningStyle}
+- Subject Difficulty: ${profileContext.difficulty}
+- Weekly Study Hours: ${profileContext.studyHoursPerWeek}
+
+Return ONLY a JSON object:
+{
+  "nextReviewHours": 24,
+  "reasoning": "Based on medium confidence and tired mood, scheduled for tomorrow"
+}
+
+Calculation Rules:
+- Confidence 1 (Again): 0.25-2 hours based on mood/energy
+- Confidence 2 (Hard): 12-48 hours based on difficulty
+- Confidence 3 (Good): 2-7 days based on study habits
+- Confidence 4 (Easy): 7-21 days based on mastery level
+- Adjust for mood: tired/stressed = shorter intervals
+- Adjust for energy: low energy = longer intervals
+- Consider learning style and subject difficulty`;
+
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+      });
+
+      const cleanResponse = response.text().replace(/```json\s*|\s*```/g, "");
+      const aiResult = JSON.parse(cleanResponse);
+
+      const now = new Date();
+      const nextReview = new Date(
+        now.getTime() + aiResult.nextReviewHours * 60 * 60 * 1000
+      );
+
+      flashcard.confidenceLevel = confidenceLevel;
+      flashcard.lastReviewed = now;
+      flashcard.nextReview = nextReview;
+      await flashcard.save();
+
+      res.status(200).json({
+        status: "success",
+        message: "Flashcard updated successfully",
+        data: {
+          flashcard,
+          aiReasoning: aiResult.reasoning,
+          nextReviewIn: `${Math.round(aiResult.nextReviewHours)} hours`,
+        },
+      });
+    } catch (error) {
+      console.error("AI scheduling failed:", error);
+
+      const fallbackHours =
+        confidenceLevel === 1
+          ? 0.25
+          : confidenceLevel === 2
+          ? 24
+          : confidenceLevel === 3
+          ? 72
+          : 168;
+
+      const nextReview = new Date(Date.now() + fallbackHours * 60 * 60 * 1000);
+
+      flashcard.confidenceLevel = confidenceLevel;
+      flashcard.lastReviewed = new Date();
+      flashcard.nextReview = nextReview;
+      await flashcard.save();
+
+      res.status(200).json({
+        status: "success",
+        message: "Flashcard updated with fallback scheduling",
+        data: { flashcard },
+      });
+    }
+  }),
+
+  //* Delete flashcard deck
+  deleteFlashcardDeck: expressAsyncHandler(async (req, res) => {
+    const { deckId } = req.params;
+
+    const deck = await FlashcardDeck.findOne({
+      _id: deckId,
+      userId: req.user,
+    });
+
+    if (!deck) {
+      return res.status(404).json({
+        status: "error",
+        message: "Deck not found",
+      });
+    }
+
+    await Flashcard.deleteMany({ deckId });
+    await FlashcardDeck.findByIdAndDelete(deckId);
+
+    res.status(200).json({
+      status: "success",
+      message: "Deck deleted successfully",
+    });
   }),
 };
 

@@ -58,33 +58,12 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "teacher", "student", "guest"],
       default: "student",
     },
-    totalEarnings: {
-      type: Number,
-      default: 0,
-    },
-    nextEarningDate: {
-      type: Date,
-      default: () =>
-        new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-    },
-    plan: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Plan",
-    },
+
     isEmailVerified: {
       type: Boolean,
       default: false,
     },
-    payements: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Payment",
-      },
-    ],
-    hasSelectedPlan: {
-      type: Boolean,
-      default: false,
-    },
+
     lastLogin: {
       type: Date,
       default: Date.now,
