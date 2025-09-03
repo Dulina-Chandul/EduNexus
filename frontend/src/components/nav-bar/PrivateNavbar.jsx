@@ -71,9 +71,11 @@ export default function PrivateNavbar() {
                       <span className="text-bg font-bold text-sm">SS</span>
                     </div> */}
 
-                    <span className="text-text dark:text-text-dark font-bold text-lg hidden sm:block">
+                    <img className="h-46 w-auto mt-3" src="/logo.png" alt="" />
+
+                    {/* <span className="text-text dark:text-text-dark font-bold text-lg hidden sm:block">
                       Edu Nexus
-                    </span>
+                    </span> */}
                   </Link>
                 </div>
 

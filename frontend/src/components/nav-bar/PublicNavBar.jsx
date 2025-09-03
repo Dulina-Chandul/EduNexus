@@ -40,9 +40,10 @@ export default function PublicNavbar() {
                     {/* <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary dark:from-primary-dark dark:to-secondary-dark rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
                       <FaBlog className="h-4 w-4 text-bg dark:text-bg-dark" />
                     </div> */}
-                    <span className="text-text dark:text-text-dark font-bold text-xl hidden sm:block group-hover:text-primary dark:group-hover:text-primary-dark transition-colors duration-300">
+                     <img className="h-46 w-auto mt-3" src="/logo.png" alt="" />
+                    {/* <span className="text-text dark:text-text-dark font-bold text-xl hidden sm:block group-hover:text-primary dark:group-hover:text-primary-dark transition-colors duration-300">
                       Edu Nexus 
-                    </span>
+                    </span> */}
                   </Link>
                 </div>
 

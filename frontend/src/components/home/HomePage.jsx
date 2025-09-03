@@ -17,55 +17,7 @@ const HomePage = () => {
     // </section>
  <div>
       <div className="bg-[url('assets/background.png')] bg-cover bg-center">
-        {/* Navigation Section */}
-        {/* <header className="fixed inset-x-0 top-0 z-30 w-full py-3 mx-auto border shadow mavx-w-screen-md backdrop-blur-lg md:top-6 md:rounded-2xl lg:max-w-screen-lg">
-          <div className="px-4">
-            <div className="flex items-center justify-between">
-              <div className="flex shrink-0">
-                <a href="index.html" className="-m-1.5 p-1.5">
-                  <span className="sr-only">Kcc</span>
-                  <img className="w-auto h-11" src="assets/pngwing.com (19).png" alt="" />
-                </a>
-              </div>
-              <div className="hidden md:flex md:items-center md:justify-center md:gap-5">
-                <a 
-                  aria-current="page"
-                  className="inline-block px-3 py-2 text-sm font-medium font-semibold text-gray-900 transition-transform duration-200 rounded-lg hover:bg-fuchsia-100 hover:text-gray-900 hover:scale-105"
-                  href="school.html"
-                >
-                  School
-                </a>
-                <a 
-                  className="inline-block px-3 py-2 text-sm font-medium font-semibold text-gray-900 transition-transform duration-200 rounded-lg hover:bg-fuchsia-100 hover:text-gray-900 hover:scale-105"
-                  href="contact.html"
-                >
-                  Contact Us
-                </a>
-                <a 
-                  className="inline-block px-3 py-2 text-sm font-medium font-semibold text-gray-900 transition-transform duration-200 rounded-lg hover:bg-fuchsia-100 hover:text-gray-900 hover:scale-105"
-                  href="about.html"
-                >
-                  About Us
-                </a>
-              </div>
 
-              <div className="flex items-center justify-end gap-3">
-                <a 
-                  className="items-center justify-center hidden px-6 py-3 text-sm font-semibold text-gray-900 transition-all duration-200 bg-white shadow-lg rounded-xl ring-1 ring-inset ring-gray-300 hover:scale-105 sm:inline-flex"
-                  href="/auth"
-                >
-                  Dashboard
-                </a>
-                <a 
-                  className="inline-flex items-center justify-center rounded-xl bg-[#39cc2e] px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-300 ease-in-out transform hover:bg-[#269c1d] hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                  href="login.html"
-                >
-                  Login
-                </a>
-              </div>
-            </div>
-          </div>
-        </header> */}
 
         {/* Hero Section */}
         <div className="max-w-2xl py-32 mx-auto sm:py-48 lg:py-56">
@@ -76,7 +28,7 @@ const HomePage = () => {
           </div>
           <div className="text-center">
             <h1 className="text-6xl font-semibold text-gray-900 tracking-tigh">Edu Nexus</h1>
-            <h1 className="text-4xl font-semibold tracking-tight text-gray-900">EC.W.W.Kannangara Central College</h1>
+            <h1 className="text-4xl font-semibold tracking-tight text-gray-900">C.W.W.Kannangara Central College</h1>
 
             <p className="mt-8 text-lg font-medium text-gray-550 text-pretty sm:text-xl/8">
               Welcome to the C.W.W.Kannangara Central College Management System
@@ -120,7 +72,7 @@ const HomePage = () => {
                 Visit Our School Website For More Information.
               </h2>
               <p className="mt-6 text-gray-300 text-lg/8 text-pretty">
-                At C.W.W. Kannangara Central College, we believe in empowering young minds through knowledge, discipline, and innovation. Our legacy is rooted in the vision of Dr. C.W.W. Kannangara, the father of free education in Sri Lanka, whose commitment to accessible learning continues to inspire us today. Located in the heart of Mathugama, our institution fosters academic excellence, holistic development, and a deep sense of community. Explore our website to discover how we continue to shape future leaders through tradition, transformation, and technology.
+                At C.W.W. Kannangara Central College, we empower young minds through knowledge, discipline, and innovation. Inspired by Dr. C.W.W. Kannangara, the father of free education in Sri Lanka, we continue his vision of accessible learning. Located in Mathugama, our college nurtures academic excellence, holistic growth, and community spirit while shaping future leaders through tradition, transformation, and technology.
               </p>
               <div className="flex items-center justify-center mt-10 gap-x-6 lg:justify-start">
                 <a 
@@ -138,7 +90,7 @@ const HomePage = () => {
             <div className="relative mt-16 h-80 lg:mt-8">
               <img 
                 className="absolute top-0 left-0 rounded-md w-180 max-w-none bg-white/5 ring-1 ring-white/10"
-                src="assets/background.png" 
+                src="/background.png" 
                 alt="App screenshot" 
                 width="1824" 
                 height="1080" 
@@ -148,6 +100,8 @@ const HomePage = () => {
         </div>
       </div>
 
+
+   {/* About Us */}
       <div>
       <section className="mt-14">
         <div className="container px-6 py-12 mx-auto">
@@ -171,7 +125,7 @@ const HomePage = () => {
                   <div className="absolute flex justify-center w-full -mt-20">
                     <div className="w-32 h-32">
                       <img 
-                        src="assets/pasindu.png"
+                        src="/pasindu.png"
                         alt="Display Picture of Pasindu Surath" 
                         className="object-cover w-full h-full rounded-full shadow-md" 
                       />
@@ -179,9 +133,9 @@ const HomePage = () => {
                   </div>
                   <div className="px-6 mt-16">
                     <h1 className="mb-1 text-3xl font-bold text-center">Pasindu Surath</h1>
-                    <p className="text-sm text-center text-gray-800">Cariya</p>
+                    <p className="text-sm text-center text-gray-800">Frontend Developer</p>
                     <p className="pt-3 text-base font-normal text-center text-gray-600">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam dolor, in excepturi aspernatur iusto consectetur corporis aut dignissimos perferendis rerum, eum iure accusamus maiores veniam debitis blanditiis suscipit commodi delectus.
+                     Passionate about creating modern, responsive, and user-friendly interfaces. Skilled in Tailwind CSS and shadcn/ui, bringing clean design systems to life with smooth interactions. Focused on building web applications that are not only functional but also visually engaging.
                     </p>
                     <div className="flex justify-center w-full pt-5 pb-5">
                       <a href="#" className="mx-5" onClick={(e) => e.preventDefault()}>
@@ -224,7 +178,7 @@ const HomePage = () => {
                   <div className="absolute flex justify-center w-full -mt-20">
                     <div className="w-32 h-32">
                       <img 
-                        src="assets/dulina.jpg"
+                        src="/dulina.jpg"
                         alt="Display Picture of Dulina Chandul" 
                         className="object-cover w-full h-full rounded-full shadow-md" 
                       />
@@ -232,9 +186,9 @@ const HomePage = () => {
                   </div>
                   <div className="px-6 mt-16">
                     <h1 className="mb-1 text-3xl font-bold text-center">Dulina Chandul</h1>
-                    <p className="text-sm text-center text-gray-800">Ponnaya</p>
+                    <p className="text-sm text-center text-gray-800">Backend Developer</p>
                     <p className="pt-3 text-base font-normal text-center text-gray-600">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa labore eligendi aliquam eos quasi soluta aspernatur esse minus fugit. Cupiditate consequuntur veniam quia facilis quo incidunt ipsam tenetur quaerat eos!
+                     Specialized in building scalable and efficient backends using React and MongoDB. Experienced in designing APIs, managing databases, and ensuring seamless communication between frontend and backend. Dedicated to delivering fast and secure application performance.
                     </p>
                     <div className="flex justify-center w-full pt-5 pb-5">
                       <a href="#" className="mx-5" onClick={(e) => e.preventDefault()}>
@@ -285,9 +239,9 @@ const HomePage = () => {
                   </div>
                   <div className="px-6 mt-16">
                     <h1 className="mb-1 text-3xl font-bold text-center">Chamila Roshana</h1>
-                    <p className="text-sm text-center text-gray-800">Cetha ekahh</p>
+                    <p className="text-sm text-center text-gray-800">UI Designer</p>
                     <p className="pt-3 text-base font-normal text-center text-gray-600">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum accusamus cupiditate, perspiciatis fugit temporibus, dolorum obcaecati consequuntur nobis doloremque aliquam repellat ducimus non, maiores alias laborum? Amet ex eius quas!
+                      Creative designer with a sharp eye for detail and user experience. Skilled at transforming ideas into intuitive and appealing interfaces. Focused on usability, accessibility, and design consistency to craft interfaces that users love to interact with.
                     </p>
                     <div className="flex justify-center w-full pt-5 pb-5">
                       <a href="#" className="mx-5" onClick={(e) => e.preventDefault()}>
@@ -334,7 +288,7 @@ const HomePage = () => {
         <div className="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
           <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
           <div className="text-center">
-            <img className="w-auto mx-auto h-11 " src="assets/logo.png" alt="" />
+            <img className=" mx-auto h-56 " src="/logo.png" alt="" />
             
             <div className="flex items-center justify-center mb-3 text-2xl font-semibold">
               <h1 className="text-[#39cc2e]">C.W.W.Kannangara Central College</h1>
