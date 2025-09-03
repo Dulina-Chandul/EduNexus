@@ -69,17 +69,17 @@ const navigation = [
     roles: ["student"],
   },
   {
-    name: "My Followings",
-    href: "/student-dashboard/my-followings",
-    icon: Users,
-    description: "Your following list",
-    roles: ["student"],
-  },
-  {
     name: "Learning Resources",
     href: "/posts",
     icon: BookOpen,
     description: "Study materials",
+    roles: ["student"],
+  },
+  {
+    name: "My Followings",
+    href: "/student-dashboard/my-followings",
+    icon: Users,
+    description: "Your following list",
     roles: ["student"],
   },
 ];

@@ -29,6 +29,9 @@ const AuthRoute = ({ children, requiredRoles }) => {
   }
 
   if (requiredRoles && !requiredRoles.includes(userData.role)) {
+    if (userData.role === "student") {
+      return <Navigate to={"/student-dashboard"} />;
+    }
     return <Navigate to={"/unauthorized"} />;
   }
 
