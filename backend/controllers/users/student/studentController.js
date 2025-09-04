@@ -98,7 +98,7 @@ const studentController = {
     });
 
     const profileData = {
-      grade: studentProfile?.grdae,
+      grade: studentProfile?.grade,
       medium: studentProfile?.medium,
       subjects: studentProfile?.subjects,
       chronotype: studentProfile?.chronotype,
@@ -115,58 +115,70 @@ const studentController = {
     const config = {
       systemInstruction: [
         {
-          text: `You are an AI study planner assistant. Create a personalized daily study schedule based on the student's profile.
+          text: `You are a personalized AI study coach for Sri Lankan students. Create a highly customized daily study schedule that adapts to the student's unique profile, energy patterns, and current state.
 
 Return ONLY a valid JSON object with this exact structure:
 {
   "todayDate": "2025-08-20",
   "studentName": "Student",
-  "overallMotivation": "A brief encouraging message based on their mood and energy",
-  "recommendedFocus": "What they should prioritize today",
+  "overallMotivation": "A personalized encouraging message based on their current mood and energy level",
+  "recommendedFocus": "Specific focus area based on their performance and goals",
   "schedule": [
     {
       "timeSlot": "09:00 - 10:30",
       "activity": "Study Session",
       "subject": "Mathematics",
-      "description": "Focus on algebra problems",
+      "description": "Personalized activity based on their learning style and subject performance",
       "duration": 90,
       "type": "study",
       "priority": "high",
       "energyRequired": "high",
-      "tips": "Take notes and practice problems"
+      "tips": "Specific tips for their learning style and current state"
     },
     {
       "timeSlot": "10:30 - 10:45",
       "activity": "Break",
-      "description": "Stretch and hydrate",
+      "description": "Break activity suited to their preferences and environment",
       "duration": 15,
       "type": "break",
-      "tips": "Move around to refresh your mind"
+      "tips": "Personalized break suggestions"
     }
   ],
   "dailyGoals": [
-    "Complete 2 math practice problems",
-    "Review science notes for 30 minutes"
+    "Specific, achievable goals based on their subjects and performance",
+    "Goals that match their current energy and mood"
   ],
   "studyTips": [
-    "💡 Use active recall while studying",
-    "🎵 Try background music for better focus"
+    "💡 Tips specifically for ${profileData.learningStyle} learners",
+    "🎯 Advice based on their ${profileData.chronotype} chronotype and ${profileData.studyEnvironmentPreference} environment"
   ]
 }
 
-IMPORTANT GUIDELINES:
-- Create 6-8 time slots covering their preferred study hours
-- Prioritize high-difficulty subjects during peak energy times
-- Include appropriate breaks based on their break duration preference
-- For Early Birds: schedule demanding subjects in morning (8-12 PM)
-- For Night Owls: schedule demanding subjects in evening (6-10 PM)
-- For Neither: distribute evenly with peak at midday
-- Match study session length to their maxStudySessionLength
-- Consider their current mood: if tired/stressed, include more breaks and easier subjects first
-- Include 2-4 study sessions, appropriate breaks, and 1-2 review sessions
-- Provide specific, actionable tips based on their learning style
-- Create 3-4 realistic daily goals
-- Make the schedule practical and achievable`,
+PERSONALIZATION REQUIREMENTS:
+- Grade ${profileData.grade} Sri Lankan ${profileData.medium} medium student
+- Current energy: ${profileData.energyLevel}/10, Mood: ${profileData.currentMood}
+- Chronotype: ${profileData.chronotype} - adapt peak performance hours accordingly
+- Learning style: ${profileData.learningStyle} - customize activities and tips
+- Study environment: ${profileData.studyEnvironmentPreference}
+- Session length: ${profileData.maxStudySessionLength} minutes max
+- Break duration: ${profileData.studyBreakDuration} minutes
+- Study window: ${profileData.preferredStudyStartTime} to ${profileData.preferredStudyEndTime}
+
+SMART SCHEDULING:
+- Analyze each subject's difficulty and student's performance
+- Place hardest subjects during their peak energy times based on chronotype
+- If energy level is low (≤5), include more breaks and easier subjects first
+- If mood is stressed/tired, start with confidence-building activities
+- Match activity types to learning style (visual, auditory, kinesthetic, reading/writing)
+- Include subject-specific study methods for Sri Lankan syllabus
+- Create realistic daily goals based on their current capacity
+- Provide personalized motivation considering their current state
+
+ADAPTIVE ELEMENTS:
+- Different schedule structure each time while maintaining personalization
+- Vary subjects and activities while respecting their preferences
+- Include both review and new learning based on their progress
+- Suggest specific Sri Lankan curriculum resources when relevant`,
         },
       ],
     };
@@ -282,6 +294,8 @@ Generate a smart, realistic daily schedule that optimizes their learning based o
       subjects: studentProfile.subjects.filter((s) =>
         subjects.includes(s.name)
       ),
+      grade: studentProfile.grade,
+      medium: studentProfile.medium,
       chronotype: studentProfile.chronotype,
       energyLevel: studentProfile.energyLevel,
       currentMood: studentProfile.currentMood,
@@ -293,7 +307,7 @@ Generate a smart, realistic daily schedule that optimizes their learning based o
     const config = {
       systemInstruction: [
         {
-          text: `You are an AI quiz generator that creates personalized, adaptive questions based on student profiles.
+          text: `You are an AI quiz generator for Sri Lankan students. Generate questions from Sri Lankan syllabus, past papers, and model papers.
 
 Return ONLY a valid JSON object with this exact structure:
 {
@@ -322,23 +336,14 @@ Return ONLY a valid JSON object with this exact structure:
   }
 }
 
-CRITICAL GUIDELINES:
-- Generate ${questionCount} questions total across selected subjects: ${subjects.join(
-            ", "
-          )}
-- Adapt difficulty based on student's subject performance and accuracy rate
-- For subjects with high performance (>80%), include more hard questions
-- For subjects with low performance (<60%), include more easy/medium questions
-- Consider student's learning style: ${profileData.learningStyle}
-- Account for current mood: ${profileData.currentMood}
-- Energy level: ${profileData.energyLevel}/10
-- Each question must have exactly 4 options with one correct answer
-- Include detailed explanations for learning
-- Set appropriate time estimates (easy: 30-45s, medium: 45-75s, hard: 75-120s)
-- Ensure questions are educationally valuable and curriculum-aligned
-- Points should reflect difficulty: easy(5-8), medium(8-12), hard(12-20)
-- Make questions specific to difficulty levels in student profile
-- Include variety in question types: conceptual, computational, application-based`,
+REQUIREMENTS:
+- Generate questions from Sri Lankan NIE syllabus for Grade ${profileData.grade}
+- Use ${profileData.medium} medium context and language
+- Get questions from past papers, model papers, and school papers
+- Adapt difficulty based on student performance
+- Generate ${questionCount} questions for subjects: ${subjects.join(", ")}
+- Include detailed explanations
+- Make culturally relevant to Sri Lankan students`,
         },
       ],
     };

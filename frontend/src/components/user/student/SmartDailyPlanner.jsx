@@ -35,6 +35,8 @@ const SmartDailyPlanner = () => {
   const [dailyPlan, setDailyPlan] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const [completedGoals, setCompletedGoals] = useState(new Set());
+
   const {
     data: profileResponse,
     isLoading: profileLoading,
@@ -124,8 +126,6 @@ const SmartDailyPlanner = () => {
       </Alert>
     );
   }
-
-  const [completedGoals, setCompletedGoals] = useState(new Set());
 
   const toggleGoal = (index) => {
     setCompletedGoals((prev) => {
@@ -408,36 +408,6 @@ const SmartDailyPlanner = () => {
               </CardContent>
             </Card>
           </div>
-
-          <Card className="bg-bg dark:bg-bg-dark border-primary/20 dark:border-primary-dark/30 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-lg text-text dark:text-text-dark flex items-center">
-                <TrendingUp className="h-5 w-5 mr-2 text-primary dark:text-primary-dark" />
-                Today's Progress
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-text dark:text-text-dark font-medium">
-                      Schedule Completion
-                    </span>
-                    <span className="text-text dark:text-text-dark font-bold">
-                      0%
-                    </span>
-                  </div>
-                  <Progress
-                    value={0}
-                    className="h-3 bg-primary/10 dark:bg-primary-dark/20"
-                  />
-                  <p className="text-xs text-text/60 dark:text-text-dark/60 mt-2">
-                    Start your first study session to track progress
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       )}
 
