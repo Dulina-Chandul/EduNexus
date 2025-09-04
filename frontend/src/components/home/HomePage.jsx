@@ -231,7 +231,7 @@ const HomePage = () => {
                   <div className="absolute flex justify-center w-full -mt-20">
                     <div className="w-32 h-32">
                       <img 
-                        src="https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif"
+                        src="/chamila.jpg"
                         alt="Display Picture of Chamila Roshana" 
                         className="object-cover w-full h-full rounded-full shadow-md" 
                       />
